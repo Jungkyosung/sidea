@@ -68,3 +68,22 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+---
+
+# sidea프로젝트명
+
+## 프로젝트 개요
+
+
+
+## 팀구성
+
+
+- [Jungkyosung](https://github.com/Jungkyosung)
+  * 환경세팅
+  * 배포
+  * 백엔드
+- [yebbii](https://github.com/yebbii)
+  * 화면설계/디자인
+  * 프론트엔드
