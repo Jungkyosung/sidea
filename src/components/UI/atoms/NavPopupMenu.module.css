@@ -21,5 +21,18 @@
   position :absolute;
   top : 22px;
   right: -20px;
+
+  animation-name: modal-animation;
+  animation-duration: 0.1s;
+  transform-origin: top;
   
+}
+
+@keyframes modal-animation {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }

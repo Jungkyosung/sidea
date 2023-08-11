@@ -35,6 +35,7 @@
 
 .navMenu:hover {
     cursor: pointer;
+    color: #0077E4;
 }
 
 .navBell {

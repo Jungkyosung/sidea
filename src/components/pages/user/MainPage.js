@@ -35,7 +35,7 @@ const MainPage = () => {
     campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
     campTitle: "camp타이틀",
     campOrganizer: "camp주최자",
-    campProgress: 100
+    campProgress: 20
   }
 
   const menuProperties = {

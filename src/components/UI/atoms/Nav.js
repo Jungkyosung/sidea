@@ -44,8 +44,8 @@ const Nav = (props) => {
         <div className={Style.navRightWrap}>
           <div className={Style.navQuest}><AiOutlineQuestionCircle/></div>
           {isLogin ? 
-          <div className={Style.navMenu} onClick={handlerIsLogin}><BiSolidCircle/><NavPopupMenu/></div> : 
-          <div className={Style.navMenu} onClick={handlerIsLogin}><BiCircle/></div>
+          <div className={Style.navMenu} onClick={handlerIsLogin}><BiCircle/></div> : 
+          <div className={Style.navMenu} onClick={handlerIsLogin}><BiSolidCircle/><NavPopupMenu/></div>
           }
           {isOpenBell ?
           <div className={Style.navBell} onClick={handlerOpenBell}><BiBell/><NavPopupBell/></div> : 
