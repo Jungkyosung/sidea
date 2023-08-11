@@ -28,6 +28,7 @@
     width: 30px;
     height: 30px;
     color : #0077E4;
+    cursor: pointer;
 }
 
 
@@ -37,6 +38,7 @@
     width: 30px;
     height: 30px;
     color : #B2D9FD;
+    cursor: pointer;
 }
 
 .todoFinishCheckTrue > svg {
@@ -64,6 +66,7 @@
     width: 20px;
     height: 20px;
     color : #B2D9FD;
+    cursor: pointer;
 }
 
 .todoContentBell > svg {
@@ -75,6 +78,7 @@
     width: 22px;
     height: 22px;
     color : #B2D9FD;
+    cursor: pointer;
 }
 
 .todoContentDelete > svg{
