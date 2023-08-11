@@ -38,6 +38,7 @@
 }
 
 .navBell {
+    position: relative;
     margin : 0 2px 0 2px;
 }
 

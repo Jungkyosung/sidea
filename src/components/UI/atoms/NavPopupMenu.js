@@ -1,7 +1,7 @@
-import Style from './NavMenu.module.css';
+import Style from './NavPopupMenu.module.css';
 import { PiTriangleFill } from 'react-icons/pi';
 
-const NavMenu = () => {
+const NavPopupMenu = () => {
   return (
     <>
       <div className={Style.NavMenuTriangle}>
@@ -15,4 +15,4 @@ const NavMenu = () => {
     </>
   )
 }
-export default NavMenu;
+export default NavPopupMenu;

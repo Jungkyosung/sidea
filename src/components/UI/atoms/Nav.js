@@ -5,19 +5,29 @@ import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { BiSolidCircle, BiCircle } from 'react-icons/bi';
 import { BiBell } from 'react-icons/bi';
 import { useState } from 'react';
-import NavMenu from './NavMenu';
+import NavPopupMenu from './NavPopupMenu';
+import NavPopupBell from './NavPopupBell';
 
 const Nav = (props) => {
 
   const [isLogin, setIsLogin] = useState(false);
+  const [isOpenBell, setIsOpenBell] = useState(false);
 
   const navigate = useNavigate();
-  const handlerNavOff = props.handlerNavOff;
+
   const handlerIsLogin = () => {
     if( isLogin) {
       setIsLogin(false)
     } else {
       setIsLogin(true)
+    }
+  }
+
+  const handlerOpenBell = () => {
+    if( isOpenBell) {
+      setIsOpenBell(false)
+    } else {
+      setIsOpenBell(true)
     }
   }
 
@@ -34,10 +44,15 @@ const Nav = (props) => {
         <div className={Style.navRightWrap}>
           <div className={Style.navQuest}><AiOutlineQuestionCircle/></div>
           {isLogin ? 
-          <div className={Style.navMenu} onClick={handlerIsLogin}><BiSolidCircle/><NavMenu/></div> : 
+          <div className={Style.navMenu} onClick={handlerIsLogin}><BiSolidCircle/><NavPopupMenu/></div> : 
           <div className={Style.navMenu} onClick={handlerIsLogin}><BiCircle/></div>
           }
-          <div className={Style.navBell}><BiBell/></div>
+          {isOpenBell ?
+          <div className={Style.navBell} onClick={handlerOpenBell}><BiBell/><NavPopupBell/></div> : 
+          <div className={Style.navBell} onClick={handlerOpenBell}><BiBell/></div>
+          }
+          
+
         </div>
       </div>
     </>

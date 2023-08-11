@@ -1,0 +1,46 @@
+.NavPopupBellTriangle {
+  color: #f1f1f1;
+  z-index: 1;
+  position :absolute;
+  top : 14px;
+}
+
+
+.NavPopupBellBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: start;
+  width: 150px;
+  /* height: 60px; */
+  border-radius: 10px;
+  background-color : #f1f1f1;
+  color: #000000;
+  box-shadow: 1px 2px 1px 1px rgba(0, 0, 0, 0.2);
+  font-size: 0.6rem;
+  z-index: 1;
+  position :absolute;
+  top : 22px;
+  right: -15px;
+  
+}
+
+.NavPopupBellLine {
+  display: flex;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.NavPopupBellIcon{
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.NavPopupBellPointUp {
+  color : #0077E4;
+}
+
+.NavPopupBellPointDown {
+  color : #FF6363;
+}
