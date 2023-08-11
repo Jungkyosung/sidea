@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import Input from '../../UI/atoms/Input';
 import DoBtn from '../../UI/atoms/btn/DoBtn';
 import EditBtn from '../../UI/atoms/btn/EditBtn';
-import MainQuickBtn from '../../UI/atoms/btn/MainQuickBtn';
 import MainQuickContainer from '../../UI/atoms/btn/MainQuickContainer';
 import RadioBtn from '../../UI/atoms/btn/RadioBtn';
 import SelectToggleRound from '../../UI/atoms/toggle/SelectToggleRound';
+import SelectToggleRect from '../../UI/atoms/toggle/SelectToggleRect';
 
 
-const MainPage = ({history}) => {
+const MainPage = ({ history }) => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
-  const [ toggleActive, setToggleActive ] = useState(0);
 
   const handlerChangeEmail = (e) => {
     setUserEmail(e.target.value);
@@ -22,6 +21,7 @@ const MainPage = ({history}) => {
   };
 
   const handlerClickAdd = () => {
+    // 등록 동작 처리
     console.log("등록")
   }
 
@@ -35,6 +35,7 @@ const MainPage = ({history}) => {
     console.log('삭제');
   };
 
+  // 인풋
   const inputs = [
     {
       id: 1,
@@ -52,22 +53,38 @@ const MainPage = ({history}) => {
     }
   ];
 
-  const toggleList = [ '오늘', '주간', '월간'];
-  const toggleReport = () => {
-    const result = [];
+  // 라디오 
+  const [selectedRadio, setSelectedRadio] = useState('전체');
 
-    for (let i = 0; i < toggleList.length; i++) {
-      result.push (
-        <>
-          <SelectToggleRound toggleId={i} toggleClickRound={toggleSelectBtn} toggleTitle={toggleList[i]}/>
-        </>
-      ) 
-    } return result;
+  const radioList = ['전체', '미답변', '답변완료'];
+
+  const onRadiofilter = (e) => {
+    setSelectedRadio(e);
   }
 
-  const toggleSelectBtn = () => {
-    console.log('출력')
-  }
+  // 토글 라운드
+  const [selectedList, setSelectedList] = useState('오늘');
+  const [selectedPoint, setSelectedPoint] = useState('100')
+
+  const reportlist = ['오늘', '주간', '월간', '연간'];
+  const setPointList = ['100', '200', '300', '400', '500'];
+
+  const handlerToggleChange = (e) => {
+    setSelectedList(e);
+  };
+
+  const handlerPointChange = (e) => {
+    setSelectedPoint(e);
+  };
+
+  // 토글 네모
+  const [selectedChargePoint, setSelectedChargePoint] = useState('500');
+
+  const chargePointList = ['500', '1000', '3000', '5000'];
+
+  const handlerCharPointChange = (e) => {
+    setSelectedChargePoint(e);
+  };
 
   return (
     <>
@@ -91,32 +108,53 @@ const MainPage = ({history}) => {
       <DoBtn doText="등록하기" doOnClick={handlerClickAdd}  />
 
       <hr />
+      <p>Edit(delete + update)</p>
       <EditBtn onUpdate={handlerUpdate} onDelete={handlerDelete} />
 
       <hr />
-      {/* <MainQuickBtn /> */}
+      <p>mainQuick</p>
       <MainQuickContainer />
 
       <hr /> 
-      {/* map 함수 돌리는 걸로 수정하는게 좋을 것 같음 */}
+      <p>radio</p>
       <RadioBtn 
-        radioId="radio1"
-        radioName="radio"
-        radioValue="1"
-        radioTitle="전체" />
-      <RadioBtn 
-        radioId="radio2"
-        radioName="radio"
-        radioValue="2"
-        radioTitle="미답변" />
-        <RadioBtn 
-        radioId="radio3"
-        radioName="radio"
-        radioValue="3"
-        radioTitle="답변완료" />
+        radioList={radioList}
+        selectRadio={selectedRadio}
+        onRadioChange={onRadiofilter}
+      />
+
+      <p>Selected option: {selectedRadio}</p>
+      
+      <hr />
+      <p>toggleRound</p>
+      <div> 
+        <SelectToggleRound
+          toggleList={reportlist}
+          toggleActive={selectedList}
+          onToggle={handlerToggleChange}
+        />
+
+        <SelectToggleRound
+          toggleList={setPointList}
+          toggleActive={selectedPoint}
+          onToggle={handlerPointChange}
+        />
+
+        <p>Selected option: {selectedList}</p>
+        <p>Selected option: {selectedPoint}</p>
+      </div>
 
       <hr />
-      {toggleReport()}
+      <p>toggleRound</p>
+      <div> 
+        <SelectToggleRect
+          toggleListRect={chargePointList}
+          toggleActiveRect={selectedChargePoint}
+          onToggleRect={handlerCharPointChange}
+        />
+
+        <p>Selected option: {selectedChargePoint}</p>
+      </div>
     </>
   );
 }

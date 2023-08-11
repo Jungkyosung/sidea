@@ -1,4 +1,36 @@
+/* *{box-sizing: border-box;} */
 .toggleActiveRound {
   width: 70px;
-  height: 25px;
+  height: 30px;
+  border-radius: 20px;
+  border: 2px solid #B2D9FD;
+  background-color: #B2D9FD;
+  cursor: pointer;
+}
+
+.toggleUnActiveRound {
+  width: 70px;
+  height: 30px;
+  border-radius: 20px;
+  border: 2px solid #B2D9FD;
+  background-color: white;
+  cursor: pointer;
+}
+
+.toggleActiveRect {
+  width: 70px;
+  height: 30px;
+  border-radius: 5px;
+  border: 2px solid #B2D9FD;
+  background-color: #B2D9FD;
+  cursor: pointer;
+}
+
+.toggleUnActiveRect {
+  width: 70px;
+  height: 30px;
+  border-radius: 5px;
+  border: 2px solid #B2D9FD;
+  background-color: white;
+  cursor: pointer;
 }

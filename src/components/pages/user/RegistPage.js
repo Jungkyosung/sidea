@@ -1,8 +1,11 @@
-const RegistPage = () => {
-  return (
-    <>
 
-    </>
-  )
-}
+const RegistPage = () => {
+
+  return (
+   <>
+   
+   </>
+  );
+};
+
 export default RegistPage;

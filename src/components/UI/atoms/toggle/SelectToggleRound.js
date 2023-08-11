@@ -1,19 +1,20 @@
-import { useState } from "react";
 import Style from './SelectToggle.module.css';
 
-const SelectToggleRound = ({ toggleId, toggleClickRound, toggleTitle }) => {
-
-  const [ toggleActive, setToggleActive ] = useState(0);
+const SelectToggleRound = ({ toggleList, toggleActive, onToggle }) => {
 
   return (
-    <>
-      <button 
-       className={is머시기 == i ? Style.toggleActiveRound : Style.toggleUnActiveRound}
-        id={toggleId} 
-        onClick={toggleClickRound}>
-          {toggleTitle}
+    <div>
+      {toggleList.map((list) => (
+        <button
+          key={list}
+          className={toggleActive === list ? Style.toggleActiveRound : Style.toggleUnActiveRound}
+          onClick={() => onToggle(list)}
+        >
+          {list}
         </button>
-    </>
-  )
-}
+      ))}
+    </div>
+  );
+};
+
 export default SelectToggleRound;

@@ -6,8 +6,20 @@ import QuickMy from './icons/iconn3.png';
 
 const MainQuickContainer = () => {
   
-  const handlerMouseOver = () => {}
-  const handlerMouseOut = () => {}
+  const handlerMouseOver = () => {};
+  const handlerMouseOut = () => {};
+
+  const handlerGoTodo = () => {
+    console.log("TODO")
+  };
+
+  const handlerGoPoint = () => {
+    console.log("Point")
+  };
+
+  const handlerGoMy = () => {
+    console.log("My")
+  };
 
   return (
     <div>
@@ -16,6 +28,7 @@ const MainQuickContainer = () => {
         quickTitle="TODO"
         onMouseOver={handlerMouseOver}
         onMouseOut={handlerMouseOut}
+        quickClick={handlerGoTodo}
       />
 
       <MainQuickBtn
@@ -23,6 +36,7 @@ const MainQuickContainer = () => {
         quickTitle="POINT"
         onMouseOver={handlerMouseOver}
         onMouseOut={handlerMouseOut}
+        quickClick={handlerGoPoint}
       />
 
       <MainQuickBtn
@@ -30,6 +44,7 @@ const MainQuickContainer = () => {
         quickTitle="MY"
         onMouseOver={handlerMouseOver}
         onMouseOut={handlerMouseOut}
+        quickClick={handlerGoMy}
       />
     </div>
   );

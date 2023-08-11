@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Input from "../../UI/atoms/Input";
 
-//엔트리템
 const LoginPage = () => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [hidePassword, setHidePassword] = useState(true);
 
   const handlerChangeEmail = (e) => {
     setUserEmail(e.target.value);
@@ -14,7 +14,7 @@ const LoginPage = () => {
     setUserPassword(e.target.value);
   };
 
-  const [hidePassword, setHidePassword] = useState(true);
+  
   const toggleHidePassword = () => {
     setHidePassword(!hidePassword);
   };
@@ -29,8 +29,8 @@ const LoginPage = () => {
         inputPlaceholder="이메일을 입력하세요"/>
 
       <Input
-        inputTypetype={hidePassword ? "password" : "text"}
-        inputValuevalue={userPassword}
+        inputType={hidePassword ? "password" : "text"}
+        inputValue={userPassword}
         inputHandler= {handlerChangePassword}
         inputPlaceholder="비밀번호를 입력하세요" />
         

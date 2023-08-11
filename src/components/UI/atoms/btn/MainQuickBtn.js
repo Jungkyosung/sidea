@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Style from './MainQuickBtn.module.css';
 
-const MainQuickBtn = ({ quickIcon, quickTitle, handlerMouseOver, handlerMouseOut }) => {
+const MainQuickBtn = ({ quickIcon, quickTitle, quickClick }) => {
   
-  const [isHovered, setIsHovered] = useState(false); // 초기값을 false로 변경
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
@@ -14,6 +14,7 @@ const MainQuickBtn = ({ quickIcon, quickTitle, handlerMouseOver, handlerMouseOut
       onMouseOut={() => {
         setIsHovered(false);
       }}
+      onClick={() => quickClick()}
     >
 
       {isHovered 

@@ -7,6 +7,11 @@
   border: 2px solid black;
   background-color: white;
   border-radius: 50%;
+  cursor: pointer;
+}
+
+.mainQuick:hover {
+  border: 2px solid #B2D9FD;
 }
 
 .mainQuickIcon {
@@ -17,6 +22,6 @@
 }
 
 .mainQuickTitle {
-  /* background-color: pink; */
   margin: 0px;
+  color: #0077E4;
 }
