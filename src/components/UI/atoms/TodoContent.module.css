@@ -1,0 +1,83 @@
+.todoContentWrapTrue {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 320px;
+    height: 50px;
+    border-radius: 30px;
+    box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.4);
+}
+
+.todoContentWrapFalse {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 320px;
+    height: 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.4);
+}
+
+.todoFinishCheckTrue {
+    margin-left: 10px;
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    color : #0077E4;
+}
+
+
+.todoFinishCheckFalse {
+    margin-left: 10px;
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    color : #B2D9FD;
+}
+
+.todoFinishCheckTrue > svg {
+    width: 100%;
+    height: 100%;
+}
+
+.todoFinishCheckFalse > svg {
+    width: 100%;
+    height: 100%;
+}
+
+
+.todoContentTitle{
+    width: 100%;
+}
+
+.todoContentRight {
+    display: flex;
+    margin-left: 5px;
+    margin-right: 10px;
+}
+
+.todoContentBell {
+    width: 20px;
+    height: 20px;
+    color : #B2D9FD;
+}
+
+.todoContentBell > svg {
+    width: 100%;
+    height: 100%;
+}
+
+.todoContentDelete{
+    width: 22px;
+    height: 22px;
+    color : #B2D9FD;
+}
+
+.todoContentDelete > svg{
+    width: 100%;
+    height: 100%;
+}
