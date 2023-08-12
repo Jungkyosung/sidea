@@ -1,0 +1,41 @@
+.doBtn {
+  width: 300px;
+  height: 40px;
+  margin-top: 15px;
+  color: white;
+  border-radius: 8px;
+  border: 2px solid #0077E4;
+  box-shadow: 0px 0px 4px #0077E4;
+  background-color: #0077E4;
+  cursor: pointer;
+}
+
+.DeleteBtn {
+  width: calc(50% - 10px);
+  height: 40px;
+  margin-top: 15px;
+  margin-right: 10px;
+  color: black;
+  border-radius: 8px;
+  border: 2px solid #0077E4;
+  box-shadow: 0px 0px 4px #0077E4;
+  background-color: white;
+  cursor: pointer;
+}
+
+.UpdateBtn {
+  width: calc(50% - 10px);
+  height: 40px;
+  margin-top: 15px;
+  margin-left: 10px;
+  color: white;
+  border-radius: 8px;
+  border: 2px solid #0077E4;
+  box-shadow: 0px 0px 4px #0077E4;
+  background-color: #0077E4;
+  cursor: pointer;
+}
+
+.btnbg {
+  width: 300px;
+}
