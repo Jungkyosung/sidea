@@ -1,0 +1,28 @@
+.menuWrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 290px;
+}
+
+.menuIcon {
+    width: 20px;
+    height: 20px;
+}
+
+.menuTitle {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100%;
+}
+
+.menuRightArrow{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.menuRightArrow > svg{
+    width: 100%;
+    height: 100%;
+}

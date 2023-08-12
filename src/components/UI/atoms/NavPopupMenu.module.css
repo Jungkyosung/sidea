@@ -1,0 +1,38 @@
+.NavMenuTriangle {
+  color: #0077E4;
+  z-index: 1;
+  position :absolute;
+  top : 14px;
+}
+
+.NavMenuBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 52px;
+  height: 60px;
+  border-radius: 10px;
+  background-color : #0077E4;
+  box-shadow: 1px 2px 1px 1px rgba(0, 0, 0, 0.2);
+  color: #FFFFFF;
+  font-size: 0.6rem;
+  z-index: 1;
+  position :absolute;
+  top : 22px;
+  right: -20px;
+
+  animation-name: modal-animation;
+  animation-duration: 0.1s;
+  transform-origin: top;
+  
+}
+
+@keyframes modal-animation {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
