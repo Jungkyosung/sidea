@@ -1,10 +1,10 @@
 import Style from './CampaignList.module.css';
 
-const CampaignList = ({ campImgSource, campTitle, campOrganizer, campProgress }) => {
+const CampaignList = ({campClick, campImgSource, campTitle, campOrganizer, campProgress }) => {
 
     return (
         <>
-            <div className={Style.campList}>
+            <div className={Style.campList} onClick={campClick}>
                 <img className={Style.campImg} src={campImgSource} />
                 <div className={Style.campInfo}>
                     <div className={Style.campTitle}>{campTitle}</div>

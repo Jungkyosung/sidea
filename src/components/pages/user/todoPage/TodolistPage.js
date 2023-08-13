@@ -5,7 +5,7 @@ import TodoContent from "../../../UI/atoms/TodoContent";
 import NaviControll from "../../../naviControll/NaviControll";
 import Calendar from "./Calendar";
 
-const TodolistPage = () => {
+const TodolistPage = ({}) => {
   const titleProperties = {
     titleName: "TODO"
   }
@@ -60,11 +60,16 @@ const TodolistPage = () => {
       todoTitle: "TodoContentTitle",
       todoHasAlarm: false
     }
-  ]
+  ];
 
   const handlerGoWriteTodo = () => {
     console.log("Gowrite")
-  }
+  };
+
+  const handlerGoReport = () => {
+    console.log("GoReport")
+  };
+
   return (
     <>
       <NaviControll>
@@ -76,7 +81,7 @@ const TodolistPage = () => {
               <div className={Style.content}>
                   <div className={Style.header}>
                     <span>today’s list</span>
-                    <span>report</span>
+                    <span onClick={handlerGoReport}>report</span>
                   </div>
 
                   <div className={Style.todoContent_box}>

@@ -1,0 +1,29 @@
+.container {
+  /* height: 100; */
+  margin-top: 220px;
+  box-shadow: 0px -4px 4px rgb(0, 0, 0, 0.4);
+  padding: 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.select_box {
+  height: 400px;
+  overflow-y: scroll;
+}
+
+/* 스크롤바css */
+.select_box::-webkit-scrollbar {
+  width: 5px;
+}
+
+.select_box::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  transition: width 0.2s ease-in-out;
+}
+
+.select_box::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(178, 217, 253, 0.5);
+}

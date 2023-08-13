@@ -1,0 +1,39 @@
+.swiper_container {
+  background-color: aqua;
+  height: 100%;
+}
+.swiper_wrapper {
+  border: 1px solid orange;
+  height: 100px;
+  overflow-y: scroll;
+}
+
+.slide {
+  border: 1px solid black;
+}
+
+.options {
+  border: 1px solid blue;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.options button {
+  
+}
+
+.period, .slider, .minute {
+  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+}
+
+.hour {
+  /* border: 1px solid red; */
+  height: 40px;
+}
+
+.minute {
+  border: 1px solid red;
+}
