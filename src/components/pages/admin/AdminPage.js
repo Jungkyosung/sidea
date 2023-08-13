@@ -1,8 +1,22 @@
+import Style from './AdminPage.module.css';
+import Menu from '../../UI/atoms/Menu';
 import NaviControll from '../../naviControll/NaviControll';
+import { BsPlusCircle } from 'react-icons/bs';
+import { BiListCheck } from 'react-icons/bi';
+import { MdHeadsetMic } from 'react-icons/md';
 
 const AdminPage = () => {
   return (
     <NaviControll>
+      <div className={Style.ContentsWrap}>
+        <div className={Style.AdminTitle}>Admin</div>
+        <Menu menuTitle={"캠페인 목록"}><BiListCheck /></Menu>
+        <Menu menuTitle={"캠페인 등록"}><BsPlusCircle /></Menu>
+        <Menu menuTitle={"문의 관리"}><MdHeadsetMic /></Menu>
+        <div className={Style.AdminStatic}>총 기부된 포인트 통계</div>
+        <div className={Style.AdminStatic}>사용자 수</div>
+        <div className={Style.AdminStatic}>오늘 적립으로 나간 포인트</div>
+      </div>
 
     </NaviControll>
   )

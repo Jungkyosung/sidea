@@ -1,4 +1,6 @@
 .campList {
+    margin-top: 10px;
+    margin-bottom: 10px;
     display: flex;
     width: 320px;
     height: 80px;

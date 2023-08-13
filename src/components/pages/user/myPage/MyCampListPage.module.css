@@ -1,0 +1,21 @@
+.CampHead {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.CampListBox {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+}
+
+.CampListBox::-webkit-scrollbar {
+  display: none;
+}

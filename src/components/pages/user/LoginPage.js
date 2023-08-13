@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Style from './Login.module.css'
+import Style from './Login.module.css';
 import Input from "../../UI/atoms/Input";
 import Title from "../../UI/atoms/Title";
 import DoBtn from "../../UI/atoms/btn/DoBtn";

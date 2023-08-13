@@ -1,12 +1,3 @@
-.ContentsWrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top : 40px;
-  margin-left : 20px;
-  margin-right: 20px;
-}
-
 .MenuBox {
   margin-top: 50px;
 }

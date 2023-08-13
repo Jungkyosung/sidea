@@ -1,4 +1,8 @@
+import NaviControll from '../../../naviControll/NaviControll';
+
 const CampDetailPage = () => {
+
+
   return (
     <>
 
