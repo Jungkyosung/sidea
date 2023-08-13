@@ -1,8 +1,5 @@
 import Style from './MyQnalistPage.module.css';
 import { useState } from 'react';
-import NaviControll from '../../../naviControll/NaviControll';
-import ProfileImg from '../../../UI/atoms/ProfileImg';
-import ProfileText from '../../../UI/atoms/ProfileText';
 import DoBtn from '../../../UI/atoms/btn/DoBtn';
 import AskList from '../../../UI/atoms/AskList';
 import { useNavigate } from 'react-router';

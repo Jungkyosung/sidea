@@ -1,0 +1,19 @@
+.ContentsWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top : 40px;
+  margin-left : 20px;
+  margin-right: 20px;
+}
+
+.askListBox{
+  height: 600px;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+}
+
+.askListBox::-webkit-scrollbar {
+  display: none;
+}

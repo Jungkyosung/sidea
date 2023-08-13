@@ -1,0 +1,62 @@
+.ContentsWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top : 40px;
+  margin-left : 20px;
+  margin-right: 20px;
+}
+
+.AdminTitle {
+  width: 100%;
+  display: flex;
+  font-size : 2rem;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.InputBox {
+  width: 100%;
+}
+
+.FileAdd {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.FileAddInput {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 45px;
+  font-size: 0.8rem;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.FileAddInput > div {
+  width: 70%;
+  padding-left: 10px;
+}
+
+.FileAddInput > label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 100%;
+  border-radius: 0 8px 8px 0;
+  background-color: #B2D9FD;
+}
+
+.FileAdd > input {
+  display: none;
+}
+
+.InputImgView {
+  width: 235px;
+  height: 235px;
+}

@@ -2,6 +2,9 @@ import Style from './PointHistory.module.css';
 
 const PointHistory = ({pointDate, pointType, pointAmount, pointBalance}) => {
 
+  //고민 되는 부분 기부면 포인트 - 처리 할 건지 그냥 금액이 -1000이면 -로 처리할 건지??
+  //그럼 포인트잔액이 -가 되면 어떻게 처리할 건지???
+
   function getPointAmount(amount){
     let result;
     let transAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
