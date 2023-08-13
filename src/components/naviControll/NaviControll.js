@@ -1,6 +1,3 @@
-// 네퀵
-// 네비
-
 import { useState } from 'react';
 import Nav from '../UI/atoms/Nav';
 import NavQuick from '../UI/atoms/NavQuick';

@@ -2,11 +2,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
+    z-index: 99;
+    top: 5px;
+    /* right: 10px; */
+    margin-left: 320px;
     width: 30px;
     height: 30px;
     border-radius: 100%;
     box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.6);
     color: #0D216D;
+    background-color: #FFFFFF;
     cursor: pointer;
 }
 
