@@ -3,9 +3,18 @@
     justify-content: space-between;
     align-items: center;
     width: 290px;
+    margin-top: 20px;
+    margin-bottom : 20px;
 }
 
 .menuIcon {
+    display: flex;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+}
+
+.menuIcon > svg {
     width: 20px;
     height: 20px;
 }

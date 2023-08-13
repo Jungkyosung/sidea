@@ -30,41 +30,42 @@ import TodoAddPage from './components/pages/user/todoPage/TodoAddPage';
 
 function App() {
   return (
-    <div className='guideline'>
+    <div className='guideline'> 
       <Routes>
-      {/* admin */} 
-      <Route path="/admin" element={<AdminPage/>} />
-      <Route path="/admin/qnalist" element={<AdminQnaListPage/>} />
-      <Route path="/admin/qna/:qnaidx" element={<AdminQnaDetailPage/>} />
-      <Route path="/admin/qna/reply" element={<AdminQnaReplyPage/>} />
-      <Route path="/admin/campaignlist" element={<AdminCampListPage/>} />
-      <Route path="/admin/campaign/:campaignidx" element={<AdminCampDetailPage/>} />
-      <Route path="/admin/campaign/add" element={<AdminCampAddPage/>} />
-      <Route path="/admin/campaign/edit/:campaignidx" element={<AdminCampEditPage/>} />
-      {/* user */}
-      <Route path="/" element={<MainPage/>} />
-      <Route path="/login" element={<LoginPage/>} />
-      <Route path="/regist" element={<RegistPage/>} />
-      <Route path="/info" element={<InfoPage/>} />
-      {/* user-mypage*/}
-      <Route path="/mypage" element={<MyPage/>} />
-      <Route path="/mypage/point" element={<MyPointPage/>} />
-      <Route path="/mypage/point/detail" element={<MyPointDetailPage/>} />
-      <Route path="/mypage/campaignlist" element={<MyCampListPage/>} />
-      <Route path="/mypage/qnalist" element={<MyQnalistPage/>} />
-      <Route path="/mypage/qna/detail" element={<MyQnaDetailPage/>} />
-      <Route path="/mypage/qna/write" element={<MyQnaWritePage/>} />
-      <Route path="/mypage/edit" element={<MyEditPage/>} />
-      {/* user-campPage*/}
-      <Route path="/campaignlist" element={<CampListPage/>} />
-      <Route path="/campaign/:campaignidx" element={<CampDetailPage/>} />
-      {/* user-todoPage*/}
-      <Route path="/todolist" element={<TodolistPage/>} />
-      <Route path="/todo/report" element={<TodoReportPage/>} />
-      <Route path="/todo/add" element={<TodoAddPage/>} />
-      <Route path="/todo/edit/:todoidx" element={<TodoEditPage/>} />
-      <Route path="/*" element={<NotFoundPage/>} />
-    </Routes>
+
+        {/* admin */}
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin/qnalist" element={<AdminQnaListPage />} />
+        <Route path="/admin/qna/:qnaidx" element={<AdminQnaDetailPage />} />
+        <Route path="/admin/qna/reply" element={<AdminQnaReplyPage />} />
+        <Route path="/admin/campaignlist" element={<AdminCampListPage />} />
+        <Route path="/admin/campaign/:campaignidx" element={<AdminCampDetailPage />} />
+        <Route path="/admin/campaign/add" element={<AdminCampAddPage />} />
+        <Route path="/admin/campaign/edit/:campaignidx" element={<AdminCampEditPage />} />
+        {/* user */}
+        <Route path="/" element={<MainPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/regist" element={<RegistPage />} />
+        <Route path="/info" element={<InfoPage />} />
+        {/* user-mypage*/}
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/point" element={<MyPointPage />} />
+        <Route path="/mypage/point/detail" element={<MyPointDetailPage />} />
+        <Route path="/mypage/campaignlist" element={<MyCampListPage />} />
+        <Route path="/mypage/qnalist" element={<MyQnalistPage />} />
+        <Route path="/mypage/qna/detail/:qnaidx" element={<MyQnaDetailPage />} />
+        <Route path="/mypage/qna/write" element={<MyQnaWritePage />} />
+        <Route path="/mypage/edit" element={<MyEditPage />} />
+        {/* user-campPage*/}
+        <Route path="/campaignlist" element={<CampListPage />} />
+        <Route path="/campaign/:campaignidx" element={<CampDetailPage />} />
+        {/* user-todoPage*/}
+        <Route path="/todolist" element={<TodolistPage />} />
+        <Route path="/todo/report" element={<TodoReportPage />} />
+        <Route path="/todo/add" element={<TodoAddPage />} />
+        <Route path="/todo/edit/:todoidx" element={<TodoEditPage />} />
+        <Route path="/*" element={<NotFoundPage />} />
+      </Routes>
     </div>
   );
 }
