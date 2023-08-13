@@ -30,7 +30,8 @@ import TodoAddPage from './components/pages/user/todoPage/TodoAddPage';
 
 function App() {
   return (
-    <Routes>
+    <div className='guideline'>
+      <Routes>
       {/* admin */} 
       <Route path="/admin" element={<AdminPage/>} />
       <Route path="/admin/qnalist" element={<AdminQnaListPage/>} />
@@ -64,6 +65,7 @@ function App() {
       <Route path="/todo/edit/:todoidx" element={<TodoEditPage/>} />
       <Route path="/*" element={<NotFoundPage/>} />
     </Routes>
+    </div>
   );
 }
 

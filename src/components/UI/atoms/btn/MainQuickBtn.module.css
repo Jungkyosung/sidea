@@ -5,7 +5,8 @@
   line-height: 100px;
   text-align: center;
   border: 2px solid black;
-  background-color: white;
+  background-color: rgb(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -24,4 +25,9 @@
 .mainQuickTitle {
   margin: 0px;
   color: #0077E4;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
 }

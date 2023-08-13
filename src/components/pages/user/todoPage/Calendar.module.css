@@ -1,0 +1,41 @@
+.datebox {
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 전, 후 주간 버튼 */
+.datebox button {
+  width: 20px;
+}
+
+/* 날짜 */
+.day, .SelectedDay {
+  /* border: 1px solid blue; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 50px;
+  width: calc(100% / 7);
+  border-radius: 8px;
+}
+
+.SelectedDay {
+  /* border: 1px solid red; */
+  box-shadow: 0px 0px 4px rgb(0, 0, 0, 0.4);
+}
+
+/* 요일 */
+.dayText {
+  /* font-weight: bold; */
+  color: black;
+}
+
+.Sun {
+  color: red; 
+}
+
+.Sat {
+  color: blue; 
+}

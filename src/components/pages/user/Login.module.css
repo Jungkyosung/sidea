@@ -1,0 +1,46 @@
+.login_container {
+  padding: 0px 20px;
+  width: 100%;
+  height: 100%;
+  /* background-color: antiquewhite; */
+  position: relative;
+}
+
+.login_box {
+  /* border: 1px solid red; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  padding: 0px 20px;
+}
+
+/*  */
+.registerTitle {
+  padding-top: 100px;
+}
+
+.login_input {
+  margin: 130px 0px;
+}
+
+.password_input {
+  position: relative;
+}
+
+.password_hide {
+  position: absolute;
+  right: 10px;
+  top: 7px;
+}
+
+/*  */
+.login_submit {
+  margin: 20px 0px;
+}
+
+.login_submit p {
+  text-align: right;
+  text-decoration: underline;
+}

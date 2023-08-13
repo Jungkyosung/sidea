@@ -1,4 +1,5 @@
 import React from 'react';
+import Style from './MainQuickBtn.module.css';
 import MainQuickBtn from './MainQuickBtn';
 import QuickTodo from './icons/iconn1.png';
 import QuickPoint from './icons/iconn2.png';
@@ -22,7 +23,7 @@ const MainQuickContainer = () => {
   };
 
   return (
-    <div>
+    <div className={Style.container}>
       <MainQuickBtn
         quickIcon={QuickTodo}
         quickTitle="TODO"
