@@ -3,7 +3,6 @@ import MainQuickContainer from "../../UI/atoms/btn/MainQuickContainer";
 import NaviControll from "../../naviControll/NaviControll";
 import { useState } from 'react';
 
-
 const MainPage = () => {
 
   const [isLogin, setIsLogin] = useState(false);
