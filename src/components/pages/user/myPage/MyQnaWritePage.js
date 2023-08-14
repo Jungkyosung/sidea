@@ -25,8 +25,8 @@ const MyQnaWritePage = () => {
 
         </div>
         <div className={Style.QnaWriteBtm}>
-            <DoBtn doText={"문의하기"} />
-          </div>
+          <DoBtn doText={"문의하기"} />
+        </div>
       </div>
     </NaviControll>
   )

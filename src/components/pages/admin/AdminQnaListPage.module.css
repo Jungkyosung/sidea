@@ -7,6 +7,11 @@
   margin-right: 20px;
 }
 
+.RadioBtnBox {
+  width: 100%;
+  margin-top: 20px;
+}
+
 .askListBox{
   height: 600px;
   overflow-y: scroll;
@@ -16,4 +21,42 @@
 
 .askListBox::-webkit-scrollbar {
   display: none;
+}
+
+.SearchWrap {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.SearchBox {
+  display: flex;
+  border-radius: 8px ;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+}
+
+.SearchBox > input{
+  display: flex;
+  border-radius: 8px 0 0 8px;
+  border : none;
+}
+
+.SearchBox > input:focus{
+  outline : none;
+}
+
+.SearchIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 8px 8px 0;
+  width: 25px;
+  height: 25px;
+}
+
+.SearchIcon:hover {
+  cursor: pointer;
+  color: #0077E4;
 }

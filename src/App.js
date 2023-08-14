@@ -37,7 +37,7 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/qnalist" element={<AdminQnaListPage />} />
         <Route path="/admin/qna/:qnaidx" element={<AdminQnaDetailPage />} />
-        <Route path="/admin/qna/reply" element={<AdminQnaReplyPage />} />
+        <Route path="/admin/qna/reply/:qnaidx" element={<AdminQnaReplyPage />} />
         <Route path="/admin/campaignlist" element={<AdminCampListPage />} />
         <Route path="/admin/campaign/:campaignidx" element={<AdminCampDetailPage />} />
         <Route path="/admin/campaign/add" element={<AdminCampAddPage />} />
