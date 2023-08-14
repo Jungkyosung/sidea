@@ -43,7 +43,7 @@ const AdminQnaListPage = () => {
         </div>
         <div className={Style.askListBox}>
           <AskList askNumber={"1"} askTitleClick={() => handlerMove("/admin/qna/1")} askTitle={"문의샘플제목1"} askIsCommented={true} />
-          <AskList askNumber={"2"} askTitleClick={() => handlerMove("/mypage/qna/detail/2")} askTitle={"문의샘플제목 길어지면 어떻게 될까?2"} askIsCommented={true} />
+          <AskList askNumber={"2"} askTitleClick={() => handlerMove("/admin/qna/2")} askTitle={"문의샘플제목 길어지면 어떻게 될까?2"} askIsCommented={true} />
           <AskList askNumber={"3"} askTitleClick={() => handlerMove("/mypage/qna/detail/3")} askTitle={"문의샘플제목 길어지면 어떻게 될까?3"} askIsCommented={false} />
           <AskList askNumber={"4"} askTitleClick={() => handlerMove("/mypage/qna/detail/4")} askTitle={"문의샘플제목4"} askIsCommented={false} />
           <AskList askNumber={"5"} askTitleClick={() => handlerMove("/mypage/qna/detail/5")} askTitle={"문의샘플제목5"} askIsCommented={false} />

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AdminQnaDetailPage = () => {
 
-  const [isAnswered, setIsAnswered] = useState(false);
+  const [isAnswered, setIsAnswered] = useState(true);
 
   const navigate = useNavigate();
 
