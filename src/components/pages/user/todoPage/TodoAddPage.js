@@ -45,50 +45,54 @@ const TodoAddPage = () => {
   return (
     <>
       <div className={Style.container}>
-        <div>
+        
+        <div className={Style.addbox}>
+          <div className={Style.addInput}>
           <Input
             inputType="text"
             inputValue={addTodo}
             inputHandler= {handlerChangeTodo}
             inputPlaceholder="TODO를 입력하세요."
           />
-        </div>
-
-        <div className={Style.select_box}>
-          <div>
-            <TimePicker />
           </div>
+        
 
-          <div>
-            <p>날짜 선택</p>
-            <SelectToggleRound
-              toggleList={dateList}
-              toggleActive={selectedDate}
-              onToggle={handlerDateChange}
-            />
-          </div>
+          <div className={Style.select_box}>
+            <div>
+              <TimePicker />
+            </div>
+
+            <div>
+              <p>날짜 선택</p>
+              <SelectToggleRound
+                toggleList={dateList}
+                toggleActive={selectedDate}
+                onToggle={handlerDateChange}
+              />
+            </div>
           
-          <div>
-            <p>반복</p>
-            <SelectToggleRound
-              toggleList={repeatList}
-              toggleActive={selectedRepeat}
-              onToggle={handlerRepeatChange}
-            />
+            <div>
+              <p>반복</p>
+              <SelectToggleRound
+                toggleList={repeatList}
+                toggleActive={selectedRepeat}
+                onToggle={handlerRepeatChange}
+              />
+            </div>
+
+            <div>
+              <p>포인트</p>
+              <SelectToggleRound
+                toggleList={pointList}
+                toggleActive={selectedPoint}
+                onToggle={handlerPointChange}
+              />
+            </div>
           </div>
 
-          <div>
-            <p>포인트</p>
-            <SelectToggleRound
-              toggleList={pointList}
-              toggleActive={selectedPoint}
-              onToggle={handlerPointChange}
-            />
+          <div className={Style.DoBtn}>
+            <DoBtn doText="등록하기" doOnClick={handlerClickAdd} />
           </div>
-        </div>
-
-        <div>
-          <DoBtn doText="등록하기" doOnClick={handlerClickAdd} />
         </div>
       </div>
 

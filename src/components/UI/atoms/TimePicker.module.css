@@ -6,6 +6,7 @@
   border: 1px solid orange;
   height: 100px;
   overflow-y: scroll;
+  transform: translate3d(0px, 0px, 0px) !important;
 }
 
 .slide {
@@ -35,5 +36,14 @@
 }
 
 .minute {
-  border: 1px solid red;
+  border: 5px solid red;
+  position: relative;
+}
+
+.selected {
+  background-color: blue;
+  position: absolute;
+  top: 0px;
+  display: flex;
+  align-items: top;
 }

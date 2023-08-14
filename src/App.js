@@ -27,7 +27,6 @@ import TodoEditPage from './components/pages/user/todoPage/TodoEditPage';
 import NotFoundPage from './components/pages/NotFoundPage';
 import MyEditPage from './components/pages/user/myPage/MyEditPage';
 import TodoAddPage from './components/pages/user/todoPage/TodoAddPage';
-import ReportPage from './components/pages/user/campPage/ReportPage';
 
 function App() {
   return (
@@ -60,7 +59,6 @@ function App() {
         {/* user-campPage*/}
         <Route path="/campaignlist" element={<CampListPage />} />
         <Route path="/campaign/:campaignidx" element={<CampDetailPage />} />
-        <Route path="/campaign/report" element={<ReportPage />} />
         {/* user-todoPage*/}
         <Route path="/todolist" element={<TodolistPage />} />
         <Route path="/todo/report" element={<TodoReportPage />} />
