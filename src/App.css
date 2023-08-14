@@ -10,14 +10,6 @@
   position: relative;
 }
 
-.guideline {
-  width: 362px;
-  height: 802px;
-  border: 1px solid red;
-  margin: auto;
-  position: relative;
-}
-
 .App {
   text-align: center;
 }

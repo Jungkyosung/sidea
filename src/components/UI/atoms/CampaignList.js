@@ -1,6 +1,6 @@
 import Style from './CampaignList.module.css';
 
-const CampaignList = ({ campClick, campImgSource, campTitle, campOrganizer, campProgress }) => {
+const CampaignList = ({campClick, campImgSource, campTitle, campOrganizer, campProgress }) => {
 
     return (
         <>

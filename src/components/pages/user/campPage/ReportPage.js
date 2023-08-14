@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Style from "./TodoReportPage.module.css";
+import Style from "./ReportPage.module.css";
 import Title from "../../../UI/atoms/Title";
 import SelectToggleRound from "../../../UI/atoms/toggle/SelectToggleRound";
 import NaviControll from "../../../naviControll/NaviControll";
 
-const TodoReportPage = () => {
+const ReportPage = ({}) => {
   const [selectedReport, setSelectedReport] = useState('오늘')
   const titleProperties = {
     titleName: "리포트"
@@ -46,8 +46,10 @@ const TodoReportPage = () => {
             </div>
           </div>
         </div>
+
       </NaviControll>
     </>
-  )
-}
-export default TodoReportPage;
+  );
+};
+
+export default ReportPage;

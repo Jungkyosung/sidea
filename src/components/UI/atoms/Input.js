@@ -10,7 +10,8 @@ const Input = ({ inputType, inputValue, inputHandler, inputPlaceholder }) => {
               type={inputType}
               value={inputValue}
               onChange={inputHandler}
-              placeholder={inputPlaceholder} />
+              placeholder={inputPlaceholder}
+        />
       </div>
     </>
   )
