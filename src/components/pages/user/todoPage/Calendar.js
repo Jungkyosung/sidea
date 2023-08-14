@@ -52,7 +52,7 @@ const Calendar = () => {
             id="Year"
             format={"YYYY"}
             ticking={false}
-            timezone={"KR/Pacific"}
+            timezone={"Asia/Seoul"}
           />.
         </span>
         <span>

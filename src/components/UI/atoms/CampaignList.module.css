@@ -2,10 +2,12 @@
     margin-top: 10px;
     margin-bottom: 10px;
     display: flex;
-    width: 320px;
+    width: 100%;
     height: 80px;
 }
-
+.campList:not(:last-child) {
+    margin-bottom: 20px;
+}
 .campImg {
     display: flex;
     width: 80px;

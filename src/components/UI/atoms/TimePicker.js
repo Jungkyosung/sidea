@@ -1,135 +1,135 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Swiper from 'swiper';
-import 'swiper/css';
-import './TimePicker.css'
+import React, { useEffect, useState } from 'react';
+import Style from './TimePicker.module.css';
+import { Swiper } from 'swiper';
+
 
 const TimePicker = () => {
-  const [ampmIndex, setAmpmIndex] = useState(0);
-  const [hourIndex, setHourIndex] = useState(0);
-  const inputRef = useRef(null);
+  const [selectedPeriod, setSelectedPeriod] = useState('AM');
+  const [selectedHour, setSelectedHour] = useState('01');
+  const [selectedMinute, setSelectedMinute] = useState('00');
 
+  const periods = ['AM', 'PM'];
+  const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
+  const minutes = Array.from({ length: 12 }, (_, i) => (i * 5).toString().padStart(2, '0'));
+
+  
+
+  // Swiper 초기화 및 해제
   useEffect(() => {
-    const datetime = new Date();
-    let hour = datetime.getHours();
-    let ampm = 0; //'am'
-    
-    if (hour === 0) {
-      ampm = 1; //'pm'
-    } else if (hour >= 13) {
-      hour -= 12;
-      ampm = 1; //'pm'
-    }
-
-    setHourIndex(hour - 1);
-    setAmpmIndex(ampm);
-    
-    const hoursSwiper = new Swiper('.swiper-container.hours', {
-      initialSlide: hour - 1,
-      ...defaults
-    });
-    
-    const ampmSwiper = new Swiper('.swiper-container.ampm', {
-      initialSlide: ampm,
-      ...defaultsAMPM
+    const mySwiper = new Swiper(`.${Style.swiper_container}`, {
+      direction: 'vertical',
+      loop: true,
+      slidesPerView: 3,
+      centeredSlides: true,
+      freeMode: true,
+      // 슬라이드를 클릭하면 해당 슬라이드로 자동 이동
+      slideToClickedSlide: true,
+      scrollbar: {
+        el: `${Style.swiper_wrapper}`,
+        draggable: true,
+        dragSize: 4,
+      },
     });
     
     return () => {
-      hoursSwiper.destroy();
-      ampmSwiper.destroy();
+      if (mySwiper) {
+        console.log("swiper");
+      }
     };
-  }, []);
+  }, []); // 빈 배열은 처음 마운트 시에만 실행
 
-  const handleUpdateInput = () => {
-    if (!inputRef.current) {
-      return;
-    }
-    
-    const am = ampmIndex === 0 ? 0 : 12;
-    const inputValue = parseInt(am) + parseInt(pad(hourIndex + 1));
-    inputRef.current.value = inputValue;
-    inputRef.current.setSelectionRange(0, inputValue.length);
+  const handlePeriodSelect = period => {
+    setSelectedPeriod(period);
   };
 
-  const pad = v => (v > 9 ? v : '0' + String(v));
+  const handleHourSelect = hour => {
+    setSelectedHour(hour);
+  };
 
+  const handleMinuteSelect = minute => {
+    setSelectedMinute(minute);
+  };
+
+  
+  
 
   return (
-    <div className="container">
-      <div className="header">
-        <div className="title">시간 선택</div>
-        
+    <div className="time-picker">
+      <div className="time-display">
+        <span className="selected-time">
+          <span className="selected-hour">{selectedHour}:</span>
+          <span className="selected-minute">{selectedMinute}</span>
+          <span className="selected-period">{selectedPeriod}</span>
+        </span>
       </div>
-      <div className="picker">
-        <div className="swiper-container ampm">
-          <div className="swiper-wrapper ampm_box">
-            <div className="ampm swiper-slide" onClick={() => setAmpmIndex(0)}>
-              오전
-            </div>
-            <div className="ampm swiper-slide" onClick={() => setAmpmIndex(1)}>
-              오후
+      <div className={Style.options}>
+
+        {/* Swiper 컨테이너 */}
+        <div className={`${Style.swiper_container} swiper-container`}>
+          {/* Swiper 슬라이드 */}
+          <div className={`${Style.swiper_wrapper} swiper-wrapper`}>
+            {/* Periods */}
+            <div className={`${Style.period} swiper-slide`}>
+              {periods.map(period => (
+                <button
+                  key={period}
+                  className={`period-option ${selectedPeriod === period ? 'selected' : ''}`}
+                  onClick={() => handlePeriodSelect(period)}
+                >
+                  {period}
+                </button>
+              ))}
             </div>
           </div>
         </div>
-        <div className="swiper-container hours">
-          <div className="swiper-wrapper">
-            {Array.from({ length: 12 }).map((_, idx) => (
-              <div
-                className={`time swiper-slide ${hourIndex === idx ? 'active' : 'active'}`}
-                onClick={() => setHourIndex(idx)}
-                key={idx}
-              >
-                {pad(idx + 1)}시
-              </div>
-            ))}
+
+        {/* Hours */}
+        <div className={`${Style.swiper_container} swiper-container`}>
+          <div className={`${Style.swiper_wrapper} swiper-wrapper`}>
+            <div className={`swiper-slide ${Style.slide}`}>
+              {hours.map(hour => (
+                
+                  <div className={Style.hour}>
+                  <button
+                  key={hour}
+                  className={`hour-option ${selectedHour === hour ? 'selected' : ''}`}
+                  onClick={() => handleHourSelect(hour)}
+                >
+                  {hour}
+                </button>
+                </div>
+                
+              ))}
+            </div>
           </div>
         </div>
-        <div className="vizor"></div>
+        {/* Minutes */}
+        <div className={`${Style.swiper_container} swiper-container`}>
+          <div className={`${Style.swiper_wrapper} swiper-wrapper`}>
+            {/* Swiper 슬라이드 영역 */}
+            <div className={`swiper-slide ${Style.minute}`}>
+              {minutes.map(minute => (
+                <div key={minute}>
+                  {/* 선택된 요소의 스타일 적용 */}
+                  <button key={minute}
+                    className={`minute-option ${selectedMinute === minute ? Style.selected : ''}`}
+                    onClick={() => handleMinuteSelect(minute)}
+                  >
+                    {minute}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-      <input
-        id="time"
-        ref={inputRef}
-        type="text"
-        readOnly
-        onFocus={handleUpdateInput}
-      />
     </div>
   );
 };
 
 export default TimePicker;
 
-const defaults = {
-  autoHeight: true,
-  pagination: '.swiper-pagination',
-  slidesPerView: 4,
-  freeMode: true,
-  freeModeSticky: true,
-  freeModeMomentumRatio: 0.25,
-  freeModeVelocityRatio: 0.25,
-  freeModeMinimumVelocity: 0.1,
-  mousewheelControl: true, // 휠 움직임을 스와이퍼 조작에 사용
-  mousewheelSensitivity: 0.5,
-  loop: true,
-  loopAdditionalSlides: 5,
-  direction: 'vertical',
-  slideToClickedSlide: true, 
-  centeredSlides: true,
-};
 
-const defaultsAMPM = {
-  autoHeight: true,
-  pagination: '.swiper-pagination',
-  slidesPerView: 4,
-  freeMode: true,
-  freeModeSticky: true,
-  freeModeMomentumRatio: 0.25,
-  freeModeVelocityRatio: 0.25,
-  freeModeMinimumVelocity: 0.1,
-  mousewheelControl: true, // 휠 움직임을 스와이퍼 조작에 사용
-  mousewheelSensitivity: 0.5,
-  loop: false,
-  loopAdditionalSlides: 5,
-  direction: 'vertical',
-  slideToClickedSlide: true, 
-  centeredSlides: true,
-};
+
+
+
