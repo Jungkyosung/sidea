@@ -7,6 +7,8 @@ import Calendar from "./Calendar";
 import TodoAddPage from "./TodoAddPage";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { MdOutlineClose } from 'react-icons/md';
+import { BiSolidBarChartSquare } from 'react-icons/bi';
 
 const TodolistPage = ({}) => {
   const [isInputFocuse, setInputFocuse] = useState(false);
@@ -78,13 +80,6 @@ const TodolistPage = ({}) => {
     }
   ];
 
-  // const handlerGoWriteTodo = () => {
-  //   console.log("Gowrite")
-  // };
-
-  // const handlerGoReport = () => {
-  //   console.log("GoReport")
-  // };
 
   return (
     <>
@@ -100,8 +95,11 @@ const TodolistPage = ({}) => {
           <div className={Style.list_box}>
             <div className={Style.todolist}>
               <div className={Style.subTitle}>
-                <span>today’s list</span>
-                <span onClick={()=>handlerMove(locations.report)}>report</span>
+                <h2>today’s list</h2>
+                <div className={Style.goReport}onClick={()=>handlerMove(locations.report)}>
+                  <BiSolidBarChartSquare  />
+                  <span>리포트</span>
+                </div>
               </div>
 
               <div className={Style.todoContent_box}>
@@ -120,12 +118,13 @@ const TodolistPage = ({}) => {
                 ? 
                 (
                   <div className={Style.todoAdd_page}>
+                    <MdOutlineClose className={Style.close} onClick={()=>setInputFocuse(false)} />
                     <TodoAddPage />
                   </div>
                 ) 
                 : 
                 (
-                  <div onClick={()=>setInputFocuse(true)}>
+                  <div className={Style.todoInput_box} onClick={()=>setInputFocuse(true)}>
                     <Input
                       inputType="text"
                       inputValue=""

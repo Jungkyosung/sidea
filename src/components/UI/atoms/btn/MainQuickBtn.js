@@ -8,13 +8,13 @@ const MainQuickBtn = ({ quickIcon, quickTitle, quickClick }) => {
   return (
     <div
       className={Style.mainQuick}
-      onMouseOver={() => {
-        setIsHovered(true); 
-      }}
-      onMouseOut={() => {
-        setIsHovered(false);
-      }}
-      onClick={() => quickClick()}
+        onMouseOver={() => {
+          setIsHovered(true); 
+        }}
+        onMouseOut={() => {
+          setIsHovered(false);
+        }}
+        onClick={() => quickClick()}
     >
 
       {isHovered 

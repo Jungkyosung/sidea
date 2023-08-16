@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Style from './Calendar.module.css'
 import Year from "react-live-clock";
 import Month from "react-live-clock";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
 const Calendar = () => {
   const now = new Date();
@@ -61,7 +62,7 @@ const Calendar = () => {
       </div>
       
       <div className={Style.datebox}>
-        <button onClick={handlePreviousWeek}>전</button>
+        <MdKeyboardArrowLeft className={Style.arrow} onClick={handlePreviousWeek} />
         {thisWeekDates.map((weekday) => {
           const currentDate = new Date(now.getFullYear(), now.getMonth(), weekday); 
           const dayStyle = `${Style.dayText} ${weekday % 7 === 6 ? Style.Sun : ''} ${weekday % 7 === 5 ? Style.Sat : ''}`;
@@ -78,7 +79,7 @@ const Calendar = () => {
             </div>
           );
         })}
-        <button onClick={handleNextWeek}>후</button>
+        <MdKeyboardArrowRight className={Style.arrow} onClick={handleNextWeek} />
       </div>
     </>
   );

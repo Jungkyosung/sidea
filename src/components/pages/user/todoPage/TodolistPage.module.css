@@ -8,16 +8,17 @@
 
 .header {
   height: 20%;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 .list_box {
-  border: 1px solid purple;
+  /* border: 1px solid purple; */
   width: 100%;
   height: 80%;
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -26,13 +27,31 @@
 
 /*  */
 .todolist {
-  border: 1px solid orange;
+  /* border: 1px solid orange; */
   height: 88%;
+  margin-bottom: 15px;
 }
 
 .subTitle {
   height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
+
+.goReport {
+  display: flex;
+  align-items: center;
+  color: #0077E4;
+  cursor: pointer;
+}
+.goReport svg {
+  font-size: 1.2em;
+}
+.goReport span {
+  text-decoration: underline;
+}
+
 .todoContent_box {
   width: 100%;
   height: 90%;
@@ -54,10 +73,22 @@
   background-color: rgb(178, 217, 253, 0.5);
 }
 
-
 .todoAdd_page {
   position: absolute;
   bottom: 0%;
   left: 0%;
-  background-color: white;
+  height: inherit;
+  /* background-color: white; */
+}
+
+.close {
+  position: absolute;
+  top: 26.5%;
+  right: 5%;
+  color: #0077E4;
+  cursor: pointer;
+}
+
+.todo_input {
+  height: 100%;
 }

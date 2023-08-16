@@ -1,49 +1,58 @@
-.swiper_container {
-  background-color: aqua;
+.time_picker {
   height: 100%;
+  overflow: hidden;
 }
+
+.swiper_container {
+  /* background-color: aqua; */
+  height: 250px;
+}
+
 .swiper_wrapper {
-  border: 1px solid orange;
-  height: 100px;
+  /* border: 1px solid orange; */
+  height: auto; 
   overflow-y: scroll;
   transform: translate3d(0px, 0px, 0px) !important;
 }
 
-.slide {
-  border: 1px solid black;
+/* 스크롤바css */
+.swiper_wrapper::-webkit-scrollbar {
+  width: 5px;
+}
+
+.swiper_wrapper::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  transition: width 0.2s ease-in-out;
+}
+
+.swiper_wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(178, 217, 253, 0.5);
 }
 
 .options {
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   height: 100%;
   display: flex;
   justify-content: space-around;
 }
 
 .options button {
-  
+  width: 50px;
+  height: 30px;
+  border: none;
+  background-color: transparent;
+  font-size: 1.2em;
+  margin: 10px 0px;
+  color: rgb(0, 0, 0, 0.6);
+  cursor: pointer;
 }
 
-.period, .slider, .minute {
-  border: 1px solid red;
-  display: flex;
-  flex-direction: column;
-}
-
-.hour {
-  /* border: 1px solid red; */
-  height: 40px;
-}
-
-.minute {
-  border: 5px solid red;
-  position: relative;
+.options button:hover {
+  background-color: #B2D9FD;
+  border-radius: 5px;
 }
 
 .selected {
-  background-color: blue;
-  position: absolute;
-  top: 0px;
-  display: flex;
-  align-items: top;
+  font-weight: bold;
+  color: black;
 }

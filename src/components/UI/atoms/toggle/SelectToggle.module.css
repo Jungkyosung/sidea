@@ -1,4 +1,11 @@
-/* *{box-sizing: border-box;} */
+.toggle_container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.toggle_container button {
+  margin-bottom: 5px;
+}
 .toggleActiveRound {
   width: 70px;
   height: 30px;

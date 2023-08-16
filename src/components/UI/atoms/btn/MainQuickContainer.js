@@ -4,22 +4,20 @@ import MainQuickBtn from './MainQuickBtn';
 import QuickTodo from './icons/iconn1.png';
 import QuickPoint from './icons/iconn2.png';
 import QuickMy from './icons/iconn3.png';
+import { useNavigate } from 'react-router-dom';
 
 const MainQuickContainer = () => {
   
-  const handlerMouseOver = () => {};
-  const handlerMouseOut = () => {};
+  const navigate = useNavigate();
 
-  const handlerGoTodo = () => {
-    console.log("TODO")
+  const locations = {
+    todo : "/todolist",
+    point : "/mypage/point",
+    mypage: "/mypage"
   };
 
-  const handlerGoPoint = () => {
-    console.log("Point")
-  };
-
-  const handlerGoMy = () => {
-    console.log("My")
+  function handlerMove(location){
+    navigate(location);
   };
 
   return (
@@ -27,25 +25,19 @@ const MainQuickContainer = () => {
       <MainQuickBtn
         quickIcon={QuickTodo}
         quickTitle="TODO"
-        onMouseOver={handlerMouseOver}
-        onMouseOut={handlerMouseOut}
-        quickClick={handlerGoTodo}
+        quickClick={()=>handlerMove(locations.todo)}
       />
 
       <MainQuickBtn
         quickIcon={QuickPoint}
         quickTitle="POINT"
-        onMouseOver={handlerMouseOver}
-        onMouseOut={handlerMouseOut}
-        quickClick={handlerGoPoint}
+        quickClick={()=>handlerMove(locations.point)}
       />
 
       <MainQuickBtn
         quickIcon={QuickMy}
         quickTitle="MY"
-        onMouseOver={handlerMouseOver}
-        onMouseOut={handlerMouseOut}
-        quickClick={handlerGoMy}
+        quickClick={()=>handlerMove(locations.mypage)}
       />
     </div>
   );
