@@ -1,22 +1,73 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Style from "./TodoAddPage.module.css";
 import Input from "../../../UI/atoms/Input";
 import DoBtn from "../../../UI/atoms/btn/DoBtn";
 import TimePicker from "../../../UI/atoms/TimePicker";
 import SelectToggleRound from "../../../UI/atoms/toggle/SelectToggleRound";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+import { MdRepeat, MdControlPoint } from 'react-icons/md';
+import { BiCalendarEvent, BiAlarm } from 'react-icons/bi';
+
+
 
 const TodoAddPage = () => {
   const [addTodo, setAddTodo] = useState("");
 
-  // 토글 라운드
-  const [selectedDate, setSelectedDate] = useState('오늘');
-  const [selectedRepeat, setSelectedRepeat] = useState(['매일']);
-  const [selectedPoint, setSelectedPoint] = useState('100P')
-
   const dateList = ['오늘', '1일 후', '2일 후', '3일 후', '4일 후', '5일 후', '6일 후', '7일 후'];
   const repeatList = ['매일', '매일 일', '매일 월', '매일 화', '매일 수', '매일 목', '매일 금', '매일 토'];
   const pointList = ['100P', '200P', '300P', '400P', '500P'];
+  // 토글 라운드
+  const [selectedDate, setSelectedDate] = useState(dateList[0]);
+  const [selectedRepeat, setSelectedRepeat] = useState(repeatList[0]);
+  const [selectedPoint, setSelectedPoint] = useState(pointList[0]);
+  const [selectedPeriod, setSelectedPeriod] = useState('AM');
+  const [selectedHour, setSelectedHour] = useState('01');
+  const [selectedMinute, setSelectedMinute] = useState('00');
 
+  // 투두 텍스트 입력
+  const handlerChangeTodo = (e) => {
+    setAddTodo(e.target.value);
+  };
+
+  // 알림 설정
+  const updateTime = (value, type) => {
+    if (type === 'period') {
+      setSelectedPeriod(value);
+    } else if (type === 'hour') {
+      setSelectedHour(value);
+    } else if (type === 'minute') {
+      setSelectedMinute(value);
+    }
+  };
+
+  const alarmstr = `( ${selectedHour || ''} : ${selectedMinute || ''} ${selectedPeriod || ''} )`;
+
+  // 날짜선택
+  const [calculatedDate, setCalculatedDate] = useState(new Date());
+
+  const handlerDateChange = (e) => {
+    const selectedIndex = dateList.indexOf(e);
+    const newCalculatedDate = getNextDate(selectedIndex);
+
+    setSelectedDate(e);
+    setCalculatedDate(newCalculatedDate);
+  };
+
+  const getNextDate = (days) => {
+    const today = new Date();
+    const nextDate = new Date(today);
+
+    nextDate.setDate(today.getDate() + days);
+
+    return nextDate;
+  };
+  
+  // 오늘
+  const today = new Date();
+  const options = { month: "long", day: "numeric" };
+
+  // 반복설정
   const handlerRepeatChange = (e) => {
     const setRepeat = e; // 클릭된 버튼의 내용을 저장
 
@@ -39,28 +90,45 @@ const TodoAddPage = () => {
       }
     } else {
       setSelectedRepeat([setRepeat]);
-    }
-    
+    }  
   };
 
-  const handlerDateChange = (e) => {
-    setSelectedDate(e);
-  };
-
+  // 포인트 설정
   const handlerPointChange = (e) => {
     setSelectedPoint(e);
   };
 
-  // 투두 텍스트 입력
-  const handlerChangeTodo = (e) => {
-    setAddTodo(e.target.value);
-  };
-
+  // 투두 등록버튼
   const handlerClickAdd = () => {
-    // 등록 동작 처리
-    console.log("등록")
-  }
+    const token = sessionStorage.getItem('token');
+    const decode_token = jwt_decode(token);
+    let userId = decode_token.sub;
 
+    const alarm = updateTime(selectedPeriod, 'period') +
+      updateTime(selectedHour, 'hour') +
+      updateTime(selectedMinute, 'minute');
+
+    const todoData = {
+      // userIdx : userIdx,
+      todoContents: addTodo,
+      todoDate: selectedDate,
+      todoStartDate: today,
+      todoEndDate: calculatedDate,
+      todoAlarm: alarm
+    };
+
+    axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
+      todoData, { params: { userId: encodeURI(userId) }, headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } }
+      )
+        .then((res) => {
+          console.log(res);
+          
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    console.log("등록");
+  };
 
   return (
     <>
@@ -74,15 +142,24 @@ const TodoAddPage = () => {
               inputPlaceholder="TODO를 입력하세요."
             />
           </div>
-        
 
           <div className={Style.select_box}>
+            <p><BiAlarm /> 알림 <span>{alarmstr}</span> </p>
             <div className={Style.select_alarm}>
-              <TimePicker />
+              <TimePicker 
+                onPeriod={(value) => updateTime(value, 'period')}
+                onHour={(value) => updateTime(value, 'hour')}
+                onMinute={(value) => updateTime(value, 'minute')}
+              />
             </div>
 
             <div className={Style.select_toggle}>
-              <p>날짜 선택</p>
+              <p><BiCalendarEvent />
+                <span>
+                  {today.toLocaleDateString("ko-KR", options)}
+                  {selectedDate === '오늘' ? '' : '~' + calculatedDate.toLocaleDateString('ko-KR', options)}
+                </span>
+              </p>
               <div className={Style.select_toggle_box}>
               <SelectToggleRound
                 toggleList={dateList}
@@ -93,7 +170,7 @@ const TodoAddPage = () => {
             </div>
           
             <div className={Style.select_toggle}>
-              <p>반복</p>
+              <p><MdRepeat /> 반복</p>
               <SelectToggleRound
                 toggleList={repeatList}
                 toggleActive={selectedRepeat}
@@ -102,7 +179,7 @@ const TodoAddPage = () => {
             </div>
 
             <div className={Style.select_toggle}>
-              <p>포인트</p>
+              <p><MdControlPoint /> 포인트</p>
               <SelectToggleRound
                 toggleList={pointList}
                 toggleActive={selectedPoint}

@@ -2,21 +2,22 @@ import Style from './Main.module.css';
 import MainQuickContainer from "../../UI/atoms/btn/MainQuickContainer";
 import NaviControll from "../../naviControll/NaviControll";
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MainPage = () => {
-
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
   
   const handlerIsLogin = () => {
-    if( isLogin) {
-      setIsLogin(false)
+    if(isLogin) {
+      setIsLogin(false);
     } else {
-      setIsLogin(true)
+      setIsLogin(true);
     }
   };
 
   const handlerGoLogin = () => {
-    console.log("GOLogin")
+    navigate('/login');
   };
 
   return (

@@ -1,11 +1,9 @@
 .time_picker {
-  height: 100%;
-  overflow: hidden;
+  height: 90%;
 }
 
 .swiper_container {
   /* background-color: aqua; */
-  height: 250px;
 }
 
 .swiper_wrapper {
@@ -37,22 +35,22 @@
 }
 
 .options button {
-  width: 50px;
+  width: 100px;
   height: 30px;
   border: none;
   background-color: transparent;
   font-size: 1.2em;
-  margin: 10px 0px;
+  margin: 5px 0px;
   color: rgb(0, 0, 0, 0.6);
   cursor: pointer;
 }
 
 .options button:hover {
-  background-color: #B2D9FD;
+  background-color: rgb(178, 217, 253, 0.5);
   border-radius: 5px;
 }
 
 .selected {
   font-weight: bold;
-  color: black;
+  text-decoration: underline;
 }

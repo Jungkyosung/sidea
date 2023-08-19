@@ -25,15 +25,21 @@
 
 /* 투두 설정 */
 .select_box {
-  height: 80%;
-  border: 1px solid purple;
+  height: 76%;
+  /* border: 1px solid purple; */
   overflow-y: scroll;
 }
 
-.select_alarm {
-  height: 35%;
+.select_box p {
+  display: flex;
+  align-items: center;
 }
 
+.select_box svg {
+  margin-right: 5px;
+}
+
+.select_alarm,
 .select_toggle {
   height: 30%;
 }
@@ -54,6 +60,6 @@
 
 .DoBtn {
   /* border: 1px solid pink; */
-  height: 10%;
+  height: 14%;
   padding-bottom: 10px;
 }

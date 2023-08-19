@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Style from './TimePicker.module.css';
 import { Swiper } from 'swiper';
+import 'swiper/css';
 
-
-const TimePicker = () => {
+const TimePicker = ({ onPeriod, onHour, onMinute}) => {
   const [selectedPeriod, setSelectedPeriod] = useState('AM');
   const [selectedHour, setSelectedHour] = useState('01');
   const [selectedMinute, setSelectedMinute] = useState('00');
@@ -21,17 +21,9 @@ const TimePicker = () => {
   useEffect(() => {
     const mySwiper = new Swiper(`.${Style.swiper_container}`, {
       direction: 'vertical',
-      loop: true,
-      loopAdditionalSlides: 3,
-      slidesPerView: 2,
+      slidesPerView: 3,
       centeredSlides: true,
-      freeMode: true,
       slideToClickedSlide: true,
-      scrollbar: {
-        el: 'swiper-wrapper',
-        draggable: true,
-        hide: true
-      },
       initialSlide: 1
     });
     
@@ -43,60 +35,50 @@ const TimePicker = () => {
   }, []); // 빈 배열은 처음 마운트 시에만 실행
 
   const handlePeriodSelect = period => {
-
-    
-
     setSelectedPeriod(period);
+    onPeriod(period);
   };
 
   const handleHourSelect = hour => {
-
     let 총높이 = view2.current.scrollHeight;
-    
     let 이동할y값 = 총높이*hour/12; 
-
     //스크롤 위치를 빼줘야 하나?
     //빈 시간을 추가해주면 좀더 될 거 같기도?
     console.log(이동할y값);
-    view2.current.scrollTo(0,이동할y값-100);
+    view2.current.scrollTo(0,이동할y값-72.6);
 
     setSelectedHour(hour);
+    onHour(hour);
   };
 
   const handleMinuteSelect = minute => {
     let 총높이 = view3.current.scrollHeight;
-    
     let 이동할y값 = 총높이*minute/12; 
-
+    
     console.log(이동할y값);
-    view3.current.scrollTo(0,이동할y값-100);
+    view3.current.scrollTo(0,이동할y값-330);
 
     setSelectedMinute(minute);
+    onMinute(minute);
   };
-
-  
-  
 
   return (
     <div className={Style.time_picker}>
-      <div className="time-display">
+      {/* <div className="time-display">
         <span className="selected-time">
           <span className="selected-hour">{selectedHour}:</span>
           <span className="selected-minute">{selectedMinute}</span>
           <span className="selected-period">{selectedPeriod}</span>
         </span>
-      </div>
+      </div> */}
 
       <div className={Style.options}>
 
         {/* Swiper 컨테이너 */}
         <div className={`${Style.swiper_container} swiper-container`}>
-          {/* Swiper 슬라이드 */}
           <div ref={view1} className={`${Style.swiper_wrapper} swiper-wrapper`}>
-            {/* Periods */}
-            <div className={`${Style.swiper_slide} swiper-slide`}>
               {periods.map(period => (
-                <div className={Style.period}>
+                <div key={period} className={`${Style.swiper_slide} swiper-slide`}>
                   <button
                     key={period}
                     className={`period-option ${selectedPeriod === period ? Style.selected : ''}`}
@@ -106,46 +88,40 @@ const TimePicker = () => {
                   </button>
                 </div>
               ))}
-            </div>
           </div>
         </div>
-
         {/* Hours */}
         <div className={`${Style.swiper_container} swiper-container`}>
           <div ref={view2} className={`${Style.swiper_wrapper} swiper-wrapper`}>
-            <div className={`swiper-slide ${Style.swiper_slide}`}>
               {hours.map(hour => (
-                  <div className={Style.hour}>
-                    <button
-                    key={hour}
+                <div key={hour} className={`swiper-slide ${Style.swiper_slide}`}>
+                  <button
+                    // key={hour}
                     className={`hour-option ${selectedHour === hour ? Style.selected : ''}`}
                     onClick={() => handleHourSelect(hour)}
                   >
-                    {hour}
+                  {hour}
                   </button>
                 </div>
-                
               ))}
-            </div>
           </div>
         </div>
         {/* Minutes */}
         <div className={`${Style.swiper_container} swiper-container`}>
           <div ref={view3} className={`${Style.swiper_wrapper} swiper-wrapper`}>
-            <div className={`swiper-slide ${Style.swiper_slide}`}>
-              {minutes.map(minute => (
-                <div key={minute} >
-                  <button key={minute}
-                    className={`minute-option ${selectedMinute === minute ? Style.selected : ''}`}
-                    onClick={() => handleMinuteSelect(minute)}
-                  >
-                    {minute}
-                  </button>
-                </div>
-              ))}
-            </div>
+            {minutes.map(minute => (
+              <div key={minute} className={`swiper-slide ${Style.swiper_slide}`}>
+                <button key={minute}
+                  className={`minute-option ${selectedMinute === minute ? Style.selected : ''}`}
+                  onClick={() => handleMinuteSelect(minute)}
+                >
+                  {minute}
+                </button>
+              </div>
+            ))}
           </div>
         </div>
+
       </div>
     </div>
   );

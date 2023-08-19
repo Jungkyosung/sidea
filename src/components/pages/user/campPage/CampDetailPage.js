@@ -1,7 +1,10 @@
 import Style from "./CampDetailPage.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 const CampDetailPage = () => {
+  const [data, setData] = useState([]);
   const [campDetail, setCampDetail] = useState({
     campImgSrc: "https://www.unesco.or.kr/assets/data/campaign/nvRdEe5I0zxV6AICGh8efrevSRcqZW_1665121652_1.jpg",
     campTitle: "캠페인",
@@ -11,6 +14,24 @@ const CampDetailPage = () => {
     campTotalPoint: "256,000,000P",
     campProgress: 80
   });
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    const decode_token = jwt_decode(token);
+    let userId = decode_token.sub;
+
+    axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}api/donation/detail`, //${donationIdx}
+      { params: { userId: encodeURI(userId) },
+        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+      })
+        .then(res => {
+            setData(res.data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+  }, []);
+
 
   return (
     <>

@@ -16,7 +16,7 @@
   padding: 0px 20px;
 }
 
-/*  */
+/* 로그인 회원가입 타이틀 */
 .registerTitle {
   padding-top: 100px;
 }
@@ -30,9 +30,10 @@
 }
 
 .password_hide {
+  font-size: 1.2em;
   position: absolute;
   right: 10px;
-  top: 7px;
+  top: 7.5px;
 }
 
 /*  */
@@ -40,7 +41,11 @@
   margin: 20px 0px;
 }
 
-.login_submit p {
+/* 회원가입 버튼 */
+.signUp_text {
   text-align: right;
   text-decoration: underline;
+  cursor: pointer;
 }
+
+/* 회원가입 */

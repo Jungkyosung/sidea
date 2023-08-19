@@ -5,13 +5,34 @@ import TodoContent from "../../../UI/atoms/TodoContent";
 import NaviControll from "../../../naviControll/NaviControll";
 import Calendar from "./Calendar";
 import TodoAddPage from "./TodoAddPage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { MdOutlineClose } from 'react-icons/md';
 import { BiSolidBarChartSquare } from 'react-icons/bi';
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 const TodolistPage = ({}) => {
+  const [data, setData] = useState([]);
   const [isInputFocuse, setInputFocuse] = useState(false);
+
+  // 목록 조회
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    const decode_token = jwt_decode(token);
+    let userId = decode_token.sub;
+
+    axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
+      { params: { userId: encodeURI(userId) },
+        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+      })
+        .then(res => {
+            setData(res.data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}, []);
 
   const navigate = useNavigate();
 
@@ -29,56 +50,56 @@ const TodolistPage = ({}) => {
   }
 
   // todo
-  const todoContents = [
-    {
-      id: 1,
-      todoFinishCheck: false,
-      todoTitle: "TodoContentTitle",
-      todoHasAlarm: false
-    },
-    {
-      id: 2,
-      todoFinishCheck: false,
-      todoTitle: "TodoContentTitle",
-      todoHasAlarm: true
-    },
-    {
-      id: 3,
-      todoFinishCheck: false,
-      todoTitle: "TodoContentTitle",
-      todoHasAlarm: false
-    },
-    {
-      id: 4,
-      todoFinishCheck: false,
-      todoTitle: "TodoContentTitle",
-      todoHasAlarm: false
-    },
-    {
-      id: 5,
-      todoFinishCheck: false,
-      todoTitle: "TodoContentTitle",
-      todoHasAlarm: false
-    },
-    {
-      id: 6,
-      todoFinishCheck: false,
-      todoTitle: "TodoContentTitle",
-      todoHasAlarm: false
-    },
-    {
-      id: 7,
-      todoFinishCheck: true,
-      todoTitle: "TodoContentTitle",
-      todoHasAlarm: false
-    },
-    {
-      id: 8,
-      todoFinishCheck: true,
-      todoTitle: "TodoContentTitle",
-      todoHasAlarm: false
-    }
-  ];
+  // const todoContents = [
+  //   {
+  //     id: 1,
+  //     todoFinishCheck: false,
+  //     todoTitle: "TodoContentTitle",
+  //     todoHasAlarm: false
+  //   },
+  //   {
+  //     id: 2,
+  //     todoFinishCheck: false,
+  //     todoTitle: "TodoContentTitle",
+  //     todoHasAlarm: true
+  //   },
+  //   {
+  //     id: 3,
+  //     todoFinishCheck: false,
+  //     todoTitle: "TodoContentTitle",
+  //     todoHasAlarm: false
+  //   },
+  //   {
+  //     id: 4,
+  //     todoFinishCheck: false,
+  //     todoTitle: "TodoContentTitle",
+  //     todoHasAlarm: false
+  //   },
+  //   {
+  //     id: 5,
+  //     todoFinishCheck: false,
+  //     todoTitle: "TodoContentTitle",
+  //     todoHasAlarm: false
+  //   },
+  //   {
+  //     id: 6,
+  //     todoFinishCheck: false,
+  //     todoTitle: "TodoContentTitle",
+  //     todoHasAlarm: false
+  //   },
+  //   {
+  //     id: 7,
+  //     todoFinishCheck: true,
+  //     todoTitle: "TodoContentTitle",
+  //     todoHasAlarm: false
+  //   },
+  //   {
+  //     id: 8,
+  //     todoFinishCheck: true,
+  //     todoTitle: "TodoContentTitle",
+  //     todoHasAlarm: false
+  //   }
+  // ];
 
 
   return (
@@ -103,7 +124,7 @@ const TodolistPage = ({}) => {
               </div>
 
               <div className={Style.todoContent_box}>
-                {todoContents.map(todo => (
+                {data.map(todo => (
                   <TodoContent
                     key={todo.id}
                     todoFinishCheck={todo.todoFinishCheck}
@@ -113,6 +134,7 @@ const TodolistPage = ({}) => {
                 ))}
               </div>
             </div> 
+            <div>
             <div className={Style.todo_input}>
               { isInputFocuse 
                 ? 
@@ -134,6 +156,7 @@ const TodolistPage = ({}) => {
                   </div>
                 )
              }
+            </div>
             </div>
           </div>
         </div>
