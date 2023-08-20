@@ -16,15 +16,15 @@ const TodolistPage = ({}) => {
   const [data, setData] = useState([]);
   const [isInputFocuse, setInputFocuse] = useState(false);
 
-  // 목록 조회
+  // 목록 조회 (userIdx, todoDate)
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     const decode_token = jwt_decode(token);
-    let userId = decode_token.sub;
-
+    let userIdx = decode_token.userIdx;
+    console.log(decode_token);
+    const params = { userIdx : userIdx }
     axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
-      { params: { userId: encodeURI(userId) },
-        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+      {params}, { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
       })
         .then(res => {
             setData(res.data);

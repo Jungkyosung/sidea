@@ -25,7 +25,8 @@ const LoginPage = () => {
         console.log(error);
     });
     console.log("버튼누름");
-  }
+  };
+  
   const handlerRegist = () => {
     navigate("/regist");
   };

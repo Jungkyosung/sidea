@@ -99,36 +99,34 @@ const TodoAddPage = () => {
   };
 
   // 투두 등록버튼
-  const handlerClickAdd = () => {
-    const token = sessionStorage.getItem('token');
-    const decode_token = jwt_decode(token);
-    let userId = decode_token.sub;
-
-    const alarm = updateTime(selectedPeriod, 'period') +
-      updateTime(selectedHour, 'hour') +
-      updateTime(selectedMinute, 'minute');
-
-    const todoData = {
-      // userIdx : userIdx,
-      todoContents: addTodo,
-      todoDate: selectedDate,
-      todoStartDate: today,
-      todoEndDate: calculatedDate,
-      todoAlarm: alarm
-    };
-
-    axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
-      todoData, { params: { userId: encodeURI(userId) }, headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } }
-      )
-        .then((res) => {
-          console.log(res);
-          
-        })
-        .catch(error => {
-          console.log(error);
-        })
-    console.log("등록");
+  const handlerClickAdd = async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+      const decode_token = jwt_decode(token);
+      const userIdx = decode_token.sub;
+  
+      const alarm = updateTime(selectedPeriod, 'period') +
+        updateTime(selectedHour, 'hour') +
+        updateTime(selectedMinute, 'minute');
+  
+      const todoData = {
+        userIdx: userIdx,
+        // ...
+      };
+  
+      const response = await axios.post(
+        `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
+        todoData,
+        { headers: { 'Authorization': `Bearer ${token}` } }
+      );
+  
+      console.log(response);
+      window.location.replace('/todolist');
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
 
   return (
     <>

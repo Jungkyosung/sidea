@@ -16,7 +16,7 @@ const TimePicker = ({ onPeriod, onHour, onMinute}) => {
   const periods = ['AM', 'PM'];
   const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
   const minutes = Array.from({ length: 12 }, (_, i) => (i * 5).toString().padStart(2, '0'));
-  
+
   // Swiper 초기화 및 해제
   useEffect(() => {
     const mySwiper = new Swiper(`.${Style.swiper_container}`, {
@@ -45,7 +45,7 @@ const TimePicker = ({ onPeriod, onHour, onMinute}) => {
     //스크롤 위치를 빼줘야 하나?
     //빈 시간을 추가해주면 좀더 될 거 같기도?
     console.log(이동할y값);
-    view2.current.scrollTo(0,이동할y값-72.6);
+    view2.current.scrollTo(0,이동할y값-69.6);
 
     setSelectedHour(hour);
     onHour(hour);
@@ -56,7 +56,7 @@ const TimePicker = ({ onPeriod, onHour, onMinute}) => {
     let 이동할y값 = 총높이*minute/12; 
     
     console.log(이동할y값);
-    view3.current.scrollTo(0,이동할y값-330);
+    view3.current.scrollTo(0,이동할y값-310);
 
     setSelectedMinute(minute);
     onMinute(minute);

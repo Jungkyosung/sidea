@@ -1,20 +1,26 @@
 import Style from './Main.module.css';
 import MainQuickContainer from "../../UI/atoms/btn/MainQuickContainer";
 import NaviControll from "../../naviControll/NaviControll";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import jwt_decode from "jwt-decode";
 
 const MainPage = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
-  
-  const handlerIsLogin = () => {
-    if(isLogin) {
-      setIsLogin(false);
-    } else {
+  const [userIdx, setUserIdx] = useState('');
+  const [nickname, setNickname] = useState('');
+  useEffect(() => {
+    if (sessionStorage.getItem('token') != null) {
+      const token = sessionStorage.getItem('token');
+      const decode_token = jwt_decode(token);
       setIsLogin(true);
+      setUserIdx(decode_token.userIdx);
+      setNickname(decode_token.nickname);
+    } else {
+      setIsLogin(false);
     }
-  };
+  },[]);
 
   const handlerGoLogin = () => {
     navigate('/login');
@@ -32,8 +38,8 @@ const MainPage = () => {
             <div className={Style.main_menu}>
               <MainQuickContainer />
               {isLogin ? 
-                <div className={Style.logintext} onChange={handlerIsLogin}></div> : 
-                <div className={Style.logintext} onChange={handlerIsLogin}>로그인 이후 이용 가능합니다. <span onClick={handlerGoLogin}>로그인</span></div>
+                <div className={Style.logintext} >{nickname}</div> : 
+                <div className={Style.logintext} >로그인 이후 이용 가능합니다. <span onClick={handlerGoLogin}>로그인</span></div>
               }
             </div>
           </div>

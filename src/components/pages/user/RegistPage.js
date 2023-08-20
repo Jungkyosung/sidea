@@ -5,6 +5,7 @@ import Title from "../../UI/atoms/Title";
 import DoBtn from "../../UI/atoms/btn/DoBtn";
 import axios from "axios";
 import { BiShowAlt, BiHide } from 'react-icons/bi';
+import { useNavigate } from "react-router-dom";
 
 
 const RegistPage = () => {
@@ -13,6 +14,7 @@ const RegistPage = () => {
   const [userPw, setUserPw] = useState('');
   const [userPwCheck, setUserPwCheck] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
+  const navigator = useNavigate();
 
   //유효성 검사
   const [isEmail, setIsEmail] = useState(false);       // 이메일
