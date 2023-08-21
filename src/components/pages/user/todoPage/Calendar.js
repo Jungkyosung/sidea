@@ -4,10 +4,15 @@ import Year from "react-live-clock";
 import Month from "react-live-clock";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
-const Calendar = () => {
+const Calendar = (props) => {
+
+  const handleDateClick = props.handleDateClick;
+  const selectedDate = props.selectedDate;
+  const setSelectedDate = props.setSelectedDate;
+  
   const now = new Date();
-  const [today] = useState(now.getDate());
-  const [selectedDate, setSelectedDate] = useState(today);
+  // const [today] = useState(now.getDate());
+  // const [selectedDate, setSelectedDate] = useState(today);
 
   const getThisWeekDates = (selectedDate) => {
     const currentDay = new Date(now.getFullYear(), now.getMonth(), selectedDate).getDay();
@@ -29,9 +34,9 @@ const Calendar = () => {
     return daysOfWeek[date.getDay()];
   };
 
-  const handleDateClick = (date) => {
-    setSelectedDate(date);
-  };
+  // const handleDateClick = (date) => {
+  //   setSelectedDate(date);
+  // };
 
   const handlePreviousWeek = () => {
     setSelectedDate(selectedDate - 7);

@@ -28,6 +28,7 @@ const TodoAddPage = () => {
   // 투두 텍스트 입력
   const handlerChangeTodo = (e) => {
     setAddTodo(e.target.value);
+    console.log(addTodo);
   };
 
   // 알림 설정
@@ -98,33 +99,56 @@ const TodoAddPage = () => {
     setSelectedPoint(e);
   };
 
+  // 날짜 형태를 sql 날짜 형태로 변경
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);  
+    return `${ year }-${ month }-${ day }`;
+  };
+
   // 투두 등록버튼
-  const handlerClickAdd = async () => {
-    try {
+  const handlerClickAdd = () => {
+    
       const token = sessionStorage.getItem('token');
       const decode_token = jwt_decode(token);
-      const userIdx = decode_token.sub;
+      const userIdx = decode_token.userIdx;
   
-      const alarm = updateTime(selectedPeriod, 'period') +
-        updateTime(selectedHour, 'hour') +
-        updateTime(selectedMinute, 'minute');
+      const alarm = `${selectedPeriod || ''} ${selectedHour || ''}:${selectedMinute || ''}`;
   
       const todoData = {
         userIdx: userIdx,
-        // ...
+        todoContents: addTodo,
+        todoDate: formatDate(today),
+        // 수정: 날짜 형식을 원하는 형태로 변환
+        todoStartDate: formatDate(today),
+        todoEndDate: formatDate(calculatedDate),
+        todoAlarm: alarm,
+        // 수정: 포인트에서 P를 떼고 숫자만 추출
+        todoPoint: selectedPoint.replace('P', '')
       };
-  
-      const response = await axios.post(
-        `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
+
+      console.log(todoData);
+      axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
         todoData,
         { headers: { 'Authorization': `Bearer ${token}` } }
-      );
-  
-      console.log(response);
+      )
+      .then(res => {
+      console.log(res);
       window.location.replace('/todolist');
-    } catch (error) {
-      console.error(error);
-    }
+    })
+    .catch(err => {
+      if (err.response) {
+        // 요청은 성공했지만 서버에서 오류 응답을 보낸 경우
+        console.error('서버 응답 오류:', err.response.data);
+      } else if (err.request) {
+        // 요청이 전송되지 않은 경우 (네트워크 문제 등)
+        console.error('요청 전송 실패:', err.request);
+      } else {
+        // 기타 오류
+        console.error('오류:', err.message);
+      }
+    });
   };
   
 

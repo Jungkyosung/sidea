@@ -53,10 +53,10 @@ const TimePicker = ({ onPeriod, onHour, onMinute}) => {
 
   const handleMinuteSelect = minute => {
     let 총높이 = view3.current.scrollHeight;
-    let 이동할y값 = 총높이*minute/12; 
+    let 이동할y값 = 총높이*(minute/5 + 1 )/12; 
     
     console.log(이동할y값);
-    view3.current.scrollTo(0,이동할y값-310);
+    view3.current.scrollTo(0,이동할y값-69.6);
 
     setSelectedMinute(minute);
     onMinute(minute);

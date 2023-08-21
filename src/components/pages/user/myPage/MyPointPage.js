@@ -1,11 +1,13 @@
 import Style from './MyPointPage.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProfileImgTmp from '../../../templates/ProfileImgTmp';
 import DoBtn from '../../../UI/atoms/btn/DoBtn';
 import PointHistory from '../../../UI/atoms/PointHistory';
 import { BsPlusCircle } from 'react-icons/bs';
 import SelectToggleRect from '../../../UI/atoms/toggle/SelectToggleRect';
 import EditBtn from '../../../UI/atoms/btn/EditBtn';
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 const MyPointPage = () => {
 
@@ -13,6 +15,28 @@ const MyPointPage = () => {
     profileImgSrc: "https://i.pinimg.com/564x/84/62/80/846280899168e1abab5a6cd0d6e03dcf.jpg",
     profileText: "닉네임"
   });
+  const [profileImg, setProfileImg] = useState("");
+  const [nickname, setNickname] = useState('');
+  const [point, setPoint] = useState();
+
+  // 조회
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    const decode_token = jwt_decode(token);
+    let userIdx = decode_token.userIdx;
+    console.log(decode_token);
+    const params = { userIdx : userIdx }
+
+    axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/point`,
+      {params}, { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+      })
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}, []);
 
   const [isCharged, setIsCharged] = useState(false);
 

@@ -14,7 +14,26 @@ import jwt_decode from "jwt-decode";
 
 const TodolistPage = ({}) => {
   const [data, setData] = useState([]);
+  const [todoDate, setTodoDate] = useState('');
   const [isInputFocuse, setInputFocuse] = useState(false);
+
+  const now = new Date();
+  const [today] = useState(now.getDate());
+  const [selectedDate, setSelectedDate] = useState(today);
+
+
+  const handleDateClick = (date) => {
+    setSelectedDate(date);
+  };
+
+
+  // 날짜 형태를 sql 날짜 형태로 변경
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);  
+    return `${ year }-${ month }-${ day }`;
+  };
 
   // 목록 조회 (userIdx, todoDate)
   useEffect(() => {
@@ -22,17 +41,39 @@ const TodolistPage = ({}) => {
     const decode_token = jwt_decode(token);
     let userIdx = decode_token.userIdx;
     console.log(decode_token);
-    const params = { userIdx : userIdx }
+    const params = { userIdx : userIdx, todoDate : formatDate(now)}
     axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
       {params}, { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
       })
         .then(res => {
+            console.log(res);
             setData(res.data);
+            setTodoDate(res.data.todoDate);
         })
         .catch(err => {
             console.log(err);
         })
 }, []);
+
+  // 날짜 선택시 목록 조회 (userIdx, todoDate)
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    const decode_token = jwt_decode(token);
+    let userIdx = decode_token.userIdx;
+    console.log(decode_token);
+    const params = { userIdx : userIdx, todoDate : formatDate(now)}
+    axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
+      {params}, { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+      })
+        .then(res => {
+            console.log(res);
+            setData(res.data);
+            setTodoDate(res.data.todoDate);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}, [selectedDate]);
 
   const navigate = useNavigate();
 
@@ -101,6 +142,23 @@ const TodolistPage = ({}) => {
   //   }
   // ];
 
+  const handlerDelete = () => {
+    axios.delete(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`)
+    .then((res) => {
+        if (res.data === 1) {
+            alert(`정상적으로 삭제되었습니다.`);
+            navigate(`/`);
+        } else {
+            alert(`삭제에 실패했습니다.`);
+            return;
+        }
+    })
+    .catch((error) => {
+        console.log(error);
+        alert(`삭제에 실패했습니다.`);
+        return;
+    })
+  };
 
   return (
     <>
@@ -109,7 +167,7 @@ const TodolistPage = ({}) => {
           <div className={Style.header}>
             <Title titleName={titleProperties.titleName} />
             <div className={Style.calendar}>
-              <Calendar />
+              <Calendar handleDateClick={handleDateClick} selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
             </div>
           </div>
 
@@ -128,8 +186,9 @@ const TodolistPage = ({}) => {
                   <TodoContent
                     key={todo.id}
                     todoFinishCheck={todo.todoFinishCheck}
-                    todoTitle={todo.todoTitle}
+                    todoTitle={todo.todoContents}
                     todoHasAlarm={todo.todoHasAlarm}
+                    todoDelete={handlerDelete}
                   />
                 ))}
               </div>

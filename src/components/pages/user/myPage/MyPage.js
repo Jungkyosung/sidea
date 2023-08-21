@@ -60,7 +60,11 @@ const MyPage = () => {
     navigate(location);
   }
 
-
+  const handlerClickLogout = () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    navigate('/');
+  };
 
   return (
     <ProfileImgTmp profileImgSrc={profileImg} profileText={nickname}>
@@ -70,7 +74,7 @@ const MyPage = () => {
         <Menu menuArrowClick={() => handlerMove(locations.donation)} menuTitle={"참여한 기부"}><IoMdDownload /></Menu>
         <Menu menuArrowClick={() => handlerMove(locations.qna)} menuTitle={"문의하기"}><MdHeadsetMic /></Menu>
       </div>
-      <div className={Style.LogoutBtn}>로그아웃</div>
+      <div className={Style.LogoutBtn} onClick={handlerClickLogout}>로그아웃</div>
     </ProfileImgTmp>
   )
 }

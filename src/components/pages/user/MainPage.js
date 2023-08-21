@@ -10,6 +10,7 @@ const MainPage = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [userIdx, setUserIdx] = useState('');
   const [nickname, setNickname] = useState('');
+  
   useEffect(() => {
     if (sessionStorage.getItem('token') != null) {
       const token = sessionStorage.getItem('token');
