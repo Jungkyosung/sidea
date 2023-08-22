@@ -9,10 +9,10 @@ const PointHistory = ({pointDate, pointType, pointAmount, pointBalance}) => {
     let result;
     let transAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-    if(amount >= 0){
-      return result = "+ " + transAmount; 
-    } else {
+    if(pointType == '기부'){
       return result = "- " + transAmount; 
+    } else {
+      return result = "+ " + transAmount; 
     }
   }
 

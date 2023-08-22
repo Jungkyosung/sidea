@@ -9,6 +9,7 @@ const Calendar = (props) => {
   const handleDateClick = props.handleDateClick;
   const selectedDate = props.selectedDate;
   const setSelectedDate = props.setSelectedDate;
+  // const daysOfWeek = props.daysOfWeek;
   
   const now = new Date();
   // const [today] = useState(now.getDate());
@@ -20,7 +21,10 @@ const Calendar = (props) => {
     const weekDates = [];
 
     for (let i = 0; i < 7; i++) {
-      weekDates.push(weekStart + i);
+      weekDates.push({
+        date: weekStart + i,
+        month: now.getMonth()
+      });
     }
 
     return weekDates;
@@ -28,11 +32,23 @@ const Calendar = (props) => {
 
   const thisWeekDates = useMemo(() => getThisWeekDates(selectedDate), [selectedDate]);
 
-  const getDayOfWeek = (year, month, day) => {
-    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const date = new Date(year, month - 1, day);
-    return daysOfWeek[date.getDay()];
+  const daysOfWeekStr = {
+    1: 'Sun',   // 수정.
+    2: 'Mon',
+    3: 'Tue',
+    4: 'Wed',
+    5: 'Thu',
+    6: 'Fri',
+    7: 'Sat'
   };
+
+  const daysOfWeek = props.daysOfWeek.map(dayNumber => daysOfWeekStr[dayNumber]);
+
+  // const getDayOfWeek = (year, month, day) => {
+  //   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  //   const date = new Date(year, month - 1, day);
+  //   return daysOfWeek[date.getDay()];
+  // };
 
   // const handleDateClick = (date) => {
   //   setSelectedDate(date);
@@ -46,9 +62,9 @@ const Calendar = (props) => {
     setSelectedDate(selectedDate + 7);
   };
 
-  useEffect(() => {
-    const updatedThisWeekDates = getThisWeekDates(selectedDate);
-  }, [selectedDate]);
+  // useEffect(() => {
+  //   const updatedThisWeekDates = getThisWeekDates(selectedDate);
+  // }, [selectedDate]);
 
   return (
     <>
@@ -62,25 +78,28 @@ const Calendar = (props) => {
           />.
         </span>
         <span>
-          {new Date(now.getFullYear(), now.getMonth(), thisWeekDates[0]).getMonth() + 1}
+        {new Date(now.getFullYear(), now.getMonth(), thisWeekDates[0].date).getMonth() + 1}
         </span>
       </div>
       
       <div className={Style.datebox}>
         <MdKeyboardArrowLeft className={Style.arrow} onClick={handlePreviousWeek} />
-        {thisWeekDates.map((weekday) => {
-          const currentDate = new Date(now.getFullYear(), now.getMonth(), weekday); 
-          const dayStyle = `${Style.dayText} ${weekday % 7 === 6 ? Style.Sun : ''} ${weekday % 7 === 5 ? Style.Sat : ''}`;
+        {thisWeekDates.map(({ date }, index) => {
+          const currentDate = new Date(now.getFullYear(), now.getMonth(), date);
+          
+          const currentDayOfWeek = daysOfWeek[index]; 
+          const dayStyle = `${Style.dayText} ${currentDayOfWeek === 'Sun' ? Style.Sun : ''} ${currentDayOfWeek === 'Sat' ? Style.Sat : ''}`;
           
           return (
-            <div className={ weekday === selectedDate ? Style.SelectedDay : Style.day }
-              key={weekday}
-              onClick={() => handleDateClick(weekday)} 
+            <div
+              className={date === selectedDate ? Style.SelectedDay : Style.day}
+              key={date}
+              onClick={() => handleDateClick(date, currentDayOfWeek)}
             >
               <div className={dayStyle}>
-                {getDayOfWeek(now.getFullYear(), now.getMonth() + 1, weekday)}
+                {currentDayOfWeek}
               </div>
-              <div>{currentDate.getDate()}</div> 
+              <div>{currentDate.getDate()}</div>
             </div>
           );
         })}
