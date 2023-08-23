@@ -6,6 +6,10 @@
   /* background-color: aqua; */
 }
 
+.swiper_container_toggleOff {
+  background-color: red;
+}
+
 .swiper_wrapper {
   /* border: 1px solid orange; */
   height: auto; 
@@ -50,7 +54,13 @@
   border-radius: 5px;
 }
 
+.options button:disabled:hover {
+  background-color: transparent;
+  cursor: text;
+}
+
 .selected {
   font-weight: bold;
   text-decoration: underline;
 }
+

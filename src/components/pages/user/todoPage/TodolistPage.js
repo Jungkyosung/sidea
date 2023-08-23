@@ -37,6 +37,8 @@ const TodolistPage = () => {
 
   // 날짜 클릭 핸들러
   const handleDateClick = (date) => {
+
+    console.log(date);
     setSelectedDate(date);
     const selectedDayOfWeek = new Date(new Date().getFullYear(), new Date().getMonth(), date).getDay();
     setSelectedWeek(selectedDayOfWeek === 0 ? 7 : selectedDayOfWeek);
@@ -48,8 +50,10 @@ const TodolistPage = () => {
     const decode_token = jwt_decode(token);
     const userIdx = decode_token.userIdx;
     
-    const params = { userIdx: userIdx, todoDate: formatDate(new Date()), date: selectedWeek };
+    const params = { userIdx: userIdx, todoDate: formatDate(new Date(2023,7,selectedDate)), date: selectedWeek };
     
+    console.log(params);
+
     axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`, 
     {
       params,
@@ -86,9 +90,9 @@ const TodolistPage = () => {
   }
 
   // 할일 삭제 핸들러
-  const handlerDelete = (todoidx) => {
-    const todoIdxData = { todoIdx: todoidx }; // 데이터 객체 생성
-    console.log(todoIdxData);
+  const handlerDelete = (todoIdx) => {
+    const todoIdxData = { todoIdx: todoIdx }; // 데이터 객체 생성
+    console.log(todoIdx);
   
     axios.delete(
       `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
@@ -100,7 +104,7 @@ const TodolistPage = () => {
       }
     )
       .then((res) => {
-        if (res.data === 1) {
+        if (res.data === '삭제') {
           console.log("정상적으로 삭제되었습니다.");
           navigate(`/`);
         } else {
@@ -126,19 +130,19 @@ const TodolistPage = () => {
       const [todoYear, todoMonth, todoDay] = todo.todoDate.split('-');
       const initTodoDate = new Date(parseInt(todoYear), parseInt(todoMonth) - 1, parseInt(todoDay));
   
-      if (initTodoDate.getDate() === selectedDate) {
+      // if (initTodoDate !== null) {
         return (
           <TodoContent
-            key={todo.todoidx}
+            key={todo.todoIdx}
             todoFinishCheck={todo.todoFinishCheck}
             todoTitle={todo.todoContents}
             todoHasAlarm={todo.todoHasAlarm}
-            todoDelete={() => handlerDelete(todo.todoidx)} 
+            todoDelete={() => handlerDelete(todo.todoIdx)} 
           />
         );
-      } else {
-        return null;
-      }
+      // } else {
+      //   return null;
+      // }
     });
   };
 

@@ -8,6 +8,8 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { MdRepeat, MdControlPoint } from 'react-icons/md';
 import { BiCalendarEvent, BiAlarm } from 'react-icons/bi';
+import ToggleSwitch from "../../../UI/atoms/toggle/ToggleSwitch";
+import { PiEyeglassesLight } from "react-icons/pi";
 
 
 
@@ -41,8 +43,8 @@ const TodoAddPage = () => {
       setSelectedMinute(value);
     }
   };
-
-  const alarmstr = `( ${selectedHour || ''} : ${selectedMinute || ''} ${selectedPeriod || ''} )`;
+   
+  const alarmstr = `( ${selectedHour} : ${selectedMinute} ${selectedPeriod} )`;
 
   // 날짜선택
   const [calculatedDate, setCalculatedDate] = useState(new Date());
@@ -53,6 +55,13 @@ const TodoAddPage = () => {
 
     setSelectedDate(e);
     setCalculatedDate(newCalculatedDate);
+
+    // 오늘이 아닐때 반복 설정 해제 
+    if (selectedIndex !== 0) {
+      setSelectedRepeat([]);
+    } else {
+      setSelectedRepeat([repeatList[0]]);
+    }
   };
 
   const getNextDate = (days) => {
@@ -68,11 +77,14 @@ const TodoAddPage = () => {
   const today = new Date();
   const options = { month: "long", day: "numeric" };
 
+
   // 반복설정
   const handlerRepeatChange = (e) => {
     const setRepeat = e; // 클릭된 버튼의 내용을 저장
 
-    if (repeatList.slice(1, 8).includes(setRepeat)) {
+    if (selectedDate !== '오늘') {
+      setSelectedRepeat([]);
+    } else if (repeatList.slice(1, 8).includes(setRepeat)) {
       // 2-8번 중복 선택 관리
       if (selectedRepeat.includes(setRepeat)) {
         // 선택 해제
@@ -91,7 +103,17 @@ const TodoAddPage = () => {
       }
     } else {
       setSelectedRepeat([setRepeat]);
-    }  
+    }
+  };
+
+  const todo = {
+    todoMon: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 월') ? 1 : 0),
+    todoTue: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 화') ? 1 : 0),
+    todoWed: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 수') ? 1 : 0),
+    todoThu: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 목') ? 1 : 0),
+    todoFri: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 금') ? 1 : 0),
+    todoSat: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 토') ? 1 : 0),
+    todoSun: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 일') ? 1 : 0),
   };
 
   // 포인트 설정
@@ -107,34 +129,102 @@ const TodoAddPage = () => {
     return `${ year }-${ month }-${ day }`;
   };
 
-  // 투두 등록버튼
-  const handlerClickAdd = () => {
-    
-      const token = sessionStorage.getItem('token');
-      const decode_token = jwt_decode(token);
-      const userIdx = decode_token.userIdx;
-  
-      const alarm = `${selectedPeriod || ''} ${selectedHour || ''}:${selectedMinute || ''}`;
-  
-      const todoData = {
-        userIdx: userIdx,
-        todoContents: addTodo,
-        todoDate: formatDate(today),
-        // 수정: 날짜 형식을 원하는 형태로 변환
-        todoStartDate: formatDate(today),
-        todoEndDate: formatDate(calculatedDate),
-        todoAlarm: alarm,
-        // 수정: 포인트에서 P를 떼고 숫자만 추출
-        todoPoint: selectedPoint.replace('P', '')
-      };
+  // 알람 있을때 or 없을때 날짜 저장 
+  const formatDateAlarm = (date) => {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);  
+    const period = selectedPeriod === 'AM' ? 0 : 12; 
+    const hours = parseInt(selectedHour);
+    const minutes = selectedMinute;
+    const seconds = '00';
 
-      console.log(todoData);
-      axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
-        todoData,
-        { headers: { 'Authorization': `Bearer ${token}` } }
-      )
+    if (isEnabled) {
+      const formatHours = (period + hours).toString().padStart(2, '0');
+      return `${year}-${month}-${day} ${formatHours}:${minutes}:${seconds}`;
+    } else {
+      return `${year}-${month}-${day}`;
+    };
+  };
+
+  // 타임 토글 스위치
+  const [isEnabled, setIsEnabled] = useState(true);
+  const [toggleOff, setToggleOff] = useState(false);
+
+  const handleSwitchClick = () => {
+    if (isEnabled == true ) {
+      setIsEnabled(false);
+      setToggleOff(true);
+    } else {
+      setIsEnabled(true);
+      setToggleOff(false);
+    }
+  };
+
+  // 알람 값 저장
+  const alarm = isEnabled ? 1 : 0;
+
+  // 반복 토글 스위치 
+  const [isRepeat, setIsRepeat] = useState(true);
+  const [repeatSwitch, setRepeatSwitch] = useState(false);
+
+  const handleRepeatClick = () => {
+   if (isRepeat === true) {
+        setIsRepeat(false);
+        setRepeatSwitch(true);
+        setSelectedRepeat([0]);
+      } else {
+        setIsRepeat(true);
+        setRepeatSwitch(false);
+        setSelectedRepeat('매일');
+      }
+  };
+  // 날짜에 따른 토글 스위치 
+  useEffect(() => {
+    if (selectedDate !== '오늘') {
+      setIsRepeat(false);
+      setRepeatSwitch(true);
+    } else {
+      setIsRepeat(true);
+      setRepeatSwitch(false);
+    }
+  }, [selectedDate]);
+  
+  // 투두 등록버튼
+  const handlerClickAdd = (e) => {
+    if (addTodo.trim() === "") {
+      alert("투두 내용을 입력하세요.");
+      return; // 함수 실행 중단
+    }
+    const token = sessionStorage.getItem('token');
+    const decode_token = jwt_decode(token);
+    const userIdx = decode_token.userIdx;
+
+    const todoData = {
+      userIdx: userIdx,
+      todoContents: addTodo,
+      todoDate: formatDateAlarm(today),
+      todoStartDate: formatDate(today),
+      todoEndDate: formatDate(calculatedDate),
+      todoAlarm: alarm,
+      todoPoint: selectedPoint.replace('P', ''),
+      todoMon: todo.todoMon, 
+      todoTue: todo.todoTue, 
+      todoWed: todo.todoWed,
+      todoThu: todo.todoThu,
+      todoFri: todo.todoFri,
+      todoSat: todo.todoSat,
+      todoSun: todo.todoSun 
+    };
+    console.log(todoData.todoDate);
+    console.log(todoData);
+    axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
+      todoData,
+      { headers: { 'Authorization': `Bearer ${token}` } }
+    )
       .then(res => {
       console.log(res);
+      alert('투두가 생겼습니다');
       window.location.replace('/todolist');
     })
     .catch(err => {
@@ -151,7 +241,6 @@ const TodoAddPage = () => {
     });
   };
   
-
   return (
     <>
       <div className={Style.container}>
@@ -166,13 +255,23 @@ const TodoAddPage = () => {
           </div>
 
           <div className={Style.select_box}>
-            <p><BiAlarm /> 알림 <span>{alarmstr}</span> </p>
+            <p>
+              <span><BiAlarm /> 알림 <span>{alarmstr}</span></span>
+              <span>
+                <ToggleSwitch
+                  switchChecked={isEnabled}
+                  handleSwitchClick={handleSwitchClick}
+                />
+              </span>
+            </p>
             <div className={Style.select_alarm}>
-              <TimePicker 
+             <TimePicker 
                 onPeriod={(value) => updateTime(value, 'period')}
                 onHour={(value) => updateTime(value, 'hour')}
                 onMinute={(value) => updateTime(value, 'minute')}
+                toggleOff={toggleOff}
               />
+            
             </div>
 
             <div className={Style.select_toggle}>
@@ -192,11 +291,17 @@ const TodoAddPage = () => {
             </div>
           
             <div className={Style.select_toggle}>
-              <p><MdRepeat /> 반복</p>
+              <p><MdRepeat /> 반복
+              <ToggleSwitch
+                switchChecked={isRepeat}
+                handleSwitchClick={handleRepeatClick}
+              />
+              </p>
               <SelectToggleRound
                 toggleList={repeatList}
                 toggleActive={selectedRepeat}
                 onToggle={handlerRepeatChange}
+                repeatSwitch = {repeatSwitch}
               />
             </div>
 

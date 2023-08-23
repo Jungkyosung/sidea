@@ -3,7 +3,7 @@ import Style from './TimePicker.module.css';
 import { Swiper } from 'swiper';
 import 'swiper/css';
 
-const TimePicker = ({ onPeriod, onHour, onMinute}) => {
+const TimePicker = ({ onPeriod, onHour, onMinute, toggleOff}) => {
   const [selectedPeriod, setSelectedPeriod] = useState('AM');
   const [selectedHour, setSelectedHour] = useState('01');
   const [selectedMinute, setSelectedMinute] = useState('00');
@@ -74,15 +74,17 @@ const TimePicker = ({ onPeriod, onHour, onMinute}) => {
 
       <div className={Style.options}>
 
+
         {/* Swiper 컨테이너 */}
-        <div className={`${Style.swiper_container} swiper-container`}>
+        <div className={ `${Style.swiper_container} swiper-container`}>
           <div ref={view1} className={`${Style.swiper_wrapper} swiper-wrapper`}>
               {periods.map(period => (
                 <div key={period} className={`${Style.swiper_slide} swiper-slide`}>
                   <button
                     key={period}
-                    className={`period-option ${selectedPeriod === period ? Style.selected : ''}`}
+                    className={`period-option ${selectedPeriod === period  && !toggleOff ? Style.selected : '' }`}
                     onClick={() => handlePeriodSelect(period)}
+                    disabled={toggleOff}
                   >
                     {period}
                   </button>
@@ -96,9 +98,9 @@ const TimePicker = ({ onPeriod, onHour, onMinute}) => {
               {hours.map(hour => (
                 <div key={hour} className={`swiper-slide ${Style.swiper_slide}`}>
                   <button
-                    // key={hour}
-                    className={`hour-option ${selectedHour === hour ? Style.selected : ''}`}
+                    className={`hour-option ${selectedHour === hour && !toggleOff ? Style.selected : ''}`}
                     onClick={() => handleHourSelect(hour)}
+                    disabled={toggleOff}
                   >
                   {hour}
                   </button>
@@ -112,8 +114,9 @@ const TimePicker = ({ onPeriod, onHour, onMinute}) => {
             {minutes.map(minute => (
               <div key={minute} className={`swiper-slide ${Style.swiper_slide}`}>
                 <button key={minute}
-                  className={`minute-option ${selectedMinute === minute ? Style.selected : ''}`}
+                  className={`minute-option ${selectedMinute === minute && !toggleOff ? Style.selected : ''}`}
                   onClick={() => handleMinuteSelect(minute)}
+                  disabled={toggleOff}
                 >
                   {minute}
                 </button>
