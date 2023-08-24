@@ -6,6 +6,12 @@
 .toggle_container button {
   margin-bottom: 5px;
 }
+
+.toggle_container button:disabled {
+  border: 2px solid #B2D9FD;
+  background-color: white;
+}
+
 .toggleActiveRound {
   width: 70px;
   height: 30px;
@@ -44,6 +50,3 @@
 
 
 
-.css-julti5-MuiSwitch-root {
-  padding: 5px;
-}

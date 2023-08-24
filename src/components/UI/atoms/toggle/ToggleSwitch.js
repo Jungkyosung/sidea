@@ -2,7 +2,7 @@
 // import styled from 'styled-components';
 import { Switch, styled } from '@mui/material';
 
-const ToggleSwitch = ({switchChecked, handleSwitchClick }) => {
+const ToggleSwitch = ({switchChecked, handleSwitchClick, disabled }) => {
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
   const IOSSwitch = styled((props) => (
@@ -60,6 +60,7 @@ const ToggleSwitch = ({switchChecked, handleSwitchClick }) => {
     <>
       <IOSSwitch 
         {...label} defaultChecked
+        {...label} disabled={disabled}
         checked={switchChecked}
         onClick={handleSwitchClick}
         inputProps={{ 'aria-label': 'controlled' }}

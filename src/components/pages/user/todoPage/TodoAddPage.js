@@ -13,25 +13,96 @@ import { PiEyeglassesLight } from "react-icons/pi";
 
 
 
-const TodoAddPage = () => {
+const TodoAddPage = (props) => {
   const [addTodo, setAddTodo] = useState("");
 
   const dateList = ['오늘', '1일 후', '2일 후', '3일 후', '4일 후', '5일 후', '6일 후', '7일 후'];
   const repeatList = ['매일', '매일 일', '매일 월', '매일 화', '매일 수', '매일 목', '매일 금', '매일 토'];
   const pointList = ['100P', '200P', '300P', '400P', '500P'];
   // 토글 라운드
-  const [selectedDate, setSelectedDate] = useState(dateList[0]);
-  const [selectedRepeat, setSelectedRepeat] = useState(repeatList[0]);
-  const [selectedPoint, setSelectedPoint] = useState(pointList[0]);
+  const [selectedDate, setSelectedDate] = useState(0);
+  const [selectedRepeat, setSelectedRepeat] = useState([1]);
+  const [selectedPoint, setSelectedPoint] = useState(0);
   const [selectedPeriod, setSelectedPeriod] = useState('AM');
   const [selectedHour, setSelectedHour] = useState('01');
   const [selectedMinute, setSelectedMinute] = useState('00');
-
+  // const options = { month: "long", day: "numeric" };
+  
   // 투두 텍스트 입력
   const handlerChangeTodo = (e) => {
     setAddTodo(e.target.value);
-    console.log(addTodo);
   };
+
+  // 타임 토글 스위치
+  const [isEnabled, setIsEnabled] = useState(true);
+  const [toggleOff, setToggleOff] = useState(false);
+
+  const handleSwitchClick = () => {
+    if (isEnabled == true ) {
+      setIsEnabled(false);
+      setToggleOff(true);
+    } else {
+      setIsEnabled(true);
+      setToggleOff(false);
+    }
+  };
+
+  // 알람 값 저장
+  const alarm = isEnabled ? 1 : 0;
+
+  
+  // 날짜 토글 스위치
+  const [isToday, setIsToday] = useState(true);
+  const [todaySwitch, setTodaySwitch] = useState(false);
+  const [isTodayDisabled, setIsTodayDisabled] = useState(false);
+  // 반복 토글 스위치 
+  const [isRepeat, setIsRepeat] = useState(true);
+  const [repeatSwitch, setRepeatSwitch] = useState(false);
+  const [isRepeatDisabled, setIsRepeatDisabled] = useState(false);
+
+  const handleTodayClick = () => {
+    setIsToday(prevIsToday => {
+      if (!prevIsToday) {
+        setSelectedDate([]);
+      }
+      if (!prevIsToday) {
+        setSelectedDate(0);
+      }
+      return !prevIsToday;
+    });
+    setTodaySwitch(!todaySwitch);
+  };
+
+  const handleRepeatClick = () => {
+    setIsRepeat(prevIsRepeat => {
+      if(!prevIsRepeat) {
+        setSelectedRepeat([]);
+      }
+      if(!prevIsRepeat) {
+        setSelectedRepeat([1]);
+      }
+      return !prevIsRepeat;
+    });
+    setRepeatSwitch(!repeatSwitch);
+  };
+
+  useEffect(() => {
+    setIsRepeat(prevIsRepeat => {
+      const newIsRepeat = selectedDate !== 0 ? true : false;
+      setRepeatSwitch(newIsRepeat);
+      setIsRepeatDisabled(newIsRepeat);
+      return !newIsRepeat;
+    });
+  }, [selectedDate, selectedRepeat]);
+
+  useEffect(() => {
+    setIsToday(prevIsToday => {
+      const newIsToday = selectedRepeat == 0 ? false : true;
+      setTodaySwitch(!newIsToday);
+      setIsTodayDisabled(!newIsToday);
+      return newIsToday;
+    });
+  }, [selectedDate, selectedRepeat]);
 
   // 알림 설정
   const updateTime = (value, type) => {
@@ -41,85 +112,64 @@ const TodoAddPage = () => {
       setSelectedHour(value);
     } else if (type === 'minute') {
       setSelectedMinute(value);
+
     }
   };
    
   const alarmstr = `( ${selectedHour} : ${selectedMinute} ${selectedPeriod} )`;
 
   // 날짜선택
-  const [calculatedDate, setCalculatedDate] = useState(new Date());
+  // 오늘 날짜 형식
+  const formatToday = (date) => {
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);  
+
+    return `${ month }월 ${ day }일`
+  };
+
+  // 오늘
+  const day = props.selectedDate;
+  const end = selectedDate + props.selectedDate; // I'm assuming you want to add the selectedDate twice, update this logic if needed
+  const selectedToday = new Date(2023, 7, day); 
+  const selectedEndDay = new Date(2023, 7, end);
+
+  const today = formatToday(selectedToday);
+  const endDay = formatToday(selectedEndDay);
 
   const handlerDateChange = (e) => {
-    const selectedIndex = dateList.indexOf(e);
-    const newCalculatedDate = getNextDate(selectedIndex);
+      setSelectedDate(e);
+  };
 
-    setSelectedDate(e);
-    setCalculatedDate(newCalculatedDate);
-
-    // 오늘이 아닐때 반복 설정 해제 
-    if (selectedIndex !== 0) {
-      setSelectedRepeat([]);
+  const handlerRepeatChange = (index) => {
+    if (index === 0) {
+      setSelectedRepeat([0]); // 0번만 선택
+    } else if (selectedRepeat.length === 6) {
+      setSelectedRepeat([0]); // 1~7 전체 선택한 경우 0번 선택
     } else {
-      setSelectedRepeat([repeatList[0]]);
+      setSelectedRepeat((prevSelected) =>
+        prevSelected.includes(0)
+          ? [index] // 0번을 선택한 경우는 0번을 빼고 새로운 선택 추가
+          : [...prevSelected, index] // 그 외의 경우는 선택 추가
+      );
     }
   };
-
-  const getNextDate = (days) => {
-    const today = new Date();
-    const nextDate = new Date(today);
-
-    nextDate.setDate(today.getDate() + days);
-
-    return nextDate;
-  };
-  
-  // 오늘
-  const today = new Date();
-  const options = { month: "long", day: "numeric" };
-
-
-  // 반복설정
-  const handlerRepeatChange = (e) => {
-    const setRepeat = e; // 클릭된 버튼의 내용을 저장
-
-    if (selectedDate !== '오늘') {
-      setSelectedRepeat([]);
-    } else if (repeatList.slice(1, 8).includes(setRepeat)) {
-      // 2-8번 중복 선택 관리
-      if (selectedRepeat.includes(setRepeat)) {
-        // 선택 해제
-        if (selectedRepeat.length > 1) {
-          setSelectedRepeat(selectedRepeat.filter((item) => item !== setRepeat));
-        }
-      } else {
-        // 선택
-        setSelectedRepeat(
-          selectedRepeat.length === 1 && selectedRepeat[0] === '매일' 
-          ? 
-          [setRepeat] 
-          : 
-          [...selectedRepeat, setRepeat]
-        );
-      }
-    } else {
-      setSelectedRepeat([setRepeat]);
-    }
-  };
-
+ 
   const todo = {
-    todoMon: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 월') ? 1 : 0),
-    todoTue: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 화') ? 1 : 0),
-    todoWed: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 수') ? 1 : 0),
-    todoThu: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 목') ? 1 : 0),
-    todoFri: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 금') ? 1 : 0),
-    todoSat: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 토') ? 1 : 0),
-    todoSun: selectedRepeat.includes('매일') ? 1 : (selectedRepeat.includes('매일 일') ? 1 : 0),
+    todoMon: isRepeat !== true ? 0 : (selectedRepeat.includes(0) ? 1 : (selectedRepeat.includes(2) ? 1 : 0)),
+    todoTue: isRepeat !== true ? 0 : (selectedRepeat.includes(0) ? 1 : (selectedRepeat.includes(3) ? 1 : 0)),
+    todoWed: isRepeat !== true ? 0 : (selectedRepeat.includes(0) ? 1 : (selectedRepeat.includes(4) ? 1 : 0)),
+    todoThu: isRepeat !== true ? 0 : (selectedRepeat.includes(0) ? 1 : (selectedRepeat.includes(5) ? 1 : 0)),
+    todoFri: isRepeat !== true ? 0 : (selectedRepeat.includes(0) ? 1 : (selectedRepeat.includes(6) ? 1 : 0)),
+    todoSat: isRepeat !== true ? 0 : (selectedRepeat.includes(0) ? 1 : (selectedRepeat.includes(7) ? 1 : 0)),
+    todoSun: isRepeat !== true ? 0 : (selectedRepeat.includes(0) ? 1 : (selectedRepeat.includes(1) ? 1 : 0)),
   };
 
   // 포인트 설정
   const handlerPointChange = (e) => {
     setSelectedPoint(e);
+    console.log(e)
   };
+  const selectedPointStr = pointList[selectedPoint];
 
   // 날짜 형태를 sql 날짜 형태로 변경
   const formatDate = (date) => {
@@ -147,49 +197,7 @@ const TodoAddPage = () => {
     };
   };
 
-  // 타임 토글 스위치
-  const [isEnabled, setIsEnabled] = useState(true);
-  const [toggleOff, setToggleOff] = useState(false);
 
-  const handleSwitchClick = () => {
-    if (isEnabled == true ) {
-      setIsEnabled(false);
-      setToggleOff(true);
-    } else {
-      setIsEnabled(true);
-      setToggleOff(false);
-    }
-  };
-
-  // 알람 값 저장
-  const alarm = isEnabled ? 1 : 0;
-
-  // 반복 토글 스위치 
-  const [isRepeat, setIsRepeat] = useState(true);
-  const [repeatSwitch, setRepeatSwitch] = useState(false);
-
-  const handleRepeatClick = () => {
-   if (isRepeat === true) {
-        setIsRepeat(false);
-        setRepeatSwitch(true);
-        setSelectedRepeat([0]);
-      } else {
-        setIsRepeat(true);
-        setRepeatSwitch(false);
-        setSelectedRepeat('매일');
-      }
-  };
-  // 날짜에 따른 토글 스위치 
-  useEffect(() => {
-    if (selectedDate !== '오늘') {
-      setIsRepeat(false);
-      setRepeatSwitch(true);
-    } else {
-      setIsRepeat(true);
-      setRepeatSwitch(false);
-    }
-  }, [selectedDate]);
-  
   // 투두 등록버튼
   const handlerClickAdd = (e) => {
     if (addTodo.trim() === "") {
@@ -203,11 +211,11 @@ const TodoAddPage = () => {
     const todoData = {
       userIdx: userIdx,
       todoContents: addTodo,
-      todoDate: formatDateAlarm(today),
-      todoStartDate: formatDate(today),
-      todoEndDate: formatDate(calculatedDate),
+      todoStartDate: formatDate(selectedToday),
+      todoEndDate: isRepeat === false ? formatDate(selectedEndDay) : '',
       todoAlarm: alarm,
-      todoPoint: selectedPoint.replace('P', ''),
+      todoAlarmTime: formatDateAlarm(selectedToday),
+      todoPoint: selectedPointStr.replace('P', ''),
       todoMon: todo.todoMon, 
       todoTue: todo.todoTue, 
       todoWed: todo.todoWed,
@@ -216,7 +224,7 @@ const TodoAddPage = () => {
       todoSat: todo.todoSat,
       todoSun: todo.todoSun 
     };
-    console.log(todoData.todoDate);
+    console.log(selectedPointStr);
     console.log(todoData);
     axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
       todoData,
@@ -224,8 +232,9 @@ const TodoAddPage = () => {
     )
       .then(res => {
       console.log(res);
+      console.log(todoData);
       alert('투두가 생겼습니다');
-      window.location.replace('/todolist');
+      // window.location.replace('/todolist');
     })
     .catch(err => {
       if (err.response) {
@@ -277,15 +286,21 @@ const TodoAddPage = () => {
             <div className={Style.select_toggle}>
               <p><BiCalendarEvent />
                 <span>
-                  {today.toLocaleDateString("ko-KR", options)}
-                  {selectedDate === '오늘' ? '' : '~' + calculatedDate.toLocaleDateString('ko-KR', options)}
+                  {today}
+                  { isToday === false ? '' : (selectedDate === 0 ? '' : '~' + endDay)}
                 </span>
+                <ToggleSwitch
+                  switchChecked={isToday}
+                  handleSwitchClick={handleTodayClick}
+                  disabled={isTodayDisabled}
+              />
               </p>
               <div className={Style.select_toggle_box}>
               <SelectToggleRound
                 toggleList={dateList}
                 toggleActive={selectedDate}
                 onToggle={handlerDateChange}
+                toggleSwitch={todaySwitch}
               />
               </div>
             </div>
@@ -295,13 +310,14 @@ const TodoAddPage = () => {
               <ToggleSwitch
                 switchChecked={isRepeat}
                 handleSwitchClick={handleRepeatClick}
+                disabled={isRepeatDisabled}
               />
               </p>
               <SelectToggleRound
                 toggleList={repeatList}
                 toggleActive={selectedRepeat}
                 onToggle={handlerRepeatChange}
-                repeatSwitch = {repeatSwitch}
+                toggleSwitch={repeatSwitch}
               />
             </div>
 

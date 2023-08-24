@@ -19,10 +19,7 @@ const TodolistPage = () => {
   const [todoDate, setTodoDate] = useState('');
   const [isInputFocuse, setInputFocuse] = useState(false);
 
-  // const now = new Date();
-  // const [today] = useState(now.getDate());
   const [selectedDate, setSelectedDate] = useState(new Date().getDate());
-
   const initDayOfWeek = new Date().getDay(); // 오늘 요일 초기 설정
   const [selectedWeek, setSelectedWeek] = useState(initDayOfWeek === 0 ? 7 : initDayOfWeek); 
   const daysOfWeek = [1, 2, 3, 4, 5, 6, 7];
@@ -37,8 +34,6 @@ const TodolistPage = () => {
 
   // 날짜 클릭 핸들러
   const handleDateClick = (date) => {
-
-    console.log(date);
     setSelectedDate(date);
     const selectedDayOfWeek = new Date(new Date().getFullYear(), new Date().getMonth(), date).getDay();
     setSelectedWeek(selectedDayOfWeek === 0 ? 7 : selectedDayOfWeek);
@@ -52,8 +47,6 @@ const TodolistPage = () => {
     
     const params = { userIdx: userIdx, todoDate: formatDate(new Date(2023,7,selectedDate)), date: selectedWeek };
     
-    console.log(params);
-
     axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`, 
     {
       params,
@@ -91,7 +84,7 @@ const TodolistPage = () => {
 
   // 할일 삭제 핸들러
   const handlerDelete = (todoIdx) => {
-    const todoIdxData = { todoIdx: todoIdx }; // 데이터 객체 생성
+    const todoIdxData = { todoIdx: todoIdx };
     console.log(todoIdx);
   
     axios.delete(
@@ -123,15 +116,13 @@ const TodolistPage = () => {
           console.error('오류:', err.message);
         }
       });
-    };
-
-  const renderTodoContent = () => {
-    return data.map(todo => {
-      const [todoYear, todoMonth, todoDay] = todo.todoDate.split('-');
-      const initTodoDate = new Date(parseInt(todoYear), parseInt(todoMonth) - 1, parseInt(todoDay));
-  
-      // if (initTodoDate !== null) {
-        return (
+  };
+    
+  const todoContent = () => (
+    Array.isArray(data) && data.length > 0
+    ?
+      (
+        data.map(todo => (
           <TodoContent
             key={todo.todoIdx}
             todoFinishCheck={todo.todoFinishCheck}
@@ -139,12 +130,12 @@ const TodolistPage = () => {
             todoHasAlarm={todo.todoHasAlarm}
             todoDelete={() => handlerDelete(todo.todoIdx)} 
           />
-        );
-      // } else {
-      //   return null;
-      // }
-    });
-  };
+        ))
+      ) 
+    : 
+      ( <div>투두가 없습니다</div> )
+  );
+  const readOnly = true;
 
   return (
     <>
@@ -173,16 +164,7 @@ const TodolistPage = () => {
               </div>
   
               <div className={Style.todoContent_box}>
-                {renderTodoContent()}
-                {data.filter(todo => {
-                  const [todoYear, todoMonth, todoDay] = todo.todoDate.split('-');
-                  const initTodoDate = new Date(parseInt(todoYear), parseInt(todoMonth) - 1, parseInt(todoDay));
-                  return initTodoDate.getDate() !== selectedDate;
-                }).length === data.length && (
-                  <div>
-                    <p>일정이 없습니다</p>
-                  </div>
-                )}
+                {todoContent()}
               </div>  
             </div>
   
@@ -191,16 +173,29 @@ const TodolistPage = () => {
                 {isInputFocuse ? (
                   <div className={Style.todoAdd_page}>
                     <MdOutlineClose className={Style.close} onClick={() => setInputFocuse(false)} />
-                    <TodoAddPage />
+                    <TodoAddPage selectedDate={selectedDate} />
                   </div>
                 ) : (
-                  <div className={Style.todoInput_box} onClick={() => setInputFocuse(true)}>
-                    <Input
+                  <div>
+                    {selectedDate < new Date().getDate() ? (
+                      <div className={Style.todoInput_box}>
+                      <Input
                       inputType="text"
                       inputValue=""
-                      inputHandler={() => handlerMove(locations.todoAdd)}
-                      inputPlaceholder="투두를 입력하세요"
+                      inputPlaceholder="과거 날짜에는 추가할 수 없습니다"
+                      readOnly={readOnly}
                     />
+                    </div>
+                    ) : (
+                      <div className={Style.todoInput_box} onClick={() => setInputFocuse(true)}>
+                      <Input
+                        inputType="text"
+                        inputValue=""
+                        inputHandler={() => handlerMove(locations.todoAdd)}
+                        inputPlaceholder="투두를 입력하세요"
+                      />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
