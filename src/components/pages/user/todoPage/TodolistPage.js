@@ -99,7 +99,8 @@ const TodolistPage = () => {
       .then((res) => {
         if (res.data === '삭제') {
           console.log("정상적으로 삭제되었습니다.");
-          navigate(`/`);
+          alert("정상적으로 삭제되었습니다")
+          window.location.replace('/todolist');
         } else {
           console.log("삭제에 실패했습니다.");
           return;

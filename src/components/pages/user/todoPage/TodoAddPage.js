@@ -112,7 +112,6 @@ const TodoAddPage = (props) => {
       setSelectedHour(value);
     } else if (type === 'minute') {
       setSelectedMinute(value);
-
     }
   };
    
@@ -234,7 +233,7 @@ const TodoAddPage = (props) => {
       console.log(res);
       console.log(todoData);
       alert('투두가 생겼습니다');
-      // window.location.replace('/todolist');
+      window.location.replace('/todolist');
     })
     .catch(err => {
       if (err.response) {

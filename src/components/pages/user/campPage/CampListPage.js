@@ -26,7 +26,8 @@ const CampListPage = () => {
         headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
       })
         .then(res => {
-            setData(res.data);
+          console.log(res.data);
+          setData(res.data);
         })
         .catch(err => {
             console.log(err);
@@ -36,16 +37,16 @@ const CampListPage = () => {
   const titleProperties = {
     titleName: "캠페인"
   }
+ 
 
-  const campProperties = [
-    {
-        campId : 1,
-      campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
-      campTitle: "camp타이틀",
-      campOrganizer: "camp주최자",
-      campProgress: 20
-    }
-  ]
+  const campProperties = data.map(camp => ({
+    campId: camp.donationIdx,
+    campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
+    campTitle: camp.donorName,
+    campOrganizer: camp.donorIdx,
+    campProgress: parseInt((camp.donationTargetAmount / camp.donationAmount) * 100)
+  }));
+
 
   return (
     <>
