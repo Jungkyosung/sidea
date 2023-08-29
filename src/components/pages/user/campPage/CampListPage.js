@@ -12,8 +12,9 @@ const CampListPage = () => {
   const navigate = useNavigate();
 
   function handlerNavi(id){
+    console.log(id);
     let location = '/campaign/' + id;
-    navigate(location);
+    navigate(`/campaign/${id}`);
   }
 
   useEffect(() => {
@@ -56,13 +57,13 @@ const CampListPage = () => {
           
           <div className={Style.listbox}>
             <div className={Style.scrollbox}>
-              {campProperties.map(camplist => (
+              {data.map(camplist => (
                 <CampaignList
-                campClick={()=>handlerNavi(camplist.campId)}
-                campImgSource={camplist.campImgSource}
-                campTitle={camplist.campTitle}
-                campOrganizer={camplist.campOrganizer}
-                campProgress={camplist.campProgress}
+                campClick={()=>handlerNavi(camplist.donationIdx)}
+                campImgSource={camplist.donorImage}
+                campTitle={camplist.donationName}
+                campOrganizer={camplist.donorName}
+                campProgress={parseInt((camplist.donationTargetAmount / camplist.donationAmount) * 100)}
                 />
               ))}
             </div>

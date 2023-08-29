@@ -10,6 +10,7 @@ import { MdRepeat, MdControlPoint } from 'react-icons/md';
 import { BiCalendarEvent, BiAlarm } from 'react-icons/bi';
 import ToggleSwitch from "../../../UI/atoms/toggle/ToggleSwitch";
 import { PiEyeglassesLight } from "react-icons/pi";
+import { useParams } from "react-router-dom";
 
 
 
@@ -28,6 +29,11 @@ const TodoEditPage = (props) => {
   const [selectedMinute, setSelectedMinute] = useState('00');
   // const options = { month: "long", day: "numeric" };
   
+  //todoidxparam
+  const {todoidx} = useParams();
+  console.log(todoidx);
+
+
   // 내용받아오기
   
   // 투두 텍스트 입력
