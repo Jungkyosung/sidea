@@ -3,10 +3,7 @@ import Style from './TimePicker.module.css';
 import { Swiper } from 'swiper';
 import 'swiper/css';
 
-const TimePicker = ({ onPeriod, onHour, onMinute, toggleOff}) => {
-  const [selectedPeriod, setSelectedPeriod] = useState('AM');
-  const [selectedHour, setSelectedHour] = useState('01');
-  const [selectedMinute, setSelectedMinute] = useState('00');
+const TimePicker = ({ selectedPeriod, selectedHour, selectedMinute, setSelectedPeriod, setSelectedHour, setSelectedMinute, onPeriod, onHour, onMinute, toggleOff}) => {
 
   const view1 = useRef(null);
   const view2 = useRef(null);
@@ -37,6 +34,7 @@ const TimePicker = ({ onPeriod, onHour, onMinute, toggleOff}) => {
   const handlePeriodSelect = period => {
     setSelectedPeriod(period);
     onPeriod(period);
+    console.log(onPeriod)
   };
 
   const handleHourSelect = hour => {

@@ -81,6 +81,14 @@
   /* background-color: white; */
 }
 
+.todoEdit_page {
+  position: absolute;
+  bottom: 0%;
+  left: 0%;
+  height: -webkit-fill-available;
+  /* background-color: white; */
+}
+
 .close {
   position: absolute;
   top: 26.5%;

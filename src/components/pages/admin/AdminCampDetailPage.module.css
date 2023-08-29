@@ -6,12 +6,26 @@
 
 .campImg {
   width: 100%;
-  height: 50%;
+  height: 40%;
+  object-fit: cover;
+  position: relative;
+}
+
+.close {
+  position:absolute;
+  top: 3%;
+  right: 5%;
+  border-radius: 50%;
+  box-shadow: 0px 0px 5px 2px rgb(0, 0, 0, 0.5);
+  font-size: 2em;
+  color: #0077E4;
+  background-color:rgb(255, 255, 255, 0.5) ;
+  cursor: pointer;
 }
 
 .campInfo_box {
   width: 100%;
-  height: 40%;
+  height: 60%;
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
@@ -26,13 +40,13 @@
 /* header */
 .campInfo_box .header {
   /* border: 1px solid blue; */
-  /* height: 20%; */
+  height: 20%;
 }
 
 /* content */
 .campInfo_box .content {
   /* border: 1px solid red; */
-  /* height: 60%; */
+  height: 45%;
 }
 
 .campInfo {
@@ -42,8 +56,8 @@
 
 /* progressBar */
 .campInfo_box .progressBar {
-  /* border: 1px solid purple; */
-  /* height: 20%; */
+  /* margin-bottom: 20px; */
+  height: 15%;
 }
 
 .campProgress {
@@ -65,7 +79,7 @@
   border-radius: 10px;
 }
 
-.campEditBtn {
-  display: flex;
-  justify-content: center;
+.EditBtn{
+  /* margin-bottom: 20px; */
+  height: 20%;
 }

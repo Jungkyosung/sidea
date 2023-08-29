@@ -13,7 +13,7 @@ const CampListPage = () => {
 
   function handlerNavi(id){
     console.log(id);
-    let location = '/campaign/' + id;
+    // let location = '/campaign/' + id;
     navigate(`/campaign/${id}`);
   }
 
@@ -33,21 +33,20 @@ const CampListPage = () => {
         .catch(err => {
             console.log(err);
         })
-}, []);
+  }, []);
 
   const titleProperties = {
     titleName: "캠페인"
   }
  
 
-  const campProperties = data.map(camp => ({
-    campId: camp.donationIdx,
-    campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
-    campTitle: camp.donorName,
-    campOrganizer: camp.donorIdx,
-    campProgress: parseInt((camp.donationTargetAmount / camp.donationAmount) * 100)
-  }));
-
+  // const campProperties = data.map(camp => ({
+  //   campId: camp.donationIdx,
+  //   campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
+  //   campTitle: camp.donorName,
+  //   campOrganizer: camp.donorIdx,
+  //   campProgress: parseInt((camp.donationTargetAmount / camp.donationAmount) * 100)
+  // }));
 
   return (
     <>
@@ -59,11 +58,12 @@ const CampListPage = () => {
             <div className={Style.scrollbox}>
               {data.map(camplist => (
                 <CampaignList
-                campClick={()=>handlerNavi(camplist.donationIdx)}
-                campImgSource={camplist.donorImage}
-                campTitle={camplist.donationName}
-                campOrganizer={camplist.donorName}
-                campProgress={parseInt((camplist.donationTargetAmount / camplist.donationAmount) * 100)}
+                  campClick={()=>handlerNavi(camplist.donationIdx)}
+                  campImgSource={camplist.donorImage}
+                  campTitle={camplist.donationName}
+                  campOrganizer={camplist.donorName}
+                  campProgress={parseInt((camplist.donationAmount / camplist.donationTargetAmount) * 100)}
+                  campEnddate={camplist.donationDuration}
                 />
               ))}
             </div>

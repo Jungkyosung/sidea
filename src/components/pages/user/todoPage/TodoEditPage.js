@@ -9,32 +9,69 @@ import jwt_decode from "jwt-decode";
 import { MdRepeat, MdControlPoint } from 'react-icons/md';
 import { BiCalendarEvent, BiAlarm } from 'react-icons/bi';
 import ToggleSwitch from "../../../UI/atoms/toggle/ToggleSwitch";
-import { PiEyeglassesLight } from "react-icons/pi";
-import { useParams } from "react-router-dom";
+// import { PiEyeglassesLight } from "react-icons/pi";
 
 
 
 const TodoEditPage = (props) => {
-  const [addTodo, setAddTodo] = useState("");
+  
+
+  
+
 
   const dateList = ['오늘', '1일 후', '2일 후', '3일 후', '4일 후', '5일 후', '6일 후', '7일 후'];
   const repeatList = ['매일', '매일 일', '매일 월', '매일 화', '매일 수', '매일 목', '매일 금', '매일 토'];
   const pointList = ['100P', '200P', '300P', '400P', '500P'];
+  const {todoData} = props;
+  console.log(todoData)
+  const todoDto = {
+    todoAlarm: 1,
+    todoAlarmTime: todoData.todoAlarmTime,
+    todoContents: "today",
+    todoEndDate: todoData.todoEndDate,
+    todoStartDate: todoData.todoStartDate,
+    todoFri: 0,
+    todoMon: 0,
+    todoSat: 0,
+    todoSun: 0,
+    todoThu: 0,
+    todoTue: 0,
+    todoWed: 0,
+    todoPoint: pointList.findIndex((point) => point === `${todoData.todoPoint}P`),
+    todoIdx: 43,
+    userIdx: 16
+  }
+  
+
+  const setTimezone = (timeString) => {
+    const dateTime = new Date(timeString);
+    const period = dateTime.getHours() >= 12 ? 'PM' : 'AM';
+    const hour = String(dateTime.getHours() % 12 === 0 ? 12 : dateTime.getHours() % 12).padStart(2, '0');
+    const minute = String(dateTime.getMinutes()).padStart(2, '0');
+    
+    return { period, hour, minute };
+  }
+
+ const { period, hour, minute } = setTimezone(todoDto.todoAlarmTime);
+
+
+ useEffect(() => {
+  setSelectedPeriod(period);
+  setSelectedHour(hour);
+  setSelectedMinute(minute);
+
+ },[])
+
+ const [addTodo, setAddTodo] = useState(todoData.todoContents);
   // 토글 라운드
   const [selectedDate, setSelectedDate] = useState(0);
   const [selectedRepeat, setSelectedRepeat] = useState([1]);
-  const [selectedPoint, setSelectedPoint] = useState(0);
-  const [selectedPeriod, setSelectedPeriod] = useState('AM');
-  const [selectedHour, setSelectedHour] = useState('01');
-  const [selectedMinute, setSelectedMinute] = useState('00');
-  // const options = { month: "long", day: "numeric" };
+  const [selectedPoint, setSelectedPoint] = useState(todoData.todoPoint);
+  const [selectedPeriod, setSelectedPeriod] = useState('');
+  const [selectedHour, setSelectedHour] = useState('');
+  const [selectedMinute, setSelectedMinute] = useState('');
   
-  //todoidxparam
-  const {todoidx} = useParams();
-  console.log(todoidx);
-
-
-  // 내용받아오기
+  console.log(selectedPeriod);
   
   // 투두 텍스트 입력
   const handlerChangeTodo = (e) => {
@@ -144,7 +181,7 @@ const TodoEditPage = (props) => {
   const endDay = formatToday(selectedEndDay);
 
   const handlerDateChange = (e) => {
-      setSelectedDate(e);
+    setSelectedDate(e);
   };
 
   const handlerRepeatChange = (index) => {
@@ -206,56 +243,56 @@ const TodoEditPage = (props) => {
 
 
   // 투두 등록버튼
-  const handlerClickAdd = (e) => {
-    if (addTodo.trim() === "") {
-      alert("투두 내용을 입력하세요.");
-      return; // 함수 실행 중단
-    }
-    const token = sessionStorage.getItem('token');
-    const decode_token = jwt_decode(token);
-    const userIdx = decode_token.userIdx;
+  // const handlerClickAdd = (e) => {
+  //   if (addTodo.trim() === "") {
+  //     alert("투두 내용을 입력하세요.");
+  //     return; // 함수 실행 중단
+  //   }
+  //   const token = sessionStorage.getItem('token');
+  //   const decode_token = jwt_decode(token);
+  //   const userIdx = decode_token.userIdx;
 
-    const todoData = {
-      userIdx: userIdx,
-      todoContents: addTodo,
-      todoStartDate: formatDate(selectedToday),
-      todoEndDate: isRepeat === false ? formatDate(selectedEndDay) : '',
-      todoAlarm: alarm,
-      todoAlarmTime: formatDateAlarm(selectedToday),
-      todoPoint: selectedPointStr.replace('P', ''),
-      todoMon: todo.todoMon, 
-      todoTue: todo.todoTue, 
-      todoWed: todo.todoWed,
-      todoThu: todo.todoThu,
-      todoFri: todo.todoFri,
-      todoSat: todo.todoSat,
-      todoSun: todo.todoSun 
-    };
-    console.log(selectedPointStr);
-    console.log(todoData);
-    axios.put(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
-      todoData,
-      { headers: { 'Authorization': `Bearer ${token}` } }
-    )
-      .then(res => {
-      console.log(res);
-      console.log(todoData);
-      alert('투두가 생겼습니다');
-      window.location.replace('/todolist');
-    })
-    .catch(err => {
-      if (err.response) {
-        // 요청은 성공했지만 서버에서 오류 응답을 보낸 경우
-        console.error('서버 응답 오류:', err.response.data);
-      } else if (err.request) {
-        // 요청이 전송되지 않은 경우 (네트워크 문제 등)
-        console.error('요청 전송 실패:', err.request);
-      } else {
-        // 기타 오류
-        console.error('오류:', err.message);
-      }
-    });
-  };
+  //   const todoData = {
+  //     userIdx: userIdx,
+  //     todoContents: addTodo,
+  //     todoStartDate: formatDate(selectedToday),
+  //     todoEndDate: isRepeat === false ? formatDate(selectedEndDay) : '',
+  //     todoAlarm: alarm,
+  //     todoAlarmTime: formatDateAlarm(selectedToday),
+  //     todoPoint: selectedPointStr.replace('P', ''),
+  //     todoMon: todo.todoMon, 
+  //     todoTue: todo.todoTue, 
+  //     todoWed: todo.todoWed,
+  //     todoThu: todo.todoThu,
+  //     todoFri: todo.todoFri,
+  //     todoSat: todo.todoSat,
+  //     todoSun: todo.todoSun 
+  //   };
+  //   console.log(selectedPointStr);
+  //   console.log(todoData);
+  //   axios.put(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
+  //     todoData,
+  //     { headers: { 'Authorization': `Bearer ${token}` } }
+  //   )
+  //     .then(res => {
+  //     console.log(res);
+  //     console.log(todoData);
+  //     alert('투두가 생겼습니다');
+  //     window.location.replace('/todolist');
+  //   })
+  //   .catch(err => {
+  //     if (err.response) {
+  //       // 요청은 성공했지만 서버에서 오류 응답을 보낸 경우
+  //       console.error('서버 응답 오류:', err.response.data);
+  //     } else if (err.request) {
+  //       // 요청이 전송되지 않은 경우 (네트워크 문제 등)
+  //       console.error('요청 전송 실패:', err.request);
+  //     } else {
+  //       // 기타 오류
+  //       console.error('오류:', err.message);
+  //     }
+  //   });
+  // };
   
   return (
     <>
@@ -282,10 +319,16 @@ const TodoEditPage = (props) => {
             </p>
             <div className={Style.select_alarm}>
              <TimePicker 
-                onPeriod={(value) => updateTime(value, 'period')}
-                onHour={(value) => updateTime(value, 'hour')}
-                onMinute={(value) => updateTime(value, 'minute')}
-                toggleOff={toggleOff}
+              selectedPeriod={selectedPeriod}
+              selectedHour={selectedHour}
+              selectedMinute={selectedMinute}
+              setSelectedPeriod={setSelectedPeriod}
+              setSelectedHour={setSelectedHour}
+              setSelectedMinute={setSelectedMinute}
+              onPeriod={(value) => updateTime(value, 'period')}
+              onHour={(value) => updateTime(value, 'hour')}
+              onMinute={(value) => updateTime(value, 'minute')}
+              toggleOff={toggleOff}
               />
             
             </div>
@@ -339,7 +382,9 @@ const TodoEditPage = (props) => {
           </div>
 
           <div className={Style.DoBtn}>
-            <DoBtn doText="등록하기" doOnClick={handlerClickAdd} />
+            <DoBtn doText="수정하기" 
+            // doOnClick={handlerClickAdd} 
+            />
           </div>
         </div>
       </div>

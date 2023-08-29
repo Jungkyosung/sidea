@@ -12,17 +12,22 @@ import TodoContent from "../../../UI/atoms/TodoContent";
 import NaviControll from "../../../naviControll/NaviControll";
 import Calendar from "./Calendar";
 import TodoAddPage from "./TodoAddPage";
+import TodoEditPage from "./TodoEditPage";
 
 const TodolistPage = () => {
   const [data, setData] = useState([]);
   const [todoIdx, setTodoIdx] = useState('');
   const [todoDate, setTodoDate] = useState('');
+  const [todoData, setTodoData] = useState();
   const [isInputFocuse, setInputFocuse] = useState(false);
+  const [isClick, setIsClick] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState(new Date().getDate());
   const initDayOfWeek = new Date().getDay(); // 오늘 요일 초기 설정
   const [selectedWeek, setSelectedWeek] = useState(initDayOfWeek === 0 ? 7 : initDayOfWeek); 
   const daysOfWeek = [1, 2, 3, 4, 5, 6, 7];
+
+  
 
   // 날짜를 SQL 날짜 형식으로 변환하는 함수
   const formatDate = (date) => {
@@ -53,8 +58,9 @@ const TodolistPage = () => {
       headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` },
     })
     .then(res => {
+      console.log(res.data)
       setData(res.data);
-      console.log(res.data);
+      // console.log(res.data);
       if (Array.isArray(res.data)) {
         const todoDates = res.data.map(item => item.todoDate);
         const todoIdxes = res.data.map(item => item.todoDate);
@@ -76,6 +82,12 @@ const TodolistPage = () => {
   // 페이지 이동 핸들러
   function handlerMove(location){
     navigate(location);
+  }
+
+  function handlerNavi(id){
+    console.log(id);
+    // let location = '/campaign/' + id;
+    navigate(`/todo/edit/${id}`);
   }
 
   const titleProperties = {
@@ -118,6 +130,12 @@ const TodolistPage = () => {
         }
       });
   };
+
+  const handlerTodoClick = (data) => {
+    setTodoData(data);
+    setIsClick(true);
+  }
+  
     
   const todoContent = () => (
     Array.isArray(data) && data.length > 0
@@ -130,6 +148,7 @@ const TodolistPage = () => {
             todoTitle={todo.todoContents}
             todoHasAlarm={todo.todoHasAlarm}
             todoDelete={() => handlerDelete(todo.todoIdx)} 
+            todoClick={() => handlerTodoClick(todo)}
           />
         ))
       ) 
@@ -165,7 +184,14 @@ const TodolistPage = () => {
               </div>
   
               <div className={Style.todoContent_box}>
-                {todoContent()}
+                 {isClick ? (
+                    <div className={Style.todoEdit_page}>
+                      <MdOutlineClose className={Style.close} onClick={() => setIsClick(false)} />
+                      <TodoEditPage todoData={todoData}/>
+                    </div>
+                  ) : (
+                    todoContent()
+                  )}
               </div>  
             </div>
   

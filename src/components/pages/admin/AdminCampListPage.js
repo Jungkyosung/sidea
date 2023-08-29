@@ -3,72 +3,36 @@ import { useNavigate } from 'react-router';
 import CampaignList from '../../UI/atoms/CampaignList';
 import Title from '../../UI/atoms/Title';
 import NaviControll from '../../naviControll/NaviControll';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 const AdminCampListPage = () => {
+  const [data, setData] = useState([]);
+  
   const navigate = useNavigate();
-
   function handlerNavi(id){
-    let location = '/admin/campaign/' + id;
-    navigate(location);
+    navigate(`/admin/campaign/${id}`);
   }
 
-  const campProperties = [
-    {
-      campId : 1,
-    campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
-    campTitle: "camp타이틀",
-    campOrganizer: "camp주최자",
-    campProgress: 20
-    },
-    {
-      campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
-      campTitle: "camp타이틀",
-      campOrganizer: "camp주최자",
-      campProgress: 20
-    },
-    {
-      campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
-      campTitle: "camp타이틀",
-      campOrganizer: "camp주최자",
-      campProgress: 20
-    },
-    {
-      campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
-      campTitle: "camp타이틀",
-      campOrganizer: "camp주최자",
-      campProgress: 20
-    },
-    {
-      campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
-      campTitle: "camp타이틀",
-      campOrganizer: "camp주최자",
-      campProgress: 20
-    },
-    {
-      campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
-      campTitle: "camp타이틀",
-      campOrganizer: "camp주최자",
-      campProgress: 20
-    },
-    {
-      campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
-      campTitle: "camp타이틀",
-      campOrganizer: "camp주최자",
-      campProgress: 20
-    },
-    {
-      campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
-      campTitle: "camp타이틀",
-      campOrganizer: "camp주최자",
-      campProgress: 20
-    },
-    {
-      campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
-      campTitle: "camp타이틀",
-      campOrganizer: "camp주최자",
-      campProgress: 20
-    }
-  ]
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    const decode_token = jwt_decode(token);
+    let userId = decode_token.sub;
+
+    axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/admin/donation/list`,
+      { params: { userId: encodeURI(userId) },
+        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+      })
+        .then(res => {
+          console.log(res.data);
+          setData(res.data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+  }, []);
+
 
   return (
     <>
@@ -78,13 +42,14 @@ const AdminCampListPage = () => {
           
           <div className={Style.listbox}>
             <div className={Style.scrollbox}>
-              {campProperties.map(camplist => (
+              {data.map(camplist => (
                 <CampaignList
-                campClick={()=>handlerNavi(camplist.campId)}
-                campImgSource={camplist.campImgSource}
-                campTitle={camplist.campTitle}
-                campOrganizer={camplist.campOrganizer}
-                campProgress={camplist.campProgress}
+                  campClick={()=>handlerNavi(camplist.donationIdx)}
+                  campImgSource={camplist.donorImage}
+                  campTitle={camplist.donationName}
+                  campOrganizer={camplist.donorName}
+                  campProgress={parseInt((camplist.donationAmount / camplist.donationTargetAmount) * 100)}
+                  campEnddate={camplist.donationDuration}
                 />
               ))}
             </div>

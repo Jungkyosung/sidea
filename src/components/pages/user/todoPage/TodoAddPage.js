@@ -9,7 +9,6 @@ import jwt_decode from "jwt-decode";
 import { MdRepeat, MdControlPoint } from 'react-icons/md';
 import { BiCalendarEvent, BiAlarm } from 'react-icons/bi';
 import ToggleSwitch from "../../../UI/atoms/toggle/ToggleSwitch";
-import { PiEyeglassesLight } from "react-icons/pi";
 
 
 
@@ -50,7 +49,6 @@ const TodoAddPage = (props) => {
   // 알람 값 저장
   const alarm = isEnabled ? 1 : 0;
 
-  
   // 날짜 토글 스위치
   const [isToday, setIsToday] = useState(true);
   const [todaySwitch, setTodaySwitch] = useState(false);
@@ -128,27 +126,39 @@ const TodoAddPage = (props) => {
 
   // 오늘
   const day = props.selectedDate;
-  const end = selectedDate + props.selectedDate; // I'm assuming you want to add the selectedDate twice, update this logic if needed
+  const end = selectedDate + props.selectedDate; 
   const selectedToday = new Date(2023, 7, day); 
   const selectedEndDay = new Date(2023, 7, end);
 
   const today = formatToday(selectedToday);
   const endDay = formatToday(selectedEndDay);
 
+
   const handlerDateChange = (e) => {
-      setSelectedDate(e);
+    setSelectedDate(e);
   };
 
   const handlerRepeatChange = (index) => {
+    // 0번과1~7번중에 하나는 무조건 선택
+    if (selectedRepeat.length === 1 && selectedRepeat.includes(index)) {
+      return;
+    }
+  
     if (index === 0) {
-      setSelectedRepeat([0]); // 0번만 선택
+      setSelectedRepeat([0]);
+    } else if (selectedRepeat.includes(index)) {
+      // 이미 선택된 경우 선택해제 
+      setSelectedRepeat((prevSelected) =>
+        prevSelected.filter(item => item !== index)
+      );
     } else if (selectedRepeat.length === 6) {
-      setSelectedRepeat([0]); // 1~7 전체 선택한 경우 0번 선택
+      // 중복선택 7번째에는 자동 0번째
+      setSelectedRepeat([0]);
     } else {
       setSelectedRepeat((prevSelected) =>
         prevSelected.includes(0)
-          ? [index] // 0번을 선택한 경우는 0번을 빼고 새로운 선택 추가
-          : [...prevSelected, index] // 그 외의 경우는 선택 추가
+          ? [index]                   // 0번 선택된 경우 0번 제외한 선택 추가
+          : [...prevSelected, index]  // 그외 선택 추가
       );
     }
   };
@@ -201,7 +211,7 @@ const TodoAddPage = (props) => {
   const handlerClickAdd = (e) => {
     if (addTodo.trim() === "") {
       alert("투두 내용을 입력하세요.");
-      return; // 함수 실행 중단
+      return; 
     }
     const token = sessionStorage.getItem('token');
     const decode_token = jwt_decode(token);
@@ -223,8 +233,9 @@ const TodoAddPage = (props) => {
       todoSat: todo.todoSat,
       todoSun: todo.todoSun 
     };
-    console.log(selectedPointStr);
+ 
     console.log(todoData);
+
     axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
       todoData,
       { headers: { 'Authorization': `Bearer ${token}` } }
@@ -274,10 +285,16 @@ const TodoAddPage = (props) => {
             </p>
             <div className={Style.select_alarm}>
              <TimePicker 
-                onPeriod={(value) => updateTime(value, 'period')}
-                onHour={(value) => updateTime(value, 'hour')}
-                onMinute={(value) => updateTime(value, 'minute')}
-                toggleOff={toggleOff}
+              selectedPeriod={selectedPeriod}
+              selectedHour={selectedHour}
+              selectedMinute={selectedMinute}
+              setSelectedPeriod={setSelectedPeriod}
+              setSelectedHour={setSelectedHour}
+              setSelectedMinute={setSelectedMinute}
+              onPeriod={(value) => updateTime(value, 'period')}
+              onHour={(value) => updateTime(value, 'hour')}
+              onMinute={(value) => updateTime(value, 'minute')}
+              toggleOff={toggleOff}
               />
             
             </div>
