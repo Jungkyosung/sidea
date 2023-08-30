@@ -206,7 +206,7 @@ const MyPointPage = () => {
             <div>{pointBalance + selectedChargePoint}P</div>
           </div>
           <div className={Style.BtnBox}>
-            <button className={Style.CancelBtn}  >
+            <button className={Style.CancelBtn} onClick={()=>setIsCharged(true)} >
               취소
             </button>
             <button className={Style.ChargeBtn}  onClick={handlerCharPoint} >

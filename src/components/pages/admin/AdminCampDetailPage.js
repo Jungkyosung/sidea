@@ -68,7 +68,7 @@ const AdminCampDetailPage = () => {
       <div className={Style.container}>
         {/* <div> */}
           <img className={Style.campImg} src={campProperties.campImgSource} />
-          <MdOutlineClose className={Style.close} onClick={()=>navigate('/campaignlist')} />
+          <MdOutlineClose className={Style.close} onClick={()=>navigate('/admin/campaignlist')} />
         {/* </div> */}
 
         <div className={Style.campInfo_box}>

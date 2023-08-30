@@ -155,7 +155,7 @@ const TodolistPage = () => {
     : 
       ( <div>투두가 없습니다</div> )
   );
-  const readOnly = true;
+  // const readOnly = true;
 
   return (
     <>
@@ -210,7 +210,7 @@ const TodolistPage = () => {
                       inputType="text"
                       inputValue=""
                       inputPlaceholder="과거 날짜에는 추가할 수 없습니다"
-                      readOnly={readOnly}
+                      readOnly="readOnly"
                     />
                     </div>
                     ) : (

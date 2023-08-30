@@ -129,7 +129,7 @@ const TodoAddPage = (props) => {
   const end = selectedDate + props.selectedDate; 
   const selectedToday = new Date(2023, 7, day); 
   const selectedEndDay = new Date(2023, 7, end);
-
+  console.log(selectedEndDay);
   const today = formatToday(selectedToday);
   const endDay = formatToday(selectedEndDay);
 
@@ -221,7 +221,7 @@ const TodoAddPage = (props) => {
       userIdx: userIdx,
       todoContents: addTodo,
       todoStartDate: formatDate(selectedToday),
-      todoEndDate: isRepeat === false ? formatDate(selectedEndDay) : '',
+      todoEndDate: isRepeat === true ? (isToday === true ? formatDate(selectedEndDay) : '') : formatDate(selectedEndDay),
       todoAlarm: alarm,
       todoAlarmTime: formatDateAlarm(selectedToday),
       todoPoint: selectedPointStr.replace('P', ''),
@@ -244,7 +244,7 @@ const TodoAddPage = (props) => {
       console.log(res);
       console.log(todoData);
       alert('투두가 생겼습니다');
-      window.location.replace('/todolist');
+      // window.location.replace('/todolist');
     })
     .catch(err => {
       if (err.response) {
@@ -352,9 +352,6 @@ const TodoAddPage = (props) => {
           </div>
         </div>
       </div>
-
-      
-
     </>
   )
 }
