@@ -22,7 +22,7 @@
 .QnaContent {
     padding: 10px;
     height: 500px;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     -ms-overflow-style: none; /* 인터넷 익스플로러 */
     scrollbar-width: none; /* 파이어폭스 */
 }
@@ -48,16 +48,16 @@
     padding-top: 40px;
     position: absolute;
     background-color: rgb(209, 233, 255);
-    top: 300px;
+    bottom: 0%;
     z-index: 1;
     animation-name: modal-animation;
-    animation-duration: 0.4s;
+    animation-duration: 0.2s;
     animation-timing-function: ease-in;
   }
   
   @keyframes modal-animation {
     0% {
-      transform: translateY(50%);
+      transform: translateY(15%);
     }
     100% {
       transform: translateY(0%);

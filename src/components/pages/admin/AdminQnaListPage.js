@@ -1,15 +1,42 @@
 import Style from './AdminQnaListPage.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Title from '../../UI/atoms/Title';
 import NaviControll from '../../naviControll/NaviControll';
 import AskList from '../../UI/atoms/AskList';
 import RadioBtn from '../../UI/atoms/btn/RadioBtn';
 import { BiSearchAlt2 } from 'react-icons/bi';
+import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 const AdminQnaListPage = () => {
-
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
+
+  function handlerNavi(id){
+    navigate(`/admin/qna/${id}`);
+  }
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    const decode_token = jwt_decode(token);
+    let userId = decode_token.sub;
+
+    axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/admin/qna`,
+      { params: { userId: encodeURI(userId) },
+        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+      })
+        .then(res => {
+          console.log(res.data);
+          setData(res.data);
+          
+        })
+        .catch(err => {
+            console.log(err);
+        })
+  }, []);
+
+  // const askData = []
 
   // 라디오 
   const [selectedRadio, setSelectedRadio] = useState('전체');
@@ -20,10 +47,8 @@ const AdminQnaListPage = () => {
     setSelectedRadio(e);
   }
 
-  function handlerMove(location) {
-    navigate(location);
-  }
-
+  
+  
   return (
     <NaviControll>
       <div className={Style.ContentsWrap}>
@@ -42,23 +67,14 @@ const AdminQnaListPage = () => {
           </div>
         </div>
         <div className={Style.askListBox}>
-          <AskList askNumber={"1"} askTitleClick={() => handlerMove("/admin/qna/1")} askTitle={"문의샘플제목1"} askIsCommented={true} />
-          <AskList askNumber={"2"} askTitleClick={() => handlerMove("/mypage/qna/detail/2")} askTitle={"문의샘플제목 길어지면 어떻게 될까?2"} askIsCommented={true} />
-          <AskList askNumber={"3"} askTitleClick={() => handlerMove("/mypage/qna/detail/3")} askTitle={"문의샘플제목 길어지면 어떻게 될까?3"} askIsCommented={false} />
-          <AskList askNumber={"4"} askTitleClick={() => handlerMove("/mypage/qna/detail/4")} askTitle={"문의샘플제목4"} askIsCommented={false} />
-          <AskList askNumber={"5"} askTitleClick={() => handlerMove("/mypage/qna/detail/5")} askTitle={"문의샘플제목5"} askIsCommented={false} />
-          <AskList askNumber={"6"} askTitleClick={() => handlerMove("/mypage/qna/detail/6")} askTitle={"문의샘플제목 길어지면 어떻게 될까?6"} askIsCommented={true} />
-          <AskList askNumber={"7"} askTitleClick={() => handlerMove("/mypage/qna/detail/7")} askTitle={"문의샘플제목 길어지면 어떻게 될까?7"} askIsCommented={true} />
-          <AskList askNumber={"8"} askTitleClick={() => handlerMove("/mypage/qna/detail/8")} askTitle={"문의샘플제목 길어지면 어떻게 될까?8"} askIsCommented={false} />
-          <AskList askNumber={"9"} askTitleClick={() => handlerMove("/mypage/qna/detail/9")} askTitle={"문의샘플제목 길어지면 어떻게 될까?9"} askIsCommented={true} />
-          <AskList askNumber={"9"} askTitleClick={() => handlerMove("/mypage/qna/detail/9")} askTitle={"문의샘플제목 길어지면 어떻게 될까?9"} askIsCommented={true} />
-          <AskList askNumber={"9"} askTitleClick={() => handlerMove("/mypage/qna/detail/9")} askTitle={"문의샘플제목 길어지면 어떻게 될까?9"} askIsCommented={true} />
-          <AskList askNumber={"9"} askTitleClick={() => handlerMove("/mypage/qna/detail/9")} askTitle={"문의샘플제목 길어지면 어떻게 될까?9"} askIsCommented={true} />
-          <AskList askNumber={"9"} askTitleClick={() => handlerMove("/mypage/qna/detail/9")} askTitle={"문의샘플제목 길어지면 어떻게 될까?9"} askIsCommented={true} />
-          <AskList askNumber={"9"} askTitleClick={() => handlerMove("/mypage/qna/detail/9")} askTitle={"문의샘플제목 길어지면 어떻게 될까?9"} askIsCommented={true} />
-          <AskList askNumber={"9"} askTitleClick={() => handlerMove("/mypage/qna/detail/9")} askTitle={"문의샘플제목 길어지면 어떻게 될까?9"} askIsCommented={true} />
-          <AskList askNumber={"9"} askTitleClick={() => handlerMove("/mypage/qna/detail/9")} askTitle={"문의샘플제목 길어지면 어떻게 될까?9"} askIsCommented={true} />
-          <AskList askNumber={"9"} askTitleClick={() => handlerMove("/mypage/qna/detail/9")} askTitle={"문의샘플제목 길어지면 어떻게 될까?9"} askIsCommented={true} />
+          { data && data.map(ask => (
+           <AskList
+            key={ask.askIdx}
+            askNumber={ask.askIdx}
+            askTitleClick={() => handlerNavi(ask.askIdx)}
+            askTitle={ask.askTitle}
+            askIsCommented={ask.askAnswer ? true : false} />
+          ))}
         </div>
       </div>
     </NaviControll>

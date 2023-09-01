@@ -25,14 +25,12 @@ const AdminCampAddPage = () => {
   useEffect(() => {
     axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/donor`)
       .then((res) => {
-        console.log(res.data)
         setDonor(res.data);
         // setNoticeCategoryIdx(1);
       })
       .catch((error) => console.log(error));
   }, []);
 
-  console.log(donor)
 
   const handlerCamptitle = (e) => { setCampTitle(e.target.value) };
   const handleChangeDonor = (e) => setDonorIdx(e.target.value);
@@ -81,28 +79,35 @@ const AdminCampAddPage = () => {
     donationName : campTitle
   };
 
+// const formData = new FormData();
+// formData.append(
+//     'data',
+//     new Blob([JSON.stringify(datas)], { type: 'application/json' })
+// );
+// Object.values(imageFiles).forEach(
+//     file => Object.values(file.files).forEach(
+//         f => formData.append(file.name, f)
+// ));
 const formData = new FormData();
-formData.append(
-    'data',
-    new Blob([JSON.stringify(datas)], { type: 'application/json' })
-);
-Object.values(imageFiles).forEach(
-    file => Object.values(file.files).forEach(
-        f => formData.append(file.name, f)
-));
+formData.append('data', JSON.stringify(datas)); 
 
+// 이미지 파일을 추가
+imageFiles.forEach(fileObj => {
+  const { name, files } = fileObj;
+  for (const file of files) {
+    formData.append(name, file);
+  }
+});
 
 const handlerOnSubmit = () => {
-    console.log(formData);
-    axios({
-        method: 'POST',
-        url: `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/admin/donation`,
-        headers: {
+    
+    axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/admin/donation`, 
+      formData, 
+      { headers: {
             'Content-Type': 'multipart/form-data;',
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-        },
-        data: formData
-    })
+        }}
+    )
         .then(res => {
           console.log(res);
             alert("sucess")
@@ -131,7 +136,7 @@ const handlerOnSubmit = () => {
         <div className={Style.input_container}>
           <div className={Style.InputBox}>
             <Input inputPlaceholder={"캠페인 제목을 입력하세요"}
-              // inputValue={campTitle}
+              inputValue={campTitle}
               inputHandler={handlerCamptitle}
             />
           </div>

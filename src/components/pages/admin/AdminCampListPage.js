@@ -44,6 +44,7 @@ const AdminCampListPage = () => {
             <div className={Style.scrollbox}>
               {data.map(camplist => (
                 <CampaignList
+                  key={camplist.donationIdx}
                   campClick={()=>handlerNavi(camplist.donationIdx)}
                   campImgSource={camplist.donorImage}
                   campTitle={camplist.donationName}

@@ -54,7 +54,7 @@ const AdminCampDetailPage = () => {
 
   const campProperties = {
     campId: data.donationIdx,
-    campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
+    campImgSource: data.donorImage,
     campTitle: data.donationName,
     campOrganizer: data.donorName,
     campPeriod: `${formatDate(startDate)} ~ ${formatDate(endDate)}`,
@@ -62,6 +62,44 @@ const AdminCampDetailPage = () => {
     campTotalPoint: pointReplace((data.donationAmount) + 'P'),
     campProgress: parseInt(( data.donationAmount / data.donationTargetAmount ) * 100)
   }
+
+  function handlerNavi(id, data){
+    console.log(data);
+    navigate(`/admin/campaign/edit/${id}`, { state: {data}});
+    
+  }
+
+  // 삭제 핸들러
+  const handlerDelete = () => {
+    const donationIdx = campProperties.campId;
+    const params = { donationIdx: donationIdx };
+  
+    axios.delete(
+      `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/admin/donation`,
+      { params }, {headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }}
+    )
+      .then((res) => {
+        if (res.data === '삭제') {
+          console.log("정상적으로 삭제되었습니다.");
+          alert("정상적으로 삭제되었습니다")
+          window.location.replace('/admin/campaignlist');
+        } else {
+          console.log("삭제에 실패했습니다.");
+          return;
+        }
+      })
+      .catch((err) => {
+        console.error('에러 상세 정보:', err);
+    
+        if (err.response) {
+          console.error('서버 응답 오류:', err.response.data);
+        } else if (err.request) {
+          console.error('요청 전송 실패:', err.request);
+        } else {
+          console.error('오류:', err.message);
+        }
+      });
+  };
 
   return (
     <>
@@ -101,7 +139,9 @@ const AdminCampDetailPage = () => {
             </div>
           </div>
           <div className={Style.EditBtn}>
-            <EditBtn />
+            <EditBtn 
+              onDelete={handlerDelete}
+              onUpdate={() => handlerNavi(campProperties.campId, data)}/>
         </div>
         </div>
       
