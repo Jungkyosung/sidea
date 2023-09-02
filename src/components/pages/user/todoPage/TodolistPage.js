@@ -13,6 +13,7 @@ import NaviControll from "../../../naviControll/NaviControll";
 import Calendar from "./Calendar";
 import TodoAddPage from "./TodoAddPage";
 import TodoEditPage from "./TodoEditPage";
+import CloseBtn from "../../../UI/atoms/btn/CloseBtn";
 
 const TodolistPage = () => {
   const [data, setData] = useState([]);
@@ -155,7 +156,7 @@ const TodolistPage = () => {
     : 
       ( <div>투두가 없습니다</div> )
   );
-  // const readOnly = true;
+  const readOnly = true;
 
   return (
     <>
@@ -185,10 +186,13 @@ const TodolistPage = () => {
   
               <div className={Style.todoContent_box}>
                  {isClick ? (
+                  <>
+                    
                     <div className={Style.todoEdit_page}>
-                      <MdOutlineClose className={Style.close} onClick={() => setIsClick(false)} />
+                      <div className={Style.close}><CloseBtn onClick={() => setIsClick(false)} /></div>
                       <TodoEditPage todoData={todoData}/>
                     </div>
+                    </>
                   ) : (
                     todoContent()
                   )}
@@ -199,7 +203,9 @@ const TodolistPage = () => {
               <div className={Style.todo_input}>
                 {isInputFocuse ? (
                   <div className={Style.todoAdd_page}>
-                    <MdOutlineClose className={Style.close} onClick={() => setInputFocuse(false)} />
+                    <div className={Style.close}>
+                      <CloseBtn onClick={() => setInputFocuse(false)} />
+                    </div>
                     <TodoAddPage selectedDate={selectedDate} />
                   </div>
                 ) : (
@@ -210,7 +216,7 @@ const TodolistPage = () => {
                       inputType="text"
                       inputValue=""
                       inputPlaceholder="과거 날짜에는 추가할 수 없습니다"
-                      readOnly="readOnly"
+                      readOnly={readOnly}
                     />
                     </div>
                     ) : (

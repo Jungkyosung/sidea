@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { MdOutlineClose } from 'react-icons/md';
 import EditBtn from '../../UI/atoms/btn/EditBtn';
+import CloseBtn from '../../UI/atoms/btn/CloseBtn';
 
 
 const AdminCampDetailPage = () => {
@@ -106,7 +107,7 @@ const AdminCampDetailPage = () => {
       <div className={Style.container}>
         {/* <div> */}
           <img className={Style.campImg} src={campProperties.campImgSource} />
-          <MdOutlineClose className={Style.close} onClick={()=>navigate('/admin/campaignlist')} />
+          <div className={Style.close}><CloseBtn onClick={()=>navigate('/admin/campaignlist')} /></div>
         {/* </div> */}
 
         <div className={Style.campInfo_box}>

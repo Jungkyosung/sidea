@@ -41,3 +41,8 @@
 .btnbg {
   width: 100%;
 }
+
+.close {
+  color: #0077E4;
+  cursor: pointer;
+}

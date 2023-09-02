@@ -1,51 +1,57 @@
 .ContentsWrap {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top : 40px;
-  overflow: hidden;
+  align-items: center; */
+  width: 100%;
+  height: 100%;
+  padding : 60px 0px 40px;
+  /* background-color: antiquewhite; */
+  /* overflow: hidden; */
 }
 
 .QnaWriteHeadWrap {
   width: 100%;
+  height: 17%;
   padding-left : 20px;
   padding-right: 20px;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .askListHead {
-  display: flex;
-  justify-content: flex-start;
+  /* display: flex;
+  justify-content: flex-start; */
   width: 100%;
   color: rgba(0, 0, 0, 0.6);
 }
 
 .QnaWriteBox {
   width: 100%;
-  margin-top: 20px;
+  height: 73%;
   border: none;
-  box-shadow: 0px -3px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 30px;
-  padding-left : 20px;
-  padding-right: 20px;
-  padding-top: 40px;
+  box-shadow: 0px -4px 4px rgb(0, 0, 0, 0.4);
+  border-radius: 20px 20px 0px 0px;
 
+  padding: 40px 20px 20px;
+  background-color: white;
   animation-name: modal-animation;
-  animation-duration: 0.4s;
+  animation-duration: 0.2s;
   animation-timing-function: ease-in;
 }
 
 @keyframes modal-animation {
   0% {
-    transform: translateY(50%);
+    transform: translateY(30%);
   }
   100% {
     transform: translateY(0%);
   }
 }
-
+.QnaWriteTitle {
+  height: 15%;
+  /* background-color: black; */
+}
 .QnaWriteCont {
-  height: 340px;
+  height: 85%;
   width: 100%;
   border: none;
   border-radius: 8px;
@@ -56,7 +62,7 @@
 }
 
 .QnaWriteCont:focus {
-  outline: none;
+  outline: 2px solid #B2D9FD ;
 }
 
 .QnaWriteCont::placeholder {
@@ -64,9 +70,9 @@
 }
 
 .QnaWriteBtm {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   width: 100%;
-  height: 200px;
+  height: 10%;
   padding-left : 20px;
   padding-right: 20px;
   background-color: #FFFFFF;

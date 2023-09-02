@@ -12,15 +12,18 @@
 }
 
 .close {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position:absolute;
   top: 3%;
   right: 5%;
   border-radius: 50%;
   box-shadow: 0px 0px 5px 2px rgb(0, 0, 0, 0.5);
   font-size: 2em;
-  color: #0077E4;
   background-color:rgb(255, 255, 255, 0.5) ;
-  cursor: pointer;
 }
 
 .campInfo_box {

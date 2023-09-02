@@ -27,6 +27,7 @@ import TodoEditPage from './components/pages/user/todoPage/TodoEditPage';
 import NotFoundPage from './components/pages/NotFoundPage';
 import MyEditPage from './components/pages/user/myPage/MyEditPage';
 import TodoAddPage from './components/pages/user/todoPage/TodoAddPage';
+import MyQnaEditPage from './components/pages/user/myPage/MyQnaEditPage';
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
         <Route path="/mypage/campaignlist" element={<MyCampListPage />} />
         <Route path="/mypage/qnalist" element={<MyQnalistPage />} />
         <Route path="/mypage/qna/detail/:qnaidx" element={<MyQnaDetailPage />} />
+        <Route path="/mypage/qna/:qnaidx" element={<MyQnaEditPage />} />
         <Route path="/mypage/qna/write" element={<MyQnaWritePage />} />
         <Route path="/mypage/edit" element={<MyEditPage />} />
         {/* user-campPage*/}

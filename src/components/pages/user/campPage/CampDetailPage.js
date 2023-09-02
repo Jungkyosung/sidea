@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdOutlineClose } from 'react-icons/md';
 import DoBtn from "../../../UI/atoms/btn/DoBtn";
+import CloseBtn from "../../../UI/atoms/btn/CloseBtn";
 // import jwt_decode from "jwt-decode";
 
 const CampDetailPage = ({}) => {
@@ -67,7 +68,7 @@ const CampDetailPage = ({}) => {
       <div className={Style.container}>
         {/* <div> */}
           <img className={Style.campImg} src={campProperties.campImgSource} />
-          <MdOutlineClose className={Style.close} onClick={()=>navigate('/campaignlist')} />
+          <div className={Style.close}><CloseBtn onClick={()=>navigate('/campaignlist')} /></div>
         {/* </div> */}
 
         <div className={Style.campInfo_box}>

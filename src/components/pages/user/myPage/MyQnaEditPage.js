@@ -6,16 +6,21 @@ import DoBtn from '../../../UI/atoms/btn/DoBtn';
 import Input from '../../../UI/atoms/Input';
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const MyQnaWritePage = () => {
-
-  const [nickname, setNickname] = useState("");
-  // const [profileImg, setProfileImg] = useState("https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg");
+const MyQnaEditPage = (props) => {
   const [askTitle, setAskTitle] = useState('');
   const [askContents, setAskContents] = useState('');
-  const askDate = new Date();
+  const [askIdx, setAskIdx] = useState(null);
  
+  const { EditData } = props;
+
+  useEffect(() => {
+    setAskTitle(EditData.askTitle)
+    setAskContents(EditData.askContents)
+    setAskIdx(EditData.askIdx)
+  },[])
+
   const handlerTitle = (e) => {
     const inputTitle = e.target.value;
     if (inputTitle.length <= 15) {
@@ -26,32 +31,10 @@ const MyQnaWritePage = () => {
   const handlerContent = (e) => {
     setAskContents(e.target.value);
   };
-
-  // 페이지 로드
-  useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    const decode_token = jwt_decode(token);
-    const userIdx = decode_token.userIdx;
-    
-    const params = { 
-      userIdx: userIdx
-    };
-    
-    axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/qna`, 
-    { params,
-      headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` },
-    })
-    .then(res => {
-      console.log(res.data)     
-      setNickname(decode_token.nickname)
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  }, []);
+  
 
   // 문의 등록
-  const handlerAsk = () => {
+  const handlerEditAsk = () => {
     const token = sessionStorage.getItem('token');
     const decode_token = jwt_decode(token);
     const userIdx = decode_token.userIdx;
@@ -60,16 +43,17 @@ const MyQnaWritePage = () => {
       userIdx: userIdx,
       askTitle : askTitle,
       askContents : askContents,
-      askDate : askDate
+      askIdx : askIdx
     };
-    
-    axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/qna`, 
-    params, {headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }}
+    console.log(params)
+
+    axios.put(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/qna`, 
+      params, {headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }}
     )
     .then(res => {
       console.log(res.data);
-      alert('문의를 등록했습니다');
-      window.location.replace(`/mypage/qnalist`);
+      alert('문의를 수정했습니다');
+      window.location.replace(`/mypage/qna/detail/${askIdx}`);
       
     })
     .catch(err => {
@@ -78,12 +62,7 @@ const MyQnaWritePage = () => {
   }
 
   return (
-    <NaviControll>
-      <div className={Style.ContentsWrap}>
-        <div className={Style.QnaWriteHeadWrap}>
-          <ProfileText profileText={nickname} />
-          <div className={Style.askListHead} >나의 문의내역</div>
-        </div>
+<>
         <div className={Style.QnaWriteBox}>
           <div className={Style.QnaWriteTitle}>
           <Input inputPlaceholder={"제목을 입력해주세. (15자 이내)"}
@@ -95,13 +74,11 @@ const MyQnaWritePage = () => {
             value={askContents}
             onChange={handlerContent}>
           </textarea>
-
         </div>
         <div className={Style.QnaWriteBtm}>
-          <DoBtn doText={"문의하기"} doOnClick={handlerAsk}/>
+          <DoBtn doText={"문의수정"} doOnClick={handlerEditAsk}/>
         </div>
-      </div>
-    </NaviControll>
+ </>
   )
 }
-export default MyQnaWritePage;
+export default MyQnaEditPage;
