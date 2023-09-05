@@ -2,11 +2,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
+    position: absolute;
     z-index: 99;
-    top: 5px;
-    /* right: 10px; */
-    margin-left: 320px;
+    top: 2%;
+    right: 4%;
     width: 30px;
     height: 30px;
     border-radius: 100%;

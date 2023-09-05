@@ -17,6 +17,7 @@ import CloseBtn from "../../../UI/atoms/btn/CloseBtn";
 
 const TodolistPage = () => {
   const [data, setData] = useState([]);
+  const [todoDoneState, setTodoDoneState] = useState([]);
   const [todoIdx, setTodoIdx] = useState('');
   const [todoDate, setTodoDate] = useState('');
   const [todoData, setTodoData] = useState();
@@ -28,7 +29,6 @@ const TodolistPage = () => {
   const [selectedWeek, setSelectedWeek] = useState(initDayOfWeek === 0 ? 7 : initDayOfWeek); 
   const daysOfWeek = [1, 2, 3, 4, 5, 6, 7];
 
-  
 
   // 날짜를 SQL 날짜 형식으로 변환하는 함수
   const formatDate = (date) => {
@@ -73,6 +73,18 @@ const TodolistPage = () => {
       console.log(err);
     });
   }, [selectedDate, selectedWeek]);
+
+  useEffect(() => {
+    const initialTodoDoneState = {};
+  
+    if (Array.isArray(data) && data.length > 0) {
+      data.forEach((todo) => {
+        initialTodoDoneState[todo.todoIdx] = todo.todoDoneCheck === 1;
+      });
+    }
+  
+    setTodoDoneState(initialTodoDoneState);
+  }, [data]);
 
   const navigate = useNavigate();
   const locations = {
@@ -120,42 +132,91 @@ const TodolistPage = () => {
         }
       })
       .catch((err) => {
-        console.error('에러 상세 정보:', err);
-    
-        if (err.response) {
-          console.error('서버 응답 오류:', err.response.data);
-        } else if (err.request) {
-          console.error('요청 전송 실패:', err.request);
-        } else {
-          console.error('오류:', err.message);
-        }
+        console.error('에러 상세 정보:', err); 
       });
   };
 
   const handlerTodoClick = (data) => {
     setTodoData(data);
     setIsClick(true);
-  }
-  
-    
-  const todoContent = () => (
-    Array.isArray(data) && data.length > 0
-    ?
-      (
-        data.map(todo => (
-          <TodoContent
-            key={todo.todoIdx}
-            todoFinishCheck={todo.todoFinishCheck}
-            todoTitle={todo.todoContents}
-            todoHasAlarm={todo.todoHasAlarm}
-            todoDelete={() => handlerDelete(todo.todoIdx)} 
-            todoClick={() => handlerTodoClick(todo)}
-          />
-        ))
-      ) 
-    : 
-      ( <div>투두가 없습니다</div> )
-  );
+  };
+
+  const handlerDoneClick = (todoIdx, todo) => {
+    console.log(todoIdx)
+    console.log(todo)
+    const today = new Date().getDate();
+
+    if (today === selectedDate){
+      let todoDoneIdx  = todo.todoDoneIdx;
+      let todoDoneCheck = todo.todoDoneCheck === 0 ? 1 : 0;
+
+      if (todoDoneIdx === 0){
+          const todoDoneFirst = {
+            todoIdx : todoIdx
+          };
+
+          axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo/done`, 
+            todoDoneFirst, { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } }
+          )
+            .then((res) => {
+              console.log(res);
+              // window.location.replace(`/todolist`)
+              // setTodoDone(todoDoneCheck === 0 ? 1 : 0);
+            })
+            .catch((err) => {
+              console.error('에러 상세 정보:', err);
+            });
+        } else {
+          const todoDoneSwitch = {
+            todoDoneIdx: todoDoneIdx,
+            todoDoneCheck: todoDoneCheck 
+          };
+          
+          axios.put(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo/done`, 
+            todoDoneSwitch, { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } }
+          )
+            .then((res) => {
+              console.log(res.data);
+              // window.location.replace(`/todolist`);
+              // setTodoDone(todoDoneCheck === 0 ? 1 : 0);
+              
+            })
+            .catch((err) => { 
+              console.error('에러 상세 정보:', err);
+            });
+        };
+        setTodoDoneState({
+          ...todoDoneState,
+          [todoIdx]: !todoDoneState[todoIdx],
+        });
+    } else {
+      alert("오늘 날짜가 아닙니다. 완료 처리되지 않습니다");
+    };
+  };
+
+      const todoContent = () => (
+        Array.isArray(data) && data.length > 0
+        ?
+          (
+            data.map((todo, index) => (
+              <TodoContent
+                key={index}
+                todoDoneClick={() => handlerDoneClick(todo.todoIdx, todo)}
+                todoFinishCheck={todoDoneState[todo.todoIdx] || false} 
+                // todoFinishCheck={todo.todoDoneCheck === 1 ? true : false}
+                todoTitle={todo.todoContents}
+                todoHasAlarm={todo.todoAlarm === 1}
+                todoDelete={() => handlerDelete(todo.todoIdx)} 
+                todoClick={() => handlerTodoClick(todo)}
+              />
+              
+            ))
+          ) 
+        : 
+          ( <div>투두가 없습니다</div> )
+      );
+
+
   const readOnly = true;
 
   return (

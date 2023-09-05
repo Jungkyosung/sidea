@@ -5,16 +5,21 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MdOutlineClose } from 'react-icons/md';
 import DoBtn from "../../../UI/atoms/btn/DoBtn";
 import CloseBtn from "../../../UI/atoms/btn/CloseBtn";
-// import jwt_decode from "jwt-decode";
+import Input from "../../../UI/atoms/Input";
+import jwt_decode from "jwt-decode";
 
 const CampDetailPage = ({}) => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const { campaignidx } = useParams();
+  const [isClick, setIsClick] = useState(false);
+  const [campPoint, setCampPoint] = useState('');
+  const [isDoDisabled, setIsDoDisabled] = useState(true);
 
   // 조회
   useEffect(() => {
     //이거는 pathvariable 형태고, param 형태로 바꿔야 해요.
+    
     const params = { donationIdx : campaignidx }
 
     axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/donation/detail`,
@@ -63,6 +68,52 @@ const CampDetailPage = ({}) => {
     campProgress: parseInt(( data.donationAmount / data.donationTargetAmount ) * 100)
   };
 
+  const handlerClickAdd = () => {
+    setIsClick(true)
+  };
+
+  const handlerCampPoint = (e) => {
+    const inputValue = e.target.value;
+    const number = inputValue.replace(/[^0-9]/g, '');
+    if (number !== '') {
+      const inputPoint = parseInt(number, 10);
+      setCampPoint(inputPoint);
+    }
+    setIsDoDisabled(inputValue === '');
+  };
+
+  const handlerCampAdd = () => {
+    let donationIdx = campProperties.campId;
+    const token = sessionStorage.getItem('token');
+    const decode_token = jwt_decode(token);
+    let userIdx = decode_token.userIdx;
+
+    const donationUser = {
+      donationIdx : donationIdx,
+      userIdx : userIdx,
+      userDonationPoint : campPoint
+    }
+    axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/donation`,
+         donationUser ,
+        { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }})
+        .then(res => {
+          console.log(res);  
+          alert('기부에 참여하셨습니다');
+          window.location.replace(`/camppaign/${donationIdx}`);
+        })
+        .catch(err => {
+          if (err.response) {
+            // 요청은 성공했지만 서버에서 오류 응답을 보낸 경우
+            console.error('서버 응답 오류:', err.response.data);
+          } else if (err.request) {
+            // 요청이 전송되지 않은 경우 (네트워크 문제 등)
+            console.error('요청 전송 실패:', err.request);
+          } else {
+            // 기타 오류
+            console.error('오류:', err.message);
+          }
+        });
+      }
   return (
     <>
       <div className={Style.container}>
@@ -101,9 +152,25 @@ const CampDetailPage = ({}) => {
             </div>
           </div>
           <div className={Style.DoBtn}>
-            <DoBtn doText="참여하기" 
-            // doOnClick={handlerClickAdd} 
-            />
+            {isClick ? 
+            (
+              <div className={Style.joinCamp_box}>
+                <div className={Style.closeInput}><CloseBtn onClick={()=>setIsClick(false)} /></div>
+                <p>기부에 참여할 포인트를 입력해주세요</p>
+                <div className={Style.joinCamp_input}>
+                  <Input className={Style.ChargeInput}
+                    inputPlaceholderplaceholder='충전 포인트를 입력해주세요'
+                    // inputType="number"
+                    inputValue={pointReplace(campPoint)}
+                    inputHandler={handlerCampPoint}
+                  />
+                  <label>P</label>
+                </div>
+                <DoBtn doText="참여완료"  doOnClick={handlerCampAdd} doDisabled={isDoDisabled}/>
+              </div>
+            )
+            :
+            (<DoBtn doText="참여하기" doOnClick={handlerClickAdd} />)}
         </div>
         </div>
       

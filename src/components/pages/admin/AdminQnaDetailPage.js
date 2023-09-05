@@ -90,8 +90,7 @@ const AdminQnaDetailPage = () => {
     const askIdx = data.askIdx;
     const params = { askIdx : askIdx };
     console.log(params)
-    axios.delete(
-      `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/admin/qna`,
+    axios.delete(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/admin/qna`,
       { data: params, headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }}
     )
       .then((res) => {

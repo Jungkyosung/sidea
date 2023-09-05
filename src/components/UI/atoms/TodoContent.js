@@ -2,7 +2,7 @@ import Style from './TodoContent.module.css';
 import { FaRegCheckCircle, FaCheckCircle, FaBell, FaBellSlash } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md';
 
-const TodoContent = ({ todoFinishCheck, todoTitle, todoHasAlarm, todoDelete, todoidx, todoClick }) => {
+const TodoContent = ({ todoFinishCheck, todoDoneClick, todoTitle, todoHasAlarm, todoDelete, todoidx, todoClick }) => {
 
     //완료체크에 따라서 다르게
     //알림여부에 따라서 알림 모양이랑 x알림 모양
@@ -12,21 +12,21 @@ const TodoContent = ({ todoFinishCheck, todoTitle, todoHasAlarm, todoDelete, tod
         <>
 
             {todoFinishCheck ?
-                <div className={Style.todoContentWrapTrue} key={todoidx} onClick={todoClick}>
-                    <div className={Style.todoFinishCheckTrue}>
+                <div className={Style.todoContentWrapTrue} key={todoidx} >
+                    <div className={Style.todoFinishCheckTrue} onClick={todoDoneClick}>
                         <FaCheckCircle />
                     </div>
-                    <div className={Style.todoContentTitle}>{todoTitle}</div>
+                    <div className={Style.todoContentTitle} onClick={todoClick}>{todoTitle}</div>
                     <div className={Style.todoContentRight}>
                     </div>
 
                 </div>
                 :
-                <div className={Style.todoContentWrapFalse} key={todoidx} onClick={todoClick}>
-                    <div className={Style.todoFinishCheckFalse}>
+                <div className={Style.todoContentWrapFalse} key={todoidx}>
+                    <div className={Style.todoFinishCheckFalse} onClick={todoDoneClick}>
                         <FaRegCheckCircle />
                     </div>
-                    <div className={Style.todoContentTitle}>{todoTitle}</div>
+                    <div className={Style.todoContentTitle} onClick={todoClick}>{todoTitle}</div>
                     <div className={Style.todoContentRight}>
                         <div className={Style.todoContentBell}>
                             {todoHasAlarm ?

@@ -9,6 +9,7 @@ const NavPopupMenu = () => {
     todo: "/todolist",
     my: "/mypage",
     logout: "/",
+    camp: "/campainglist"
   }
 
   function handlerMove(location) {
@@ -28,6 +29,7 @@ const NavPopupMenu = () => {
       </div>
       <div className={Style.NavMenuBox}>
         <div onClick={() => handlerMove(locations.todo)}>TODO</div>
+        {/* <div onClick={() => handlerMove(locations.camp)}>CAMPAIGN</div> */}
         <div onClick={() => handlerMove(locations.my)} >MY</div>
         <div onClick={handlerClickLogout}>LOGOUT</div>
       </div>

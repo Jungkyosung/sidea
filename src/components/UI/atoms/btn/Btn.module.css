@@ -10,6 +10,14 @@
   cursor: pointer;
 }
 
+.doBtn:disabled {
+  border: 2px solid #0077E4;
+  box-shadow: 0px 0px 4px #0077E4;
+  /* background-color: #B2D9EF; */
+  opacity: 0.5;
+  cursor: none;
+}
+
 .DeleteBtn {
   width: calc(50% - 10px);
   /* width: 50%; */

@@ -5,6 +5,7 @@ import { BsPlusCircle } from 'react-icons/bs';
 import { BiListCheck } from 'react-icons/bi';
 import { MdHeadsetMic } from 'react-icons/md';
 import { useNavigate } from 'react-router';
+import NavAdmin from '../../UI/atoms/NavAdmin';
 
 const AdminPage = () => {
 
@@ -13,7 +14,8 @@ const AdminPage = () => {
   const locations = {
     campList: "/admin/campaignlist",
     campAdd: "/admin/campaign/add",
-    qna: "/admin/qnalist"
+    qna: "/admin/qnalist",
+    admin: "/admin"
   }
 
   function handlerMove(location) {
@@ -22,7 +24,8 @@ const AdminPage = () => {
 
 
   return (
-    <NaviControll>
+    <>
+    <NavAdmin clickAdminHome={()=>handlerMove(locations.admin)} />
       <div className={Style.ContentsWrap}>
         <div className={Style.AdminTitle}>Admin</div>
         <Menu menuArrowClick={()=>handlerMove(locations.campList)} menuTitle={"캠페인 목록"}><BiListCheck /></Menu>
@@ -31,9 +34,10 @@ const AdminPage = () => {
         <div className={Style.AdminStatic}>총 기부된 포인트 통계</div>
         <div className={Style.AdminStatic}>사용자 수</div>
         <div className={Style.AdminStatic}>오늘 적립으로 나간 포인트</div>
-      </div>
 
-    </NaviControll>
+      </div>
+      {/* </NavAdmin> */}
+    </>
   )
 }
 export default AdminPage;

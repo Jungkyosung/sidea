@@ -29,6 +29,7 @@ const Nav = (props) => {
       setIsOpenBell(false)
     } else {
       setIsOpenBell(true)
+      setIsNavOpen(false);
     }
   }
 
@@ -43,7 +44,12 @@ const Nav = (props) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const clickNavMenu = () => {
-    setIsNavOpen(!isNavOpen);
+    if( isNavOpen) {
+      setIsNavOpen(false)
+    } else {
+      setIsNavOpen(true)
+      setIsOpenBell(false);
+    }
   };
 
 

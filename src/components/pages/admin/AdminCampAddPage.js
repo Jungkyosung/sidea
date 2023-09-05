@@ -9,6 +9,8 @@ import './AdminCampDatepickr.css';
 import { ko } from "date-fns/esm/locale";
 import axios from 'axios';
 import Title from '../../UI/atoms/Title';
+import NavAdmin from '../../UI/atoms/NavAdmin';
+import { useNavigate } from 'react-router-dom';
 // import { BsFillCalendarWeekFill } from 'react-icons/bs';
 
 const AdminCampAddPage = () => {
@@ -21,6 +23,7 @@ const AdminCampAddPage = () => {
   const [donor, setDonor] = useState([]);
   const [donorIdx, setDonorIdx] = useState('');
   // const [isInputFocuse, setInputFocuse] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/donor`)
@@ -129,7 +132,8 @@ const handlerOnSubmit = () => {
   };
 
   return (
-    <NaviControll>
+    <>
+    <NavAdmin clickAdminHome={()=>navigate(`/admin`)}/>
       <div className={Style.ContentsWrap}>
       <Title titleName={"캠페인 등록"} />
 
@@ -198,7 +202,8 @@ const handlerOnSubmit = () => {
         <DoBtn doText={"등록하기"} doOnClick={handlerOnSubmit}/>
         </div>
       </div>
-    </NaviControll>
+    {/* </NavAdmin> */}
+    </>
   )
 }
 export default AdminCampAddPage;

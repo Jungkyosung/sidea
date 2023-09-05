@@ -62,16 +62,15 @@ const MyPointPage = () => {
   const chargePointList = [500, 1000, 3000, 5000];
 
   // 현재 포인트
-
-  let pointBalance = 0;
-  // 배열을 순회하면서 계산
-  pointData.forEach(point => {
-    if (point.pointTypeIdx === 1) {
-      pointBalance -= point.pointScore; 
-    } else {
-      pointBalance += point.pointScore; 
-    }
-  });
+  // let pointBalance = 0;
+  // // 배열을 순회하면서 계산
+  // pointData.forEach(point => {
+  //   if (point.pointTypeIdx === 1) {
+  //     pointBalance -= point.pointScore; 
+  //   } else {
+  //     pointBalance += point.pointScore; 
+  //   }
+  // });
 
   // 토글 네모
   const handlerCharPointChange = (e) => {
@@ -92,7 +91,7 @@ const MyPointPage = () => {
   };
 
   // 충전 버튼
-  const handlerCharPoint = (e) => {
+  const handlerCharPoint = () => {
     // e.preventDefault();
     console.log(selectedChargePoint);
     const pointDto = {
@@ -105,7 +104,9 @@ const MyPointPage = () => {
          pointDto ,
         { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }})
         .then(res => {
-          console.log(res);        
+          console.log(res);
+          alert('포인트가 충전되었습니다')
+          window.location.replace('/mypage/point')
         })
         .catch(err => {
           if (err.response) {
@@ -137,10 +138,40 @@ const MyPointPage = () => {
     return `${ month }.${ day }`;
   };
 
-  // 잔액
-  let pointStatus = 0;
 
-  
+  // 포인트 데이터 과거순 정렬
+  const sortedPointData = pointData.sort((b, a) => new Date(b.pointDate) - new Date(a.pointDate));
+
+  let pointStatus = 0; // 포인트 상태 초기화
+
+  const reversedPointHistoryList = sortedPointData.map((point, index) => {
+    const formatPointDate = formatDate(new Date(point.pointDate));
+    let pointBalance; 
+
+    if (point.pointTypeIdx === 1) {
+      pointStatus -= point.pointScore;
+    } else {
+      pointStatus += point.pointScore;
+    }
+
+    // 포인트 잔액을 현재 잔액으로 설정 (과거부터 계산)
+    pointBalance = pointStatus;
+
+    return (
+          <div key={index}>
+            <PointHistory
+              pointDate={formatPointDate}
+              pointType={getPointType(point.pointTypeIdx)}
+              pointAmount={point.pointScore}
+              pointBalance={pointBalance}
+            />
+          </div>
+    )
+  });
+
+  // 과거순을 최신순으로 정렬
+  const pointHistoryList = reversedPointHistoryList.reverse();
+
 
   return (
     <ProfileImgTmp profileImgSrc={profileImg} profileText={nickname}>
@@ -151,11 +182,14 @@ const MyPointPage = () => {
         <div className={Style.PointStatus_box}>
           <div className={Style.PointBalanceHead} >현재 포인트</div>
           <div className={Style.PointIcon}><BsPlusCircle /></div>
-          <div>{pointBalance} P</div>
+          <div>{pointStatus} P</div>
           <div className={Style.PointBalanceHead} >포인트 현황</div>
           <div className={Style.PointHistoryBox}>
-            { pointData.map(point => {
+            {/* { pointData.map(point => {
                 const formatPointDate = formatDate(new Date(point.pointDate));
+
+                // 초기 잔액 설정
+                let pointStatus = 0;
 
                 // 잔액 계산
                 if (point.pointTypeIdx === 1) {
@@ -163,6 +197,8 @@ const MyPointPage = () => {
                 } else {
                   pointStatus += point.pointScore;
                 };
+                // 포인트 데이터를 최신 순으로 정렬
+              
                 
                 return (
                   <div key={point.pointDate}>
@@ -174,8 +210,9 @@ const MyPointPage = () => {
                     />
                   </div>
                 );
-              })
-            }
+            })
+            } */}
+            <div>{pointHistoryList}</div>
           </div>
           <DoBtn doOnClick={()=>setIsCharged(false)} doText={"포인트 충전하기"} />
         </div>
@@ -185,7 +222,7 @@ const MyPointPage = () => {
         <div>
           <div className={Style.PointBalanceHead} >현재 포인트</div>
           <div className={Style.PointIcon}><BsPlusCircle /></div>
-          <div>{pointBalance} P</div>
+          <div>{pointStatus} P</div>
           <div className={Style.PointBalanceHead} >포인트 충전금액</div>
           <SelectToggleRect toggleListRect={chargePointList} toggleActiveRect={selectedChargePoint} onToggleRect={handlerCharPointChange} />
           <div>
@@ -203,7 +240,7 @@ const MyPointPage = () => {
           </div>
           <div>
             <div>포인트 충전 예상 금액</div>
-            <div>{pointBalance + selectedChargePoint}P</div>
+            <div>{pointStatus + selectedChargePoint}P</div>
           </div>
           <div className={Style.BtnBox}>
             <button className={Style.CancelBtn} onClick={()=>setIsCharged(true)} >

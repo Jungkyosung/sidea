@@ -67,7 +67,7 @@ const MyQnaDetailPage = () => {
     return `${ year }-${ month }-${ day } ${hours}:${minutes}:${seconds}`;
   };
 
-  const askIdx = data.AskIdx;
+  // const askIdx = data.AskIdx;
   const askAnswer = data.askAnswer;
   const askContents = data.askContents;
   const askTitle = data.askTitle;
@@ -87,12 +87,12 @@ const MyQnaDetailPage = () => {
     const token = sessionStorage.getItem('token');
     const decode_token = jwt_decode(token);
     const userIdx = decode_token.userIdx;
-    // const askIdx = data.askIdx;
+    const askIdx = data.askIdx;
     const params = { 
       userIdx : userIdx,
       askIdx : askIdx 
     };
-
+    console.log(params)
     axios.delete(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/qna`,
       { data: params, headers: { 'Authorization': `Bearer ${token}`}}
     )
