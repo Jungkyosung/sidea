@@ -19,6 +19,7 @@ const NavPopupMenu = () => {
   const handlerClickLogout = () => {
     sessionStorage.clear();
     localStorage.clear();
+    alert('로그아웃 되었습니다')
     handlerMove(locations.logout)
   };
   

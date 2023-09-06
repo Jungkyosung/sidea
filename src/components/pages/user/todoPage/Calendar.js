@@ -15,20 +15,39 @@ const Calendar = (props) => {
   // const [today] = useState(now.getDate());
   // const [selectedDate, setSelectedDate] = useState(today);
 
+  // const getThisWeekDates = (selectedDate) => {
+  //   const currentDay = new Date(now.getFullYear(), now.getMonth(), selectedDate).getDay();
+  //   const weekStart = selectedDate - currentDay;
+  //   const weekDates = [];
+
+  //   for (let i = 0; i < 7; i++) {
+  //     weekDates.push({
+  //       date: weekStart + i,
+  //       month: now.getMonth()
+  //     });
+  //   }
+
+  //   return weekDates;
+  // };
+
   const getThisWeekDates = (selectedDate) => {
+    const now = new Date(); // 현재 날짜를 가져옵니다.
+
+  
     const currentDay = new Date(now.getFullYear(), now.getMonth(), selectedDate).getDay();
     const weekStart = selectedDate - currentDay;
     const weekDates = [];
 
     for (let i = 0; i < 7; i++) {
       weekDates.push({
-        date: weekStart + i,
-        month: now.getMonth()
+       date : weekStart + i,
+       month : now.getMonth()
       });
     }
 
     return weekDates;
   };
+    
 
   const thisWeekDates = useMemo(() => getThisWeekDates(selectedDate), [selectedDate]);
 
@@ -62,23 +81,19 @@ const Calendar = (props) => {
     setSelectedDate(selectedDate + 7);
   };
 
-  // useEffect(() => {
-  //   const updatedThisWeekDates = getThisWeekDates(selectedDate);
-  // }, [selectedDate]);
+  useEffect(() => {
+    const updatedThisWeekDates = getThisWeekDates(selectedDate);
+  }, [selectedDate]);
 
   return (
     <>
       <div className={Style.Year_Month}>
         <span>
-          <Year 
-            id="Year"
-            format={"YYYY"}
-            ticking={false}
-            timezone={"Asia/Seoul"}
-          />.
+        {new Date(now.getFullYear(), now.getMonth(), thisWeekDates[0].date).getFullYear()}
+        .
         </span>
         <span>
-        {new Date(now.getFullYear(), now.getMonth(), thisWeekDates[0].date).getMonth() + 1}
+        {new Date(now.getFullYear(), now.getMonth() , thisWeekDates[0].date).getMonth() +1 }
         </span>
       </div>
       

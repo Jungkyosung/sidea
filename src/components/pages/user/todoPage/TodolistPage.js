@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { MdOutlineClose } from 'react-icons/md';
-import { BiSolidBarChartSquare } from 'react-icons/bi';
+import { BiSolidBarChartSquare, BiDonateHeart } from 'react-icons/bi';
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
@@ -29,7 +29,6 @@ const TodolistPage = () => {
   const [selectedWeek, setSelectedWeek] = useState(initDayOfWeek === 0 ? 7 : initDayOfWeek); 
   const daysOfWeek = [1, 2, 3, 4, 5, 6, 7];
 
-
   // 날짜를 SQL 날짜 형식으로 변환하는 함수
   const formatDate = (date) => {
     const year = date.getFullYear();
@@ -41,7 +40,7 @@ const TodolistPage = () => {
   // 날짜 클릭 핸들러
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    const selectedDayOfWeek = new Date(new Date().getFullYear(), new Date().getMonth(), date).getDay();
+    const selectedDayOfWeek = new Date(new Date().getFullYear(), new Date().getMonth()+1, date).getDay();
     setSelectedWeek(selectedDayOfWeek === 0 ? 7 : selectedDayOfWeek);
   };
 
@@ -89,7 +88,8 @@ const TodolistPage = () => {
   const navigate = useNavigate();
   const locations = {
     report: "/todo/report",
-    todoAdd: "/todo/add"
+    todoAdd: "/todo/add",
+    camp: "/campaignlist"
   };
 
   // 페이지 이동 핸들러
@@ -110,7 +110,6 @@ const TodolistPage = () => {
   // 할일 삭제 핸들러
   const handlerDelete = (todoIdx) => {
     const todoIdxData = { todoIdx: todoIdx };
-    console.log(todoIdx);
   
     axios.delete(
       `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
@@ -142,8 +141,7 @@ const TodolistPage = () => {
   };
 
   const handlerDoneClick = (todoIdx, todo) => {
-    console.log(todoIdx)
-    console.log(todo)
+
     const today = new Date().getDate();
 
     if (today === selectedDate){
@@ -219,6 +217,7 @@ const TodolistPage = () => {
 
   const readOnly = true;
 
+
   return (
     <>
       <NaviControll>
@@ -239,9 +238,15 @@ const TodolistPage = () => {
             <div className={Style.todolist}>
               <div className={Style.subTitle}>
                 <h2>today’s list</h2>
-                <div className={Style.goReport} onClick={() => handlerMove(locations.report)}>
-                  <BiSolidBarChartSquare />
-                  <span>리포트</span>
+                <div>
+                  <span className={Style.goReport} onClick={() => handlerMove(locations.camp)}>
+                    <BiDonateHeart />
+                    <span>캠페인</span>
+                  </span>
+                  <span className={Style.goReport} onClick={() => handlerMove(locations.report)}>
+                    <BiSolidBarChartSquare />
+                    <span>리포트</span>
+                  </span>
                 </div>
               </div>
   

@@ -93,27 +93,34 @@ const CampDetailPage = ({}) => {
       userIdx : userIdx,
       userDonationPoint : campPoint
     }
+
     axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/donation`,
-         donationUser ,
-        { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }})
-        .then(res => {
-          console.log(res);  
-          alert('기부에 참여하셨습니다');
-          window.location.replace(`/camppaign/${donationIdx}`);
-        })
-        .catch(err => {
-          if (err.response) {
-            // 요청은 성공했지만 서버에서 오류 응답을 보낸 경우
-            console.error('서버 응답 오류:', err.response.data);
-          } else if (err.request) {
-            // 요청이 전송되지 않은 경우 (네트워크 문제 등)
-            console.error('요청 전송 실패:', err.request);
-          } else {
-            // 기타 오류
-            console.error('오류:', err.message);
-          }
-        });
-      }
+      donationUser, { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }}
+    )
+      .then(res => {
+        console.log(res);  
+        alert('기부에 참여하셨습니다');
+        // window.location.replace(`/camppaign/${donationIdx}`);
+
+        const pointDonation = {
+          userIdx: userIdx,
+          pointScore: campPoint
+        }
+        axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/point/donation`,
+          pointDonation, { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }}
+        )
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
   return (
     <>
       <div className={Style.container}>

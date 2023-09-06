@@ -13,16 +13,24 @@ const LoginPage = () => {
   const [hidePassword, setHidePassword] = useState(true);
   const navigate = useNavigate();
   
-  const handlerClickLogin = () => {
+  const handlerClickLogin = (e) => {
+    e.preventDefault();
     axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/login`,
       { userEmail,  userPw })
-      .then((response) => {
-        console.log(response);
-        sessionStorage.setItem("token", response.data);
-        navigate("/");
+      .then((res) => {
+        if(res.data) {
+          sessionStorage.setItem("token", res.data);
+          alert( `로그인에 성공했습니다. 메인페이지로 이동합니다.`);
+          navigate("/");
+        } else {
+          alert( `ID, PW가 일치하지 않습니다. 확인 후 다시 시도해주세요.`);
+          sessionStorage.clear();
+        }
     })
     .catch((error) => {
-        console.log(error);
+      alert( `ID, PW가 일치하지 않습니다. 확인 후 다시 시도해주세요.`);
+      sessionStorage.clear();
+      console.log(error);
     });
     console.log("버튼누름");
   };
@@ -49,7 +57,14 @@ const LoginPage = () => {
   };
 
 
+  const isloginDisabled = () => {
+    return (
+      userEmail &&
+      userPw
+    );
+  };
 
+  
 
   return (
     <>
@@ -58,7 +73,7 @@ const LoginPage = () => {
             <Title titleName={titleProperties.titleName} />
         </div>
 
-        <div className={Style.login_box}>
+        <form className={Style.login_box} onSubmit={handlerClickLogin}>
           <div className={Style.login_input}>
             <Input 
             inputType="text"
@@ -85,11 +100,11 @@ const LoginPage = () => {
             </div>
 
             <div className={Style.login_submit}>
-              <DoBtn doText="로그인" doOnClick={handlerClickLogin}/>
+              <DoBtn doText="로그인" doOnClick={handlerClickLogin} doDisabled={!isloginDisabled()}/>
               <p className={Style.signUp_text} onClick={handlerRegist}>회원가입</p>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </>
   );

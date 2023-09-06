@@ -127,9 +127,9 @@ const TodoAddPage = (props) => {
   // 오늘
   const day = props.selectedDate;
   const end = selectedDate + props.selectedDate; 
-  const selectedToday = new Date(2023, 7, day); 
-  const selectedEndDay = new Date(2023, 7, end);
-  console.log(selectedEndDay);
+  const date = new Date();
+  const selectedToday = new Date(date.getFullYear(), date.getMonth(), day); 
+  const selectedEndDay = new Date(date.getFullYear(), date.getMonth(), end);
   const today = formatToday(selectedToday);
   const endDay = formatToday(selectedEndDay);
 
@@ -176,8 +176,8 @@ const TodoAddPage = (props) => {
   // 포인트 설정
   const handlerPointChange = (e) => {
     setSelectedPoint(e);
-    console.log(e)
   };
+
   const selectedPointStr = pointList[selectedPoint];
 
   // 날짜 형태를 sql 날짜 형태로 변경
@@ -233,15 +233,12 @@ const TodoAddPage = (props) => {
       todoSat: todo.todoSat,
       todoSun: todo.todoSun 
     };
- 
-    console.log(todoData);
 
     axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
       todoData,
       { headers: { 'Authorization': `Bearer ${token}` } }
     )
       .then(res => {
-      console.log(res);
       console.log(todoData);
       alert('투두가 생겼습니다');
       // window.location.replace('/todolist');

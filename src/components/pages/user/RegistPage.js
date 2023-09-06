@@ -19,10 +19,12 @@ const RegistPage = () => {
   //유효성 검사
   const [isEmail, setIsEmail] = useState(false);       // 이메일
   const [isPwCheck, setIsPwCheck] = useState(false);   // 비밀번호 확인
+  const [isValidNickname, setIsValidNickname] = useState(false);
 
   // 오류메세지 
   const [emailMessage, setEmailMessage] = useState('');
   const [pwMessage, setPwMessage] = useState('');
+  const [messageDuplicate, setMessageDuplicate] = useState('');
 
   const titleProperties = {
     titleName: "SING UP"
@@ -31,7 +33,7 @@ const RegistPage = () => {
   // 이메일 입력
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const handlerChangeEmail = useCallback((e) => {
-    
+    setMessageDuplicate('');
     const newEmail = e.target.value
         setUserEmail(newEmail);
         if (!emailRegex.test(newEmail)) {
@@ -44,6 +46,8 @@ const RegistPage = () => {
           // 
           const nickname = newEmail.split('@')[0];
           setUserNickname(nickname);
+          setIsValidNickname(false);
+          setMessageDuplicate("중복확인을 해주세요");
         }
     }, [])
 
@@ -52,26 +56,71 @@ const RegistPage = () => {
     if (isEmail) {
       setUserNickname(e.target.value);
     }
-  };
+    if(e.target.value) {
+      setIsValidNickname(false);
+      setMessageDuplicate("중복 확인을 해주세요");
+    } 
+  }; 
+
+  // 아이디 중복 확인
+  const duplicateNickname = () => {
+    const params = {  usernickname: userNickname };
+
+    axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/usernickname/duplicate`,
+    {params}, { 
+      withCredentials: true,
+      headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}`}
+    })
+      .then((response) => {
+        console.log(response)
+        if(response.data === 0){
+          setIsValidNickname(true);
+          setMessageDuplicate("사용 가능한 닉네임입니다");
+        }  else {
+          setIsValidNickname(false);
+          setMessageDuplicate("이미 사용 중인 닉네임 입니다");
+        }
+      })
+      .catch((err) => {
+        console.error(err.response);
+      });
+  }
 
   // 비밀번호
-  const handlerChangePassword = e => setUserPw(e.target.value);
+  const MIN_PASSWORD_LENGTH = 10;
 
+  const handlerChangePassword = (e) => {
+    if(setIsValidNickname === false) {
+      setMessageDuplicate('');
+    }
+    const pwLength = e.target.value;
+    setUserPw(pwLength);
+
+    if (pwLength.length < MIN_PASSWORD_LENGTH) {
+      setPwMessage('비밀번호는 최소 10자 이상이어야 합니다.');
+      setIsPwCheck(false);
+    } else {
+      setPwMessage('');
+      setIsPwCheck(true);
+    }
+  };
+ 
   // 비밀번호 체크
   const handlerCheckPassword = useCallback((e) => {
-    const pwCheckCurrent = e.target.value
+    const pwCheckCurrent = e.target.value;
     setUserPwCheck(pwCheckCurrent);
 
     if (userPw === pwCheckCurrent) {
-      setPwMessage("")
+      setPwMessage("");
       setIsPwCheck(true);
-      console.log("일치")
+      console.log("일치");
     } else {
-      setPwMessage('비밀번호가 일치하지 않습니다.')
+      setPwMessage('비밀번호가 일치하지 않습니다.');
       setIsPwCheck(false);
-      console.log("불일치")
+      console.log("불일치");
     }
-  }, [userPw])
+
+  }, [userPw]);
 
   // 비밀번호 보여주기 여부
   const toggleHidePassword = () => {
@@ -85,10 +134,10 @@ const RegistPage = () => {
     axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/regist`,
         { userEmail, userNickname, userPw })
         .then(res => {
-            navigator('/login');
-            localStorage.clear();
-            sessionStorage.clear();
-            
+          alert('정상적으로 가입 되었습니다. 로그인 페이지로 이동합니다. ')
+          navigator('/login');
+          localStorage.clear();
+          sessionStorage.clear();
         })
         .catch(error => {
             console.log(error);
@@ -96,6 +145,18 @@ const RegistPage = () => {
         });
     console.log("회원가입")
   }
+
+  const isRegistDisabled = () => {
+    return (
+      isEmail &&
+      isValidNickname &&
+      isPwCheck &&
+      userEmail.trim() !== '' &&
+      userNickname.trim() !== '' &&
+      userPw.trim() !== '' &&
+      userPwCheck.trim() !== ''
+    );
+  };
 
   return (
     <>
@@ -105,51 +166,65 @@ const RegistPage = () => {
         </div>
 
         <div className={Style.login_box}>
-          <div className={Style.login_input}>
-            <Input 
-              inputType="text"
-              inputValue={userEmail}
-              inputHandler= {handlerChangeEmail}
-              inputPlaceholder="이메일"
-            />
-            <span className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</span> 
-
-            <Input 
-              inputType="text"
-              inputValue={userNickname}
-              inputHandler= {handlerChangeNickname}
-              inputPlaceholder="닉네임"
-            />
-
-            <div className={Style.password_input}>
-              <Input
-                inputType={hidePassword ? "password" : "text"}
-                inputValue={userPw}
-                inputHandler= {handlerChangePassword}
-                inputPlaceholder="비밀번호" 
+          {/* <div className={Style.login_input}> */}
+            <div className={Style.regist_input}>
+              <Input 
+                inputType="text"
+                inputValue={userEmail}
+                inputHandler= {handlerChangeEmail}
+                inputPlaceholder="이메일"
               />
-              
-              <div className={Style.password_hide}>
-                {hidePassword ? (
-                  <BiShowAlt onClick={toggleHidePassword} ></BiShowAlt>
-                ):(
-                  <BiHide onClick={toggleHidePassword}></BiHide>
-                )}
+              <label className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</label> 
+            </div>
+
+            <div className={Style.regist_input}>
+              <div className={Style.nickname_input}>
+                <div className={Style.nickname}>
+                  <Input 
+                    inputType="text"
+                    inputValue={userNickname}
+                    inputHandler= {handlerChangeNickname}
+                    inputPlaceholder="닉네임"
+                  />
+                </div>
+                <button onClick={duplicateNickname}>중복확인</button>
+              </div>
+              <label>{messageDuplicate}</label>
+            </div>
+            
+
+            <div className={Style.regist_input}>
+              <div className={Style.password_input}>
+                <Input
+                  inputType={hidePassword ? "password" : "text"}
+                  inputValue={userPw}
+                  inputHandler= {handlerChangePassword}
+                  inputPlaceholder="비밀번호" 
+                />
+                
+                <div className={Style.password_hide}>
+                  {hidePassword ? (
+                    <BiShowAlt onClick={toggleHidePassword} ></BiShowAlt>
+                  ):(
+                    <BiHide onClick={toggleHidePassword}></BiHide>
+                  )}
+                </div>
               </div>
             </div>
-            <Input
-                inputType={hidePassword ? "password" : "text"}
-                inputValue={userPwCheck}
-                inputHandler= {handlerCheckPassword}
-                inputPlaceholder="비밀번호 확인" 
-              />
-            <label className={`message ${isPwCheck ? 'success' : 'error'}`}>{pwMessage}</label> 
-
+            <div className={Style.regist_input}>
+              <Input
+                    inputType={hidePassword ? "password" : "text"}
+                    inputValue={userPwCheck}
+                    inputHandler= {handlerCheckPassword}
+                    inputPlaceholder="비밀번호 확인" 
+                  />
+                <label className={`message ${isPwCheck ? 'success' : 'error'}`}>{pwMessage}</label> 
+            </div>
             <div className={Style.login_submit}>
-              <DoBtn doText="회원가입" doOnClick={handlerClickLogin}/>
+              <DoBtn doText="회원가입" doOnClick={handlerClickLogin} doDisabled={!isRegistDisabled()}/>
             </div>
           </div>
-        </div>
+        {/* </div> */}
       </div>
     </>
   );

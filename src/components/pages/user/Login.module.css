@@ -21,8 +21,12 @@
   padding-top: 100px;
 }
 
-.login_input {
-  margin: 130px 0px;
+.regist_input {
+  /* border: 1px solid red; */
+  padding-bottom: 10px;
+}
+.regist_input > label {
+  font-size: 0.8em;
 }
 
 .password_input {
@@ -49,3 +53,23 @@
 }
 
 /* 회원가입 */
+.nickname_input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nickname_input .nickname {
+  width: 75%;
+}
+
+.nickname_input button {
+  width: 22%;
+  height: 40px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #B2D9FD  ;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+  /* color: white; */
+  cursor: pointer;
+}

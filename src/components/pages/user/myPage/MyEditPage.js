@@ -6,6 +6,7 @@ import DoBtn from '../../../UI/atoms/btn/DoBtn';
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
+import is from 'date-fns/esm/locale/is/index.js';
 // import $ from 'jquery';
 
 const MyEditPage = () => {
@@ -17,18 +18,20 @@ const MyEditPage = () => {
   const [userPw, setUserPw] = useState('');
   const [currentPw, setCurrentPw] = useState('');
   // const [currentPw, setCurrentPw] = useState('');
-
+  const [nicknameChange, setNicknameChange] = useState(false);
+  const [myNickName, setMyNickName] = useState('')
   // 새 비밀번호
   const [changePw, setChangePw] = useState('');
   const [changePwCheck, setChangePwCheck] = useState('');
   
   // 유효성 검사
-  const [isValidNickname, setIsValidNickname] = useState(false);
+  const [isValidNickname, setIsValidNickname] = useState(true);
   const [isCurrentPw, setIsCurrentPw] = useState(false);
-  const [isPwCheck, setIsPwCheck] = useState(false);  
+  const [isPwCheck, setIsPwCheck] = useState(true);  
 
   // 메세지 출력
   const [messageDuplicate, setMessageDuplicate] = useState('');
+  const [currentPwMessage, setCurrentPwMessage] = useState('');
   const [pwMessage, setPwMessage] = useState('');
 
 
@@ -50,6 +53,7 @@ const MyEditPage = () => {
           // setProfileImg(res.data.userImg);
           setEmail(res.data.userEmail);
           setUserPw(res.data.userPw);
+          setMyNickName(res.data.userNickname);
         })
         .catch(err => {
           if (err.response) {
@@ -66,6 +70,7 @@ const MyEditPage = () => {
         
 }, []);
 
+
   // 닉네임, 프로필 이미지, 비밀번호 수정가능
   const handlerEdit = () => {
     
@@ -75,7 +80,8 @@ const MyEditPage = () => {
       })
         .then(res => {
           console.log(res);
-            navigate("/mypage")
+          alert('정보가 수정되었습니다')
+          navigate("/mypage")
         })
         .catch(err => {
           if (err.response) {
@@ -95,9 +101,16 @@ const MyEditPage = () => {
   // input handler
   const handlerNickname = (e) => {
     setNickname(e.target.value);
+    if(e.target.value){
+      setIsValidNickname(false);
+      setMessageDuplicate("중복 확인을 해주세요");
+    }
+    if(myNickName == nickname) {
+      setIsValidNickname(true);
+    }
   }
 
-  // 아이디 중복 확인
+  // 닉네임 중복 확인
   const duplicateNickname = () => {
     const params = {
       usernickname: nickname
@@ -108,14 +121,20 @@ const MyEditPage = () => {
       headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}`}
     })
       .then((response) => {
-        console.log(response)
-        if(response.data === 0){
+        console.log(response);
+        console.log(response.config.params.usernickname);
+        console.log(myNickName);
+        const userNickname = response.config.params.usernickname;
+        if (response.data === 0) {
           setIsValidNickname(true);
-          setMessageDuplicate("true");
-        }  else {
+          setMessageDuplicate("사용 가능한 닉네임 입니다");
+        } else if (response.data === 1 && userNickname === myNickName) {
+          setIsValidNickname(true);
+          setMessageDuplicate("");
+        } else {
           setIsValidNickname(false);
           console.log(isValidNickname);
-          setMessageDuplicate("false");
+          setMessageDuplicate("이미 사용 중인 닉네임 입니다");
         }
       })
       .catch((err) => {
@@ -138,8 +157,7 @@ const MyEditPage = () => {
       userEmail: email,
       userPw: currentPw
     }
-    
-
+  
     axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/userpw`,
     {params}, { 
       withCredentials: true,
@@ -147,10 +165,12 @@ const MyEditPage = () => {
     })
       .then((response) => {
         console.log(response.data);
-        if (response.data == userPw) {
+        if (response.data == '비밀번호 일치') {
           setIsCurrentPw(true);
+          setCurrentPwMessage('');
         } else {
           setIsCurrentPw(false);
+          setCurrentPwMessage('현재 비밀번호가 일치하지 않습니다.')
         }
       })
       .catch((err) => {
@@ -167,24 +187,37 @@ const MyEditPage = () => {
       });
   }
   
-  
   // 비밀번호
-  const handlerChangePw = e => setChangePw(e.target.value);
+  const MIN_PASSWORD_LENGTH = 10;
 
+  const handlerChangePw = (e) => {
+ 
+    const pwLength = e.target.value;
+    setChangePw(pwLength);
+
+    if (pwLength.length < MIN_PASSWORD_LENGTH) {
+      setPwMessage('비밀번호는 최소 10자 이상이어야 합니다.');
+      setIsPwCheck(false);
+    } else {
+      setPwMessage('');
+    }
+  };
+ 
   // 비밀번호 체크
   const handlerCheckPw = useCallback((e) => {
-    const pwCheckCurrent = e.target.value
+    const pwCheckCurrent = e.target.value;
     setChangePwCheck(pwCheckCurrent);
 
     if (changePw === pwCheckCurrent) {
-      setPwMessage("")
+      setPwMessage("");
       setIsPwCheck(true);
-      console.log("일치")
+      console.log("일치");
     } else {
-      setPwMessage('비밀번호가 일치하지 않습니다.')
+      setPwMessage('비밀번호가 일치하지 않습니다.');
       setIsPwCheck(false);
-      console.log("불일치")
+      console.log("불일치");
     }
+
   }, [changePw]);
 
   // 
@@ -212,23 +245,38 @@ const MyEditPage = () => {
     console.log("leave")
   };
 
+  const isEdit = () => {
+    return (
+      isValidNickname &&
+      isCurrentPw &&
+      isPwCheck
+    );
+  };
+
+  console.log(isValidNickname)
+  console.log(isCurrentPw)
+  console.log(isPwCheck)
 
   return (
     <NaviControll>
       <div className={Style.ContentsWrap}>
+        <div className={Style.profile}>
         <ProfileImg profileImgSrc={profileImg} />
+        </div>
+        <div className={Style.editContents}>
         <div className={Style.EditInputBox}>
           <label className={Style.EditInputLabel}>닉네임</label>
-          <div>
+          <div className={Style.nickName_duplicate}>
             <input className={Style.EditInput} id = "nickname" value={nickname} onChange={handlerNickname}></input>
             <button onClick={duplicateNickname}>중복확인</button>
           </div>
-          <label >{messageDuplicate}</label>
+          <label className={Style.message}>{messageDuplicate}</label>
         </div>
         <div className={Style.EditInputBox}>
           <label className={Style.EditInputLabel}>현재 비밀번호</label>
           <div>
             <input className={Style.EditInput} onChange={(e)=>setCurrentPw(e.target.value)} onBlur={currentPwCheck}></input>
+            <label className={Style.message}>{currentPwMessage}</label>
           </div>
         </div>
         <div className={Style.EditInputBox}>
@@ -241,7 +289,7 @@ const MyEditPage = () => {
           <label className={Style.EditInputLabel}>새 비밀번호 확인</label>
           <div>
             <input className={Style.EditInput} value={changePwCheck} onChange={handlerCheckPw}></input>
-            <label className={`message ${isPwCheck ? 'success' : 'error'}`}>{pwMessage}</label>
+            <label className={Style.message}>{pwMessage}</label>
           </div>
         </div>
         <div className={Style.EditInputBox}>
@@ -250,7 +298,8 @@ const MyEditPage = () => {
             <input className={Style.EditInput} value={email} readOnly></input>
           </div>
         </div>
-        <DoBtn doText={"변경하기"} doOnClick={handlerEdit}/>
+        <DoBtn doText={"변경하기"} doOnClick={handlerEdit} doDisabled={!isEdit()}/>
+        </div>
         <div className={Style.LeaveBtn} onClick={leaveUser}>탈퇴하기</div>
       </div>
     </NaviControll>
