@@ -58,7 +58,6 @@ const TodolistPage = () => {
       headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` },
     })
     .then(res => {
-      console.log(res.data)
       setData(res.data);
       // console.log(res.data);
       if (Array.isArray(res.data)) {

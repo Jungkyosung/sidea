@@ -59,6 +59,8 @@ const MyCampListPage = () => {
       ( <div>아직 참여한 기부가 없습니다.</div> )
   );
 
+
+
   return (
     <ProfileImgTmp profileImgSrc={profileImg} profileText={nickname}>
       <div className={Style.CampHead} >참여한 기부</div>

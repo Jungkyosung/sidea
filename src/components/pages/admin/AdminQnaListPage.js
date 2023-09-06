@@ -29,7 +29,6 @@ const AdminQnaListPage = () => {
         .then(res => {
           console.log(res.data);
           setData(res.data);
-          
         })
         .catch(err => {
             console.log(err);
@@ -43,11 +42,22 @@ const AdminQnaListPage = () => {
 
   const radioList = ['전체', '미답변', '답변완료'];
 
+  const filterData = data.filter((radio) => {
+    if (selectedRadio === '전체') {
+      return true; 
+    } else if (selectedRadio === '미답변') {
+      return !radio.askAnswer;
+    } else if (selectedRadio === '답변완료') {
+      return radio.askAnswer;
+    }
+    return false; 
+  });
+
+
   const onRadiofilter = (e) => {
     setSelectedRadio(e);
   }
 
-  
   
   return (
     <NaviControll>
@@ -67,14 +77,17 @@ const AdminQnaListPage = () => {
           </div>
         </div>
         <div className={Style.askListBox}>
-          { data && data.map(ask => (
-           <AskList
-            key={ask.askIdx}
-            askNumber={ask.askIdx}
-            askTitleClick={() => handlerNavi(ask.askIdx)}
-            askTitle={ask.askTitle}
-            askIsCommented={ask.askAnswer ? true : false} />
-          ))}
+          { Array.isArray(filterData) && filterData.length > 0 ? 
+            ( filterData.map((ask, id) => (
+              <AskList
+                key={id}
+                askNumber={filterData.length - id}
+                askTitleClick={() => handlerNavi(ask.askIdx)}
+                askTitle={ask.askTitle}
+                askIsCommented={ask.askAnswer ? true : false} />  
+            ))) 
+          : (<div className={Style.nullContens}>등록된 문의가 없습니다</div>)
+          }
         </div>
       </div>
     </NaviControll>

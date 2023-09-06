@@ -1,9 +1,13 @@
+import { useNavigate } from 'react-router-dom';
 import Style from './NavQuick.module.css';
 import { BiHomeSmile } from 'react-icons/bi';
 
-const NavAdmin = (clickAdminHome) => {
+const NavAdmin = () => {
+  const navigate= useNavigate();
 
-  
+  const clickAdminHome = () => {
+    navigate(`/admin`)
+  }
 
   return (
     <>

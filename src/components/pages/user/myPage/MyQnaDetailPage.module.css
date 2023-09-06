@@ -63,7 +63,10 @@
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
   color: black;
   padding: 10px;
+   
+  /* overflow: auto; */
 }
+
 
 .MyQnaText {
   height: 50%;
@@ -77,12 +80,30 @@
 
 .askContents {
   /* background-color: antiquewhite; */
-  height: 90%;
+  height: 92%;
+  font-size: 1em;
+  line-height: 1.2em;
+  white-space: pre-line;
+  word-break: break-all;
   overflow-y: auto;
 }
 
+/* 스크롤바css */
+.askContents::-webkit-scrollbar {
+  width: 5px;
+}
+
+.askContents::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  transition: width 0.2s ease-in-out;
+}
+
+.askContents::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(178, 217, 253, 0.5);
+}
+
 .askDate {
-  height: 10%;
+  height: 8%;
   font-size: 0.8em;
   display: flex;
   justify-content: flex-end;

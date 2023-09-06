@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import ProfileImgTmp from '../../../templates/ProfileImgTmp';
 import DoBtn from '../../../UI/atoms/btn/DoBtn';
 import PointHistory from '../../../UI/atoms/PointHistory';
-import { BsPlusCircle } from 'react-icons/bs';
+import { MdControlPoint } from 'react-icons/md';
+import { BiDonateHeart } from 'react-icons/bi';
 import SelectToggleRect from '../../../UI/atoms/toggle/SelectToggleRect';
 import EditBtn from '../../../UI/atoms/btn/EditBtn';
 import axios from "axios";
@@ -15,7 +16,6 @@ const MyPointPage = () => {
   const [nickname, setNickname] = useState('');
   const [userIdx, setUserIdx] = useState('');
   const [pointData, setPointData] = useState([]);
-
 
   // 조회 (프로필 이미지, 닉네임, 포인트)
   useEffect(() => {
@@ -44,33 +44,11 @@ const MyPointPage = () => {
 
   const [isCharged, setIsCharged] = useState(true);
 
-  // let pointBalance = 500;
-  // let pointBalanceWithRest = pointBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  // 토글 네모
-//   const [selectedChargePoint, setSelectedChargePoint] = useState(0);
-
-//   const chargePointList = [500, 1000, 3000, 5000];
-
-//   const handlerCharPointChange = (e) => {
-//     setSelectedChargePoint(e);
-//   };
-
-  const [selectedChargePoint, setSelectedChargePoint] = useState(0);
-  const [chargeInput, setChargeInput] = useState('');
-
   const chargePointList = [500, 1000, 3000, 5000];
 
-  // 현재 포인트
-  // let pointBalance = 0;
-  // // 배열을 순회하면서 계산
-  // pointData.forEach(point => {
-  //   if (point.pointTypeIdx === 1) {
-  //     pointBalance -= point.pointScore; 
-  //   } else {
-  //     pointBalance += point.pointScore; 
-  //   }
-  // });
+  const [selectedChargePoint, setSelectedChargePoint] = useState(500);
+  const [chargeInput, setChargeInput] = useState('');
+
 
   // 토글 네모
   const handlerCharPointChange = (e) => {
@@ -82,13 +60,29 @@ const MyPointPage = () => {
   const handlerInputChange = (e) => {
     const inputValue = e.target.value;
     const number = inputValue.replace(/[^0-9]/g, '');
+    
     if (number !== '') {
       const inputPoint = parseInt(number, 10);
-
-      setChargeInput(inputPoint);
+      // 포커스가 아웃되었을 때 값 비교
+      e.target.onblur = () => {
+        if (chargePointList.includes(inputPoint)) {
+          setChargeInput('');
+          setSelectedChargePoint(inputPoint);
+        } else {
+          setChargeInput(inputPoint);
+        }
+      };
       setSelectedChargePoint(inputPoint);
+      setChargeInput(inputPoint);
+    } else {
+      setSelectedChargePoint('');
+      setChargeInput('');
     }
   };
+
+  const handlerInputFocus = () => {
+    setSelectedChargePoint('');
+  }
 
   // 충전 버튼
   const handlerCharPoint = () => {
@@ -143,6 +137,7 @@ const MyPointPage = () => {
   const sortedPointData = pointData.sort((b, a) => new Date(b.pointDate) - new Date(a.pointDate));
 
   let pointStatus = 0; // 포인트 상태 초기화
+  let pointDonation = 0;
 
   const reversedPointHistoryList = sortedPointData.map((point, index) => {
     const formatPointDate = formatDate(new Date(point.pointDate));
@@ -150,6 +145,7 @@ const MyPointPage = () => {
 
     if (point.pointTypeIdx === 1) {
       pointStatus -= point.pointScore;
+      pointDonation += point.pointScore
     } else {
       pointStatus += point.pointScore;
     }
@@ -158,7 +154,7 @@ const MyPointPage = () => {
     pointBalance = pointStatus;
 
     return (
-          <div key={index}>
+          <div className={Style.pointistory} key={index}>
             <PointHistory
               pointDate={formatPointDate}
               pointType={getPointType(point.pointTypeIdx)}
@@ -172,6 +168,7 @@ const MyPointPage = () => {
   // 과거순을 최신순으로 정렬
   const pointHistoryList = reversedPointHistoryList.reverse();
 
+  
 
   return (
     <ProfileImgTmp profileImgSrc={profileImg} profileText={nickname}>
@@ -180,69 +177,98 @@ const MyPointPage = () => {
       ?
       (
         <div className={Style.PointStatus_box}>
-          <div className={Style.PointBalanceHead} >현재 포인트</div>
-          <div className={Style.PointIcon}><BsPlusCircle /></div>
-          <div>{pointStatus} P</div>
-          <div className={Style.PointBalanceHead} >포인트 현황</div>
-          <div className={Style.PointHistoryBox}>
-            {/* { pointData.map(point => {
-                const formatPointDate = formatDate(new Date(point.pointDate));
+          <div className={Style.PointAccount_container} >
+            <div className={Style.PointAccount_box}>
+              <div className={Style.PointBalanceHead} >현재 포인트</div>
+              <div className={Style.PointIcon}><MdControlPoint /> <span>{pointStatus} P</span></div>
+            </div>
+            <div className={Style.PointAccount_box}>
+              <div className={Style.PointBalanceHead} >적립된 기부 포인트</div>
+              <div className={Style.PointIcon}><BiDonateHeart /> <span>{pointDonation} P</span></div>
+            </div>
+          </div>
 
-                // 초기 잔액 설정
-                let pointStatus = 0;
+          <div className={Style.PointBalance_container}>
+            <div className={Style.PointBalanceTitle} >포인트 현황</div>
+            <div className={Style.PointHistoryBox}>
+              {/* { pointData.map(point => {
+                  const formatPointDate = formatDate(new Date(point.pointDate));
 
-                // 잔액 계산
-                if (point.pointTypeIdx === 1) {
-                  pointStatus -= point.pointScore;
-                } else {
-                  pointStatus += point.pointScore;
-                };
-                // 포인트 데이터를 최신 순으로 정렬
-              
+                  // 초기 잔액 설정
+                  let pointStatus = 0;
+
+                  // 잔액 계산
+                  if (point.pointTypeIdx === 1) {
+                    pointStatus -= point.pointScore;
+                  } else {
+                    pointStatus += point.pointScore;
+                  };
+                  // 포인트 데이터를 최신 순으로 정렬
                 
-                return (
-                  <div key={point.pointDate}>
-                    <PointHistory
-                      pointDate={formatPointDate}
-                      pointType={getPointType(point.pointTypeIdx)}
-                      pointAmount={point.pointScore}
-                      pointBalance={pointStatus}
-                    />
-                  </div>
-                );
-            })
-            } */}
-            <div>{pointHistoryList}</div>
+                  
+                  return (
+                    <div key={point.pointDate}>
+                      <PointHistory
+                        pointDate={formatPointDate}
+                        pointType={getPointType(point.pointTypeIdx)}
+                        pointAmount={point.pointScore}
+                        pointBalance={pointStatus}
+                      />
+                    </div>
+                  );
+              })
+              } */}
+              <div>{pointHistoryList}</div>
+            </div>
           </div>
           <DoBtn doOnClick={()=>setIsCharged(false)} doText={"포인트 충전하기"} />
         </div>
       )
       :
       (
-        <div>
-          <div className={Style.PointBalanceHead} >현재 포인트</div>
-          <div className={Style.PointIcon}><BsPlusCircle /></div>
-          <div>{pointStatus} P</div>
-          <div className={Style.PointBalanceHead} >포인트 충전금액</div>
-          <SelectToggleRect toggleListRect={chargePointList} toggleActiveRect={selectedChargePoint} onToggleRect={handlerCharPointChange} />
-          <div>
-            <input className={Style.ChargeInput}
-                  placeholder='충전 포인트를 입력해주세요'
-                  type="number"
-                  value={chargeInput}
-                  onChange={handlerInputChange}>
-            </input>
+        <div className={Style.PointStatus_box}>
+          <div className={Style.PointChar_container}>
+            <div className={Style.PointBalanceHead} >현재 포인트</div>
+            <div className={Style.PointIcon}><MdControlPoint /> <span>{pointStatus} P</span></div>
           </div>
-          <div className={Style.PointBalanceHead} >결제 수단</div>
-          <div className={Style.ChargingWayBox}>
-            <div className={Style.ChargingWay}></div>
-            <div className={Style.ChargingWay}></div>
+
+          <div className={Style.PointCharOption_container}>
+            <div className={Style.PointBalanceHead} >포인트 충전금액</div>
+            <div className={Style.charInput_box}>
+              <SelectToggleRect 
+                toggleListRect={chargePointList}
+                toggleActiveRect={selectedChargePoint}
+                onToggleRect={handlerCharPointChange}
+              />
+            
+            <div>
+              <input className={Style.ChargeInput}
+                    placeholder='충전 포인트를 입력해주세요'
+                    type="number"
+                    value={chargeInput}
+                    onChange={handlerInputChange}
+                    onFocus={handlerInputFocus}
+              >
+              </input>
+            </div>
+            </div>
           </div>
-          <div>
-            <div>포인트 충전 예상 금액</div>
-            <div>{pointStatus + selectedChargePoint}P</div>
+          
+          <div className={Style.PointChar_container}>
+            <div className={Style.PointBalanceHead} >결제 수단</div>
+            <div className={Style.ChargingWayBox}>
+              <div className={Style.ChargingWay}></div>
+              <div className={Style.ChargingWay}></div>
+            </div>
           </div>
-          <div className={Style.BtnBox}>
+
+          <div className={Style.PointChar_container}>
+            <div className={Style.expectPoint_box}>
+              <div>포인트 충전 예상 금액</div>
+              <div className={Style.expectPoint_Title}>{pointStatus + selectedChargePoint}P</div>
+            </div>
+
+            <div className={Style.BtnBox}>
             <button className={Style.CancelBtn} onClick={()=>setIsCharged(true)} >
               취소
             </button>
@@ -250,6 +276,8 @@ const MyPointPage = () => {
               충전
             </button>
           </div>
+          </div>
+          
       </div>
       )
     }

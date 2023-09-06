@@ -239,9 +239,11 @@ const TodoAddPage = (props) => {
       { headers: { 'Authorization': `Bearer ${token}` } }
     )
       .then(res => {
-      console.log(todoData);
-      alert('투두가 생겼습니다');
-      // window.location.replace('/todolist');
+        console.log(res);
+        console.log(todoData);
+
+        alert('투두가 생겼습니다');
+        // window.location.replace('/todolist');
     })
     .catch(err => {
       if (err.response) {

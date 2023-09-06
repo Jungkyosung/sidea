@@ -81,9 +81,9 @@ const Calendar = (props) => {
     setSelectedDate(selectedDate + 7);
   };
 
-  useEffect(() => {
-    const updatedThisWeekDates = getThisWeekDates(selectedDate);
-  }, [selectedDate]);
+  // useEffect(() => {
+  //   const updatedThisWeekDates = getThisWeekDates(selectedDate);
+  // }, [selectedDate]);
 
   return (
     <>

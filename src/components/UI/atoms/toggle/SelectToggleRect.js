@@ -3,10 +3,10 @@ import Style from './SelectToggle.module.css';
 const SelectToggleRect = ({toggleListRect, toggleActiveRect, onToggleRect }) => {
   
   return (
-      <div>
-        {toggleListRect.map((list) => (
+      <div className={Style.toggle_container}>
+        {toggleListRect.map((list, index) => (
           <button
-            key={list}
+            key={index}
             className={toggleActiveRect === list ? Style.toggleActiveRect : Style.toggleUnActiveRect}
             onClick={() => onToggleRect(list)}
           >

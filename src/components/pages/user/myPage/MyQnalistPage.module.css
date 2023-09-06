@@ -11,6 +11,7 @@
   display: flex;
   justify-content: flex-start;
   width: 100%;
+  margin: 10px 0px;
   color: rgba(0, 0, 0, 0.6);
 }
 
@@ -23,4 +24,9 @@
 
 .askListBox::-webkit-scrollbar {
   display: none;
+}
+s
+
+.nullContens {
+  margin-top: 150px;
 }

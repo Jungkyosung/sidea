@@ -4,7 +4,7 @@
   justify-content: space-between;
 }
 .toggle_container button {
-  margin-bottom: 5px;
+  margin-bottom: 5px; 
 }
 
 .toggle_container button:disabled {

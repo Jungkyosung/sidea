@@ -100,7 +100,7 @@ const CampDetailPage = ({}) => {
       .then(res => {
         console.log(res);  
         alert('기부에 참여하셨습니다');
-        // window.location.replace(`/camppaign/${donationIdx}`);
+        window.location.replace(`/campaign/${donationIdx}`);
 
         const pointDonation = {
           userIdx: userIdx,

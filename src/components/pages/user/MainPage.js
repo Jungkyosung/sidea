@@ -8,16 +8,16 @@ import jwt_decode from "jwt-decode";
 const MainPage = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
-  const [userIdx, setUserIdx] = useState('');
-  const [nickname, setNickname] = useState('');
+  // const [userIdx, setUserIdx] = useState('');
+  // const [nickname, setNickname] = useState('');
   
   useEffect(() => {
     if (sessionStorage.getItem('token') != null) {
-      const token = sessionStorage.getItem('token');
-      const decode_token = jwt_decode(token);
+      // const token = sessionStorage.getItem('token');
+      // const decode_token = jwt_decode(token);
       setIsLogin(true);
-      setUserIdx(decode_token.userIdx);
-      setNickname(decode_token.nickname);
+      // setUserIdx(decode_token.userIdx);
+      // setNickname(decode_token.nickname);
     } else {
       setIsLogin(false);
     }
@@ -39,7 +39,7 @@ const MainPage = () => {
             <div className={Style.main_menu}>
               <MainQuickContainer />
               {isLogin ? 
-                <div className={Style.logintext} >{nickname}</div> : 
+                <div className={Style.logintext} ></div> : 
                 <div className={Style.logintext} >로그인 이후 이용 가능합니다. <span onClick={handlerGoLogin}>로그인</span></div>
               }
             </div>

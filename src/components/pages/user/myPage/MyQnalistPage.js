@@ -50,14 +50,18 @@ const MyQnalistPage = () => {
     <ProfileImgTmp profileImgSrc={profileImg} profileText={nickname}>
       <div className={Style.askListHead} >나의 문의내역</div>
       <div className={Style.askListBox}>
-      { data && data.map((ask, index) => (
-           <AskList
-            key={ask.askIdx}
-            askNumber={index + 1}
-            askTitleClick={() => handlerNavi(ask.askIdx)}
-            askTitle={ask.askTitle}
-            askIsCommented={ask.askAnswer ? true : false} />
-          ))}
+        { Array.isArray(data) && data.length > 0 ? 
+          (data.map((ask, index) => (
+            <AskList
+              key={ask.askIdx}
+              askNumber={data.length - index}
+              askTitleClick={() => handlerNavi(ask.askIdx)}
+              askTitle={ask.askTitle}
+              askIsCommented={ask.askAnswer ? true : false} />
+            ))
+          ) 
+          : (<div className={Style.nullContens}>등록된 문의가 없습니다</div>)
+        }
       </div>
       <DoBtn doOnClick={() => handlerMove("/mypage/qna/write")} doText={"문의하기"} />
     </ProfileImgTmp>

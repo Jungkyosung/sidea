@@ -6,6 +6,7 @@ import DoBtn from "../../UI/atoms/btn/DoBtn";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BiShowAlt, BiHide } from 'react-icons/bi';
+import jwt_decode from "jwt-decode";
 
 const LoginPage = () => {
   const [userEmail, setUserEmail] = useState('');
@@ -15,13 +16,24 @@ const LoginPage = () => {
   
   const handlerClickLogin = (e) => {
     e.preventDefault();
+
     axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/login`,
       { userEmail,  userPw })
       .then((res) => {
+        const token = res.data;
+        const decode_token = jwt_decode(token);
+        console.log(decode_token)
+
         if(res.data) {
-          sessionStorage.setItem("token", res.data);
-          alert( `로그인에 성공했습니다. 메인페이지로 이동합니다.`);
-          navigate("/");
+          if(decode_token.userAuth == 1) {
+            sessionStorage.setItem("token", res.data);
+            alert( `로그인에 성공했습니다. 메인페이지로 이동합니다.`);
+            navigate("/");
+          } else {
+            sessionStorage.setItem("token", res.data);
+            alert( `관리자 로그인에 성공했습니다. 관리자 페이지로 이동합니다.`);
+            navigate("/admin");
+          }
         } else {
           alert( `ID, PW가 일치하지 않습니다. 확인 후 다시 시도해주세요.`);
           sessionStorage.clear();

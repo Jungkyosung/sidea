@@ -40,7 +40,7 @@ const MyEditPage = () => {
     const token = sessionStorage.getItem('token');
     const decode_token = jwt_decode(token);
     const email = decode_token.email;
-    console.log(decode_token);
+
     const params = { userEmail : email }
     // api/userinfo?userEmail=jks@jks.com으로 바꿨는데 인식이 안되네요  
 
@@ -222,13 +222,18 @@ const MyEditPage = () => {
 
   // 
   const leaveUser = () => {
+    if (window.confirm('탈퇴 후 일정기간 재가입이 불가능 합니다. 탈퇴 하시겠습니까?')){
+      
     axios.put(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/user/delete`,
-    { userEmail: email, userPw: userPw },
-    { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
-    })
+      { userEmail: email, userPw: userPw },
+      { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }}
+    )
       .then(res => {
         console.log(res);
-          navigate("/");
+        sessionStorage.clear();
+        localStorage.clear();
+        alert('서비스를 이용해주셔서 감사합니다. 정상적으로 탈퇴 되었습니다')
+        navigate("/");
       })
       .catch(err => {
         if (err.response) {
@@ -242,7 +247,9 @@ const MyEditPage = () => {
           console.error('오류:', err.message);
         }
       })
-    console.log("leave")
+    } else {
+      console.log("취소")
+    }
   };
 
   const isEdit = () => {
@@ -253,9 +260,6 @@ const MyEditPage = () => {
     );
   };
 
-  console.log(isValidNickname)
-  console.log(isCurrentPw)
-  console.log(isPwCheck)
 
   return (
     <NaviControll>
