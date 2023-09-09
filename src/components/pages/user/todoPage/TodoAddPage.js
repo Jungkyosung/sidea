@@ -243,7 +243,7 @@ const TodoAddPage = (props) => {
         console.log(todoData);
 
         alert('투두가 생겼습니다');
-        // window.location.replace('/todolist');
+        window.location.replace('/todolist');
     })
     .catch(err => {
       if (err.response) {

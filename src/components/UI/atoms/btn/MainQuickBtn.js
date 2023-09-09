@@ -15,11 +15,11 @@ const MainQuickBtn = ({ quickIcon, quickTitle, quickClick }) => {
           setIsHovered(false);
         }}
         onClick={() => quickClick()}
-    >
+      >
 
       {isHovered 
       ? 
-      <p className={Style.mainQuickTitle}>
+      <p className={Style.mainQuickTitle} >
         {quickTitle}
       </p> 
       : 

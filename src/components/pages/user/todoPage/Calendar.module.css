@@ -1,3 +1,6 @@
+.Year_Month {
+  margin-bottom: 5px;
+}
 .datebox {
   /* border: 1px solid red; */
   display: flex;
@@ -30,6 +33,7 @@
 
 /* 요일 */
 .dayText {
+  font-size: 0.8em;
   color: rgb(0, 0, 0, 0.6);
 }
 

@@ -157,7 +157,7 @@ const MyQnaDetailPage = () => {
             }
           </div>
           <div className={Style.editbtn}>
-            <EditBtn onDelete={handlerDelete} onUpdate={handlerEditGo}/>
+            <EditBtn deleteTxt={"삭제"} updateTxt={"수정"} onDelete={handlerDelete} onUpdate={handlerEditGo}/>
           </div>
           </>
         )

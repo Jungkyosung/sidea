@@ -7,9 +7,10 @@ import Input from '../../../UI/atoms/Input';
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
+import CloseBtn from '../../../UI/atoms/btn/CloseBtn';
 
 const MyQnaWritePage = () => {
-
+  const navigate = useNavigate();
   const [nickname, setNickname] = useState("");
   // const [profileImg, setProfileImg] = useState("https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg");
   const [askTitle, setAskTitle] = useState('');
@@ -85,6 +86,7 @@ const MyQnaWritePage = () => {
           <div className={Style.askListHead} >나의 문의내역</div>
         </div>
         <div className={Style.QnaWriteBox}>
+          <div className={Style.close}><CloseBtn onClick={() => navigate('/mypage/qnalist')} /></div>
           <div className={Style.QnaWriteTitle}>
           <Input inputPlaceholder={"제목을 입력해주세. (15자 이내)"}
           inputValue={askTitle}

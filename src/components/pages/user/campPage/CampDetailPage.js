@@ -100,7 +100,7 @@ const CampDetailPage = ({}) => {
       .then(res => {
         console.log(res);  
         alert('기부에 참여하셨습니다');
-        window.location.replace(`/campaign/${donationIdx}`);
+        window.location.replace(`/mypage/campaignlist`);
 
         const pointDonation = {
           userIdx: userIdx,
@@ -125,14 +125,14 @@ const CampDetailPage = ({}) => {
     <>
       <div className={Style.container}>
         {/* <div> */}
-          <img className={Style.campImg} src={campProperties.campImgSource} />
+          <div className={Style.campImg_box}><img className={Style.campImg} src={campProperties.campImgSource} /></div>
           <div className={Style.close}><CloseBtn onClick={()=>navigate('/campaignlist')} /></div>
         {/* </div> */}
 
         <div className={Style.campInfo_box}>
           <div className={Style.header}>
-            <p>{campProperties.campTitle}</p>
-            <p className={Style.campSubTitle}>{campProperties.campOrganizer}</p>
+            <p className={Style.campTitle}>{campProperties.campTitle}</p>
+            <p className={Style.campDonor}>{campProperties.campOrganizer}</p>
           </div>
 
           <div className={Style.content}>
@@ -151,8 +151,8 @@ const CampDetailPage = ({}) => {
           </div>
           <div className={Style.progressBar}>
             <div className={Style.campInfo}>
-              <div>{campProperties.campProgress}%</div>
-              <div>{status}</div>
+              <div className={Style.campInfo_text}>{campProperties.campProgress}%</div>
+              <div className={Style.campInfo_text}>{status}</div>
             </div>
             <div className={Style.campProgressBackBar}>
               <div className={Style.campProgressFrontBar} style={{ width: `${campProperties.campProgress}%` }}></div>
@@ -161,6 +161,7 @@ const CampDetailPage = ({}) => {
           <div className={Style.DoBtn}>
             {isClick ? 
             (
+              <>
               <div className={Style.joinCamp_box}>
                 <div className={Style.closeInput}><CloseBtn onClick={()=>setIsClick(false)} /></div>
                 <p>기부에 참여할 포인트를 입력해주세요</p>
@@ -175,6 +176,8 @@ const CampDetailPage = ({}) => {
                 </div>
                 <DoBtn doText="참여완료"  doOnClick={handlerCampAdd} doDisabled={isDoDisabled}/>
               </div>
+              <div className={Style.disableDo}><DoBtn  doDisabled={true}/></div>
+              </>
             )
             :
             (<DoBtn doText="참여하기" doOnClick={handlerClickAdd} />)}

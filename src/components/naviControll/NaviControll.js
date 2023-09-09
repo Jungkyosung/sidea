@@ -31,8 +31,9 @@ const NaviControll = ({ children }) => {
 
   return (
     <>
-      {userAuth === 0 ? <div><NavAdmin /> {children}</div> : null}
-      {userAuth === 1 ? 
+      {userAuth === 0 ? 
+      <><NavAdmin /> {children}</> 
+      : 
         (
           <>
             {isNavOpen ?
@@ -41,7 +42,7 @@ const NaviControll = ({ children }) => {
             }
             {children}
           </>
-        ) : null
+        )
       }
     </>
   )

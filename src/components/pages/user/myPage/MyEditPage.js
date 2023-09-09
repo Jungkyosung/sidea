@@ -207,17 +207,20 @@ const MyEditPage = () => {
   const handlerCheckPw = useCallback((e) => {
     const pwCheckCurrent = e.target.value;
     setChangePwCheck(pwCheckCurrent);
-
     if (changePw === pwCheckCurrent) {
-      setPwMessage("");
-      setIsPwCheck(true);
-      console.log("일치");
+      if (pwCheckCurrent.length < MIN_PASSWORD_LENGTH) {
+        setPwMessage('비밀번호는 최소 10자 이상이어야 합니다.');
+        setIsPwCheck(false);
+      } else {
+        setPwMessage('');
+        setIsPwCheck(true);
+        console.log('일치');
+      }
     } else {
       setPwMessage('비밀번호가 일치하지 않습니다.');
       setIsPwCheck(false);
-      console.log("불일치");
+      console.log('불일치');
     }
-
   }, [changePw]);
 
   // 
@@ -304,7 +307,9 @@ const MyEditPage = () => {
         </div>
         <DoBtn doText={"변경하기"} doOnClick={handlerEdit} doDisabled={!isEdit()}/>
         </div>
-        <div className={Style.LeaveBtn} onClick={leaveUser}>탈퇴하기</div>
+        <div className={Style.LeaveBtn}>
+        <div onClick={leaveUser}>탈퇴하기</div>
+        </div>
       </div>
     </NaviControll>
   )

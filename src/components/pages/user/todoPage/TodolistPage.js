@@ -40,7 +40,7 @@ const TodolistPage = () => {
   // 날짜 클릭 핸들러
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    const selectedDayOfWeek = new Date(new Date().getFullYear(), new Date().getMonth()+1, date).getDay();
+    const selectedDayOfWeek = new Date(new Date().getFullYear(), new Date().getMonth(), date).getDay();
     setSelectedWeek(selectedDayOfWeek === 0 ? 7 : selectedDayOfWeek);
   };
 
@@ -50,8 +50,8 @@ const TodolistPage = () => {
     const decode_token = jwt_decode(token);
     const userIdx = decode_token.userIdx;
     
-    const params = { userIdx: userIdx, todoDate: formatDate(new Date(2023,7,selectedDate)), date: selectedWeek };
-    
+    const params = { userIdx: userIdx, todoDate: formatDate(new Date(new Date().getFullYear(), new Date().getMonth(),selectedDate)), date: selectedWeek };
+    console.log(params)
     axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`, 
     {
       params,
@@ -59,7 +59,6 @@ const TodolistPage = () => {
     })
     .then(res => {
       setData(res.data);
-      // console.log(res.data);
       if (Array.isArray(res.data)) {
         const todoDates = res.data.map(item => item.todoDate);
         const todoIdxes = res.data.map(item => item.todoDate);

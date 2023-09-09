@@ -28,11 +28,15 @@
 .QnaWriteBox {
   width: 100%;
   height: 73%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   border: none;
   box-shadow: 0px -4px 4px rgb(0, 0, 0, 0.4);
   border-radius: 20px 20px 0px 0px;
 
-  padding: 40px 20px 20px;
+  padding: 20px;
   background-color: white;
   animation-name: modal-animation;
   animation-duration: 0.2s;
@@ -48,12 +52,12 @@
   }
 }
 .QnaWriteTitle {
-  height: 15%;
+  height: 12%;
   /* background-color: black; */
 }
 
 .QnaWriteCont {
-  height: 85%;
+  height: 83%;
   width: 100%;
   border: none;
   border-radius: 8px;
@@ -96,4 +100,55 @@
   padding-right: 20px;
   background-color: #FFFFFF;
   z-index: 1;
+}
+
+.close {
+  height: 5%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.QnaEditBox {
+  width: 100%;
+  height: 73%;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  border: none;
+  box-shadow: 0px -4px 4px rgb(0, 0, 0, 0.4);
+  border-radius: 20px 20px 0px 0px;
+
+  padding: 50px 20px 20px;
+  background-color: white;
+  animation-name: modal-animation;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-in;
+}
+
+.QnaEditTitle {
+  height: 15%;
+  /* background-color: black; */
+}
+
+.QnaEditCont {
+  height: 85%;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+  color: black;
+  padding: 10px;
+  resize: none;
+  font-size: 1em;
+  line-height: 1.4em;
+}
+
+.QnaEditCont:focus {
+  outline: 2px solid #B2D9FD;
+}
+
+.nullContens {
+  height: 20%;
 }

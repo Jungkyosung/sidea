@@ -52,10 +52,11 @@ const AdminCampDetailPage = () => {
   progressEndday.setDate(progressEndday.getDate() + 1);
 
   const status = formatDate(progressEndday) >= formatDate(today) ? "진행중" : "완료";
-
+  const img = `http://www.newsggam.com/news/photo/202109/86016_45584_2321.jpg`;
   const campProperties = {
     campId: data.donationIdx,
-    campImgSource: data.donorImage,
+    // campImgSource: data.donorImage,
+    campImgSource: img,
     campTitle: data.donationName,
     campOrganizer: data.donorName,
     campPeriod: `${formatDate(startDate)} ~ ${formatDate(endDate)}`,
@@ -106,14 +107,14 @@ const AdminCampDetailPage = () => {
     <>
       <div className={Style.container}>
         {/* <div> */}
-          <img className={Style.campImg} src={campProperties.campImgSource} />
+          <div className={Style.campImg_box}><img className={Style.campImg} src={campProperties.campImgSource} /></div>
           <div className={Style.close}><CloseBtn onClick={()=>navigate('/admin/campaignlist')} /></div>
         {/* </div> */}
 
         <div className={Style.campInfo_box}>
           <div className={Style.header}>
-            <p>{campProperties.campTitle}</p>
-            <p className={Style.campSubTitle}>{campProperties.campOrganizer}</p>
+            <p className={Style.campTitle}>{campProperties.campTitle}</p>
+            <p className={Style.campDonor}>{campProperties.campOrganizer}</p>
           </div>
 
           <div className={Style.content}>
@@ -132,8 +133,8 @@ const AdminCampDetailPage = () => {
           </div>
           <div className={Style.progressBar}>
             <div className={Style.campInfo}>
-              <div>{campProperties.campProgress}%</div>
-              <div>{status}</div>
+              <div className={Style.campInfo_text}>{campProperties.campProgress}%</div>
+              <div className={Style.campInfo_text}>{status}</div>
             </div>
             <div className={Style.campProgressBackBar}>
               <div className={Style.campProgressFrontBar} style={{ width: `${campProperties.campProgress}%` }}></div>
@@ -141,6 +142,8 @@ const AdminCampDetailPage = () => {
           </div>
           <div className={Style.EditBtn}>
             <EditBtn 
+              deleteTxt={'삭제'}
+              updateTxt={'수정'}
               onDelete={handlerDelete}
               onUpdate={() => handlerNavi(campProperties.campId, data)}/>
         </div>

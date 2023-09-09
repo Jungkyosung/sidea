@@ -6,6 +6,7 @@ import NaviControll from '../../naviControll/NaviControll';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
+import { BiMessageSquareAdd} from 'react-icons/bi';
 
 const AdminCampListPage = () => {
   const [data, setData] = useState([]);
@@ -39,7 +40,7 @@ const AdminCampListPage = () => {
       <NaviControll>
         <div className={Style.container}>
           <Title titleName={"캠페인 목록"} />
-          
+          <BiMessageSquareAdd className={Style.addCamp} onClick={()=>navigate(`/admin/campaign/add`)}/>
           <div className={Style.listbox}>
             <div className={Style.scrollbox}>
               {data.map(camplist => (

@@ -11,7 +11,7 @@ import axios from 'axios';
 import Title from '../../UI/atoms/Title';
 import NavAdmin from '../../UI/atoms/NavAdmin';
 import { useNavigate } from 'react-router-dom';
-// import { BsFillCalendarWeekFill } from 'react-icons/bs';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
 const AdminCampAddPage = () => {
   const [dateRange, setDateRange] = useState([null, null]);
@@ -79,7 +79,8 @@ const AdminCampAddPage = () => {
     donationTargetAmount : targetPoint,
     donationDate : startDate,
     donationDuration : endDate,
-    donationName : campTitle
+    donationName : campTitle,
+    donationImge : campImg
   };
 
 // const formData = new FormData();
@@ -145,18 +146,19 @@ const handlerOnSubmit = () => {
             />
           </div>
           <div className={Style.InputBox}>
+              <div className={Style.select_box} >
               <select className={Style.donorDropbox} id="category" name="category" onChange={handleChangeDonor}>
                 {
-                  donor.map((donorOption) => (
-                    <option className="option-category" key={donorOption.donorIdx} value={donorOption.donorIdx}>
+                  donor.map((donorOption, id) => (
+                    <option className={`option-category ${Style.option}`} key={id} value={donorOption.donorIdx}>
                       {donorOption.donorName}
                     </option>
                   ))
                 }
               </select>
-
-            
+            </div>  
           </div>
+          
           <div className={Style.InputBox}>
             <DatePicker
               className={Style.datepicker}
@@ -190,9 +192,7 @@ const handlerOnSubmit = () => {
             <div className={Style.campImgBox}>
               {campImg &&
                 campImg.map((image, id) => (
-                   
-                        <img key={id} src={image} className={Style.InputImgView} />
-                    
+                  <img key={id} src={image} className={Style.InputImgView} />  
                 ))}
             </div>
           </div>

@@ -25,6 +25,9 @@ const LoginPage = () => {
         console.log(decode_token)
 
         if(res.data) {
+          // sessionStorage.setItem("token", res.data);
+          //   alert( `로그인에 성공했습니다. 메인페이지로 이동합니다.`);
+          //   navigate("/");
           if(decode_token.userAuth == 1) {
             sessionStorage.setItem("token", res.data);
             alert( `로그인에 성공했습니다. 메인페이지로 이동합니다.`);
@@ -93,7 +96,7 @@ const LoginPage = () => {
             inputHandler= {handlerChangeEmail}
             inputPlaceholder="이메일을 입력하세요"
             />
-
+          </div>
             <div className={Style.password_input}>
               <Input
                 inputType={hidePassword ? "password" : "text"}
@@ -108,14 +111,13 @@ const LoginPage = () => {
                   ):(
                     <BiHide onClick={toggleHidePassword}></BiHide>
                   )}
-              </div>
+              </div> 
             </div>
 
             <div className={Style.login_submit}>
               <DoBtn doText="로그인" doOnClick={handlerClickLogin} doDisabled={!isloginDisabled()}/>
               <p className={Style.signUp_text} onClick={handlerRegist}>회원가입</p>
-            </div>
-          </div>
+            </div> 
         </form>
       </div>
     </>

@@ -1,75 +1,107 @@
 .ContentsWrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 40px;
-    margin-left: 20px;
-    margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 60px 20px;
+  position: relative;
 }
 
 .QnaUser {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .QnaContentBox {
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 70%;
+  border-radius: 8px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
 }
 
 .QnaContentAnswerBox {
-    margin-top:10px;
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
-    background-color: rgba(178, 217, 253, 0.2);
+  margin-top:10px;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+  background-color: rgba(178, 217, 253, 0.2);
 }
 
 .QnaContent {
-    padding: 10px;
-    height: 500px;
-    font-size: 1em;
-    line-height: 1.2em;
-    white-space: pre-line;
-    word-break: break-all;
-    overflow-y: scroll;
-    -ms-overflow-style: none; /* 인터넷 익스플로러 */
-    scrollbar-width: none; /* 파이어폭스 */
+  padding: 10px;
+  height: 90%;
+  font-size: 1em;
+  line-height: 1.2em;
+  white-space: pre-line;
+  word-break: break-all;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
 }
 
 .QnaContent::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .QnaContentWithAnswer {
-    padding: 10px;
-    height: 250px;
-    overflow-y: scroll;
-    -ms-overflow-style: none; /* 인터넷 익스플로러 */
-    scrollbar-width: none; /* 파이어폭스 */
+  padding: 10px;
+  height: 200px;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
 }
 
 .QnaContentWithAnswer::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .QnaContentAnswer {
-    padding: 10px;
-    height: 250px;
-    overflow-y: scroll;
-    -ms-overflow-style: none; /* 인터넷 익스플로러 */
-    scrollbar-width: none; /* 파이어폭스 */
+  padding: 10px;
+  height: 200px;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
 }  
 
 .QnaContentAnswer::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .QnaDate {
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px;
-    font-size: 0.8em;
+  height: 10%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px;
+  font-size: 0.8em;
+}
+
+.btn_box {
+  margin-top: 10px;
+  height: 8%;
+}
+
+.close {
+  position: absolute;
+  top: 39%;
+  right: 6.5%;
+  z-index: 10;
+  animation-name: close;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-in;
+}
+
+@keyframes close {
+  0% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

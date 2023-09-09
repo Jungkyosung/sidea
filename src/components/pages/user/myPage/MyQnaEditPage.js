@@ -1,12 +1,9 @@
 import Style from './MyQnaWritePage.module.css';
-import NaviControll from '../../../naviControll/NaviControll';
 import { useEffect, useState } from 'react';
-import ProfileText from '../../../UI/atoms/ProfileText';
 import DoBtn from '../../../UI/atoms/btn/DoBtn';
 import Input from '../../../UI/atoms/Input';
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { useNavigate, useParams } from 'react-router-dom';
 
 const MyQnaEditPage = (props) => {
   const [askTitle, setAskTitle] = useState('');
@@ -63,13 +60,13 @@ const MyQnaEditPage = (props) => {
 
   return (
 <>
-        <div className={Style.QnaWriteBox}>
-          <div className={Style.QnaWriteTitle}>
+        <div className={Style.QnaEditBox}>
+          <div className={Style.QnaeditrTitle}>
           <Input inputPlaceholder={"제목을 입력해주세. (15자 이내)"}
           inputValue={askTitle}
           inputHandler={handlerTitle}/>
           </div>
-          <textarea className={Style.QnaWriteCont}
+          <textarea className={Style.QnaEditCont}
             placeholder='문의할 내용을 입력해주세요'
             value={askContents}
             onChange={handlerContent}>

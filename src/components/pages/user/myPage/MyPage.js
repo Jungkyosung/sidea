@@ -4,6 +4,7 @@ import Menu from '../../../UI/atoms/Menu';
 import { BsPersonFill, BsPlusCircle } from 'react-icons/bs';
 import { IoMdDownload } from 'react-icons/io';
 import { MdHeadsetMic } from 'react-icons/md';
+import { BiDonateHeart } from 'react-icons/bi';
 import { useNavigate } from 'react-router';
 import ProfileImgTmp from '../../../templates/ProfileImgTmp';
 import axios from "axios";
@@ -53,7 +54,8 @@ const MyPage = () => {
     edit: "/mypage/edit",
     point: "/mypage/point",
     donation: "/mypage/campaignlist",
-    qna: "/mypage/qnalist"
+    qna: "/mypage/qnalist",
+    camplist: "/campaignlist"
   }
 
   function handlerMove(location) {
@@ -72,6 +74,7 @@ const MyPage = () => {
       <div className={Style.MenuBox}>
         <Menu menuArrowClick={() => handlerMove(locations.edit)} menuTitle={"계정설정"}><BsPersonFill /></Menu>
         <Menu menuArrowClick={() => handlerMove(locations.point)} menuTitle={"포인트 관리"}><BsPlusCircle /></Menu>
+        <Menu menuArrowClick={() => handlerMove(locations.camplist)} menuTitle={"캠페인 목록"}><BiDonateHeart /></Menu>
         <Menu menuArrowClick={() => handlerMove(locations.donation)} menuTitle={"참여한 기부"}><IoMdDownload /></Menu>
         <Menu menuArrowClick={() => handlerMove(locations.qna)} menuTitle={"문의하기"}><MdHeadsetMic /></Menu>
       </div>

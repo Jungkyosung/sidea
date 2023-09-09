@@ -21,7 +21,7 @@
   padding-top: 100px;
 }
 
-.regist_input {
+.login_input, .regist_input {
   /* border: 1px solid red; */
   padding-bottom: 10px;
 }
@@ -36,8 +36,9 @@
 .password_hide {
   font-size: 1.2em;
   position: absolute;
-  right: 10px;
-  top: 7.5px;
+  right: 3%;
+  top: 18.5%;
+  cursor: pointer;
 }
 
 /*  */

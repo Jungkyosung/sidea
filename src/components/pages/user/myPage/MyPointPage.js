@@ -269,12 +269,13 @@ const MyPointPage = () => {
             </div>
 
             <div className={Style.BtnBox}>
-            <button className={Style.CancelBtn} onClick={()=>setIsCharged(true)} >
+            {/* <button className={Style.CancelBtn} onClick={()=>setIsCharged(true)} >
               취소
             </button>
             <button className={Style.ChargeBtn}  onClick={handlerCharPoint} >
               충전
-            </button>
+            </button> */}
+            <EditBtn deleteTxt={"취소"} onDelete={()=>setIsCharged(true)} updateTxt={"충전"} onUpdate={handlerCharPoint}/>
           </div>
           </div>
           

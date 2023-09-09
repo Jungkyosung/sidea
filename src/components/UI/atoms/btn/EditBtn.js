@@ -2,13 +2,13 @@ import Style from './Btn.module.css';
 import DeleteBtn from "./DeleteBtn";
 import UpdateBtn from "./UpdateBtn";
 
-const EditBtn = ({ onUpdate, onDelete}) => {
+const EditBtn = ({ deleteTxt, updateTxt, onUpdate, onDelete}) => {
 
 return (
   <>
   <div className={Style.btnbg}>
-    <DeleteBtn deleteOnClick={onDelete} />
-    <UpdateBtn updateOnClick={onUpdate} />
+    <DeleteBtn deleteTxt={deleteTxt} deleteOnClick={onDelete} />
+    <UpdateBtn updateTxt={updateTxt} updateOnClick={onUpdate} />
   </div>
   </>
   );

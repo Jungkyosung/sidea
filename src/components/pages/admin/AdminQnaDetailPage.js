@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
 import AdminQnaReplyPage from './AdminQnaReplyPage';
+import CloseBtn from '../../UI/atoms/btn/CloseBtn';
 
 
 const AdminQnaDetailPage = () => {
@@ -132,11 +133,15 @@ const AdminQnaDetailPage = () => {
               <div className={Style.QnaContentAnswer}>{askAnswer}</div>
               <div className={Style.QnaDate}>{askAnswerDate}</div>
             </div>
-            <div>
+            <div className={Style.btn_box}>
               {isClick ? 
-              ( <AdminQnaReplyPage askIdx={askidx} askAnswerContent={replycontent} askAnswerDate={replyDate}/> )
+              ( <>
+                  <div className={Style.close}><CloseBtn onClick={() => setIsClick(false)}/></div>
+                  <AdminQnaReplyPage askIdx={askidx} askAnswerContent={replycontent} askAnswerDate={replyDate}/>
+                </>
+              )
               :
-              ( <EditBtn onDelete={handlerDelete} onUpdate={handlerEditReplyData}/> )
+              ( <EditBtn deleteTxt={'삭제'} updateTxt={'수정'} onDelete={handlerDelete} onUpdate={handlerEditReplyData}/> )
               }
             </div>
           </>)
@@ -146,9 +151,12 @@ const AdminQnaDetailPage = () => {
               <div className={Style.QnaContent}>{askContents}</div>
               <div className={Style.QnaDate}>{askDate}</div>
             </div>
-            <div>
+            <div className={Style.btn_box}>
               {isClick ? 
-              ( <AdminQnaReplyPage askIdx={askidx}/> ) 
+              ( <>
+                <div className={Style.close}><CloseBtn onClick={() => setIsClick(false)}/></div>
+                <AdminQnaReplyPage askIdx={askidx}/>
+              </> ) 
               : 
               ( <DoBtn doText={"답변하기"} doOnClick={handlerReplyData}/> )
               }
