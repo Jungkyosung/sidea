@@ -2,7 +2,7 @@ import Style from './TodoContent.module.css';
 import { FaRegCheckCircle, FaCheckCircle, FaBell, FaBellSlash } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md';
 
-const TodoContent = ({ todoFinishCheck, todoDoneClick, todoTitle, todoHasAlarm, todoDelete, todoidx, todoClick }) => {
+const TodoContent = ({ todoFinishCheck, todoDoneClick, todoTitle, todoHasAlarm, todoDelete, todoidx, todoClick, todoDoneBlur }) => {
 
     //완료체크에 따라서 다르게
     //알림여부에 따라서 알림 모양이랑 x알림 모양
@@ -13,7 +13,7 @@ const TodoContent = ({ todoFinishCheck, todoDoneClick, todoTitle, todoHasAlarm, 
 
             {todoFinishCheck ?
                 <div className={Style.todoContentWrapTrue} key={todoidx} >
-                    <div className={Style.todoFinishCheckTrue} onClick={todoDoneClick}>
+                    <div className={Style.todoFinishCheckTrue} onClick={todoDoneClick} onBlur={todoDoneBlur}>
                         <FaCheckCircle />
                     </div>
                     <div className={Style.todoContentTitle} onClick={todoClick}>{todoTitle}</div>

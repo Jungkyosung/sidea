@@ -93,15 +93,20 @@ const TodoEditPage = (props) => {
   // 알람 있을때 or 없을때 날짜 저장
   const formatDateAlarm = (date) => {
     const year = date.getFullYear();
-    const month = ("0" + (date.getMonth() + 1)).slice(-2);
-    const day = ("0" + date.getDate()).slice(-2);
-    const period = selectedPeriod === "AM" ? 0 : 12;
-    const hours = parseInt(selectedHour);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    // const period = selectedPeriod === 'AM' ? 0 : 12;
+    let hours = parseInt(selectedHour);
     const minutes = selectedMinute;
-    const seconds = "00";
-
+    const seconds = '00';
+  
     if (isEnabled) {
-      const formatHours = (period + hours).toString().padStart(2, "0");
+      if (selectedPeriod === 'AM' && hours === 12) {
+        hours = 0; 
+      } else if (selectedPeriod === 'PM' && hours !== 12) {
+        hours += 12; 
+      }
+      const formatHours = hours.toString().padStart(2, '0');
       return `${year}-${month}-${day} ${formatHours}:${minutes}:${seconds}`;
     } else {
       return `${year}-${month}-${day}`;
@@ -110,7 +115,7 @@ const TodoEditPage = (props) => {
 
   const { todoData } = props;
 
-  console.log(todoData);
+ 
 
   const todoAlarm = todoData.todoAlarm;
   const todoAlarmTime = todoData.todoAlarmTime;
@@ -127,7 +132,7 @@ const TodoEditPage = (props) => {
   const todoPoint = pointList.findIndex(
     (point) => point === `${todoData.todoPoint}P`
   );
-
+  console.log(todoEndDate);
   const setTimezone = (timeString) => {
     const dateTime = new Date(timeString);
     const period = dateTime.getHours() >= 12 ? "PM" : "AM";
@@ -255,11 +260,13 @@ const TodoEditPage = (props) => {
   // 오늘
   const day = todoStartDate.split('-')[2];
   const end = selectedDate + parseInt(day); 
-  const selectedToday = new Date(todoStartDate);
-  const selectedEndDay = new Date(2023, 7, end);
-
+  const date = new Date();
+  const selectedToday = new Date(date.getFullYear(), date.getMonth(), day); 
+  const selectedEndDay = new Date(date.getFullYear(), date.getMonth(), end);
   const today = formatToday(selectedToday);
   const endDay = formatToday(selectedEndDay);
+  
+  console.log(endDay)
 
   const handlerDateChange = (e) => {
     let saveSelectedDate = selectedDate;
@@ -267,7 +274,7 @@ const TodoEditPage = (props) => {
     setSelectedDate(e);
 
     const eventEnd = e + parseInt(day); 
-    const eventEndDay = new Date(2023, 7, eventEnd);
+    const eventEndDay = new Date(date.getFullYear(), date.getMonth(), eventEnd);
     const serverToday = new Date();
     serverToday.setHours(0, 0, 0, 0);
 
@@ -387,9 +394,9 @@ const TodoEditPage = (props) => {
 
           <div className={Style.select_box}>
             <p>
-              <span>
+              <div>
                 <BiAlarm /> 알림 <span>{alarmstr}</span>
-              </span>
+              </div>
               <span>
                 <ToggleSwitch
                   switchChecked={isEnabled}
@@ -414,15 +421,13 @@ const TodoEditPage = (props) => {
 
             <div className={Style.select_toggle}>
               <p>
-                <BiCalendarEvent />
-                <span>
-                  {today}
-                  {isToday === false
-                    ? ""
-                    : selectedDate === 0
-                    ? ""
-                    : "~" + endDay}
-                </span>
+                <div>
+                  <BiCalendarEvent />
+                  <span>
+                    {today}
+                    { isToday === false ? '' : (selectedDate === 0 ? '' : '~' + endDay)}
+                  </span>
+                </div>
                 <ToggleSwitch
                   switchChecked={isToday}
                   handleSwitchClick={handleTodayClick}
@@ -441,12 +446,12 @@ const TodoEditPage = (props) => {
 
             <div className={Style.select_toggle}>
               <p>
-                <MdRepeat /> 반복
+                <div> <MdRepeat /> 반복 </div>
                 <ToggleSwitch
                   switchChecked={isRepeat}
                   handleSwitchClick={handleRepeatClick}
                   disabled={isRepeatDisabled}
-                />
+                /> 
               </p>
               <SelectToggleRound
                 toggleList={repeatList}
@@ -458,7 +463,7 @@ const TodoEditPage = (props) => {
 
             <div className={Style.select_toggle}>
               <p>
-                <MdControlPoint /> 포인트
+                <div><MdControlPoint /> 포인트</div>
               </p>
               <SelectToggleRound
                 toggleList={pointList}

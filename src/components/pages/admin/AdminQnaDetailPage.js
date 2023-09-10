@@ -125,7 +125,7 @@ const AdminQnaDetailPage = () => {
         <div className={Style.QnaUser}>문의자: {nickname}</div>
         {isAnswered ?
           (<>
-            <div className={Style.QnaContentBox}>
+            <div className={Style.QnaAnswerContentBox}>
               <div className={Style.QnaContentWithAnswer}>{askContents}</div>
               <div className={Style.QnaDate}>{askDate}</div>
             </div>

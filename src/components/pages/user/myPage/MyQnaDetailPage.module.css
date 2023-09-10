@@ -7,11 +7,10 @@
 
 .QnaWriteHeadWrap {
   width: 100%;
-  width: 100%;
   height: 17%;
   padding-left : 20px;
   padding-right: 20px;
-}
+} 
 
 .askListHead {
   margin-top: 20px;
@@ -66,7 +65,7 @@
    
   /* overflow: auto; */
 }
-
+ 
 
 .MyQnaText {
   height: 50%;

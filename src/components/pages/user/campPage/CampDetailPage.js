@@ -158,30 +158,34 @@ const CampDetailPage = ({}) => {
               <div className={Style.campProgressFrontBar} style={{ width: `${campProperties.campProgress}%` }}></div>
             </div>
           </div>
-          <div className={Style.DoBtn}>
-            {isClick ? 
-            (
-              <>
-              <div className={Style.joinCamp_box}>
-                <div className={Style.closeInput}><CloseBtn onClick={()=>setIsClick(false)} /></div>
-                <p>기부에 참여할 포인트를 입력해주세요</p>
-                <div className={Style.joinCamp_input}>
-                  <Input className={Style.ChargeInput}
-                    inputPlaceholderplaceholder='충전 포인트를 입력해주세요'
-                    // inputType="number"
-                    inputValue={pointReplace(campPoint)}
-                    inputHandler={handlerCampPoint}
-                  />
-                  <label>P</label>
-                </div>
-                <DoBtn doText="참여완료"  doOnClick={handlerCampAdd} doDisabled={isDoDisabled}/>
-              </div>
-              <div className={Style.disableDo}><DoBtn  doDisabled={true}/></div>
-              </>
-            )
-            :
-            (<DoBtn doText="참여하기" doOnClick={handlerClickAdd} />)}
-        </div>
+          {status === '진행중' ? 
+            <div className={Style.DoBtn}>
+              {isClick ? 
+                (
+                  <>
+                  <div className={Style.joinCamp_box}>
+                    <div className={Style.closeInput}><CloseBtn onClick={()=>setIsClick(false)} /></div>
+                    <p>기부에 참여할 포인트를 입력해주세요</p>
+                    <div className={Style.joinCamp_input}>
+                      <Input className={Style.ChargeInput}
+                        inputPlaceholderplaceholder='충전 포인트를 입력해주세요'
+                        // inputType="number"
+                        inputValue={pointReplace(campPoint)}
+                        inputHandler={handlerCampPoint}
+                      />
+                      <label>P</label>
+                    </div>
+                    <DoBtn doText="참여완료"  doOnClick={handlerCampAdd} doDisabled={isDoDisabled}/>
+                  </div>
+                  <div className={Style.disableDo}><DoBtn  doDisabled={true}/></div>
+                  </>
+                )
+                :
+                (<DoBtn doText="참여하기" doOnClick={handlerClickAdd} />)}
+              
+            </div>
+            : null
+            }
         </div>
       
       </div>
