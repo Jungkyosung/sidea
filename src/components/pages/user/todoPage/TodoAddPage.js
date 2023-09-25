@@ -9,6 +9,8 @@ import jwt_decode from "jwt-decode";
 import { MdRepeat, MdControlPoint } from 'react-icons/md';
 import { BiCalendarEvent, BiAlarm } from 'react-icons/bi';
 import ToggleSwitch from "../../../UI/atoms/toggle/ToggleSwitch";
+import { FaSleigh } from "react-icons/fa";
+import { colors } from "@mui/material";
 
 
 
@@ -192,18 +194,23 @@ const TodoAddPage = (props) => {
   const formatDateAlarm = (date) => {
     const year = date.getFullYear();
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const day = ('0' + date.getDate()).slice(-2);  
-    const period = selectedPeriod === 'AM' ? 0 : 12; 
-    const hours = parseInt(selectedHour);
+    const day = ('0' + date.getDate()).slice(-2);
+    // const period = selectedPeriod === 'AM' ? 0 : 12;
+    let hours = parseInt(selectedHour);
     const minutes = selectedMinute;
     const seconds = '00';
 
     if (isEnabled) {
-      const formatHours = (period + hours).toString().padStart(2, '0');
+      if (selectedPeriod === 'AM' && hours === 12) {
+        hours = 0; 
+      } else if (selectedPeriod === 'PM' && hours !== 12) {
+        hours += 12; 
+      }
+      const formatHours = hours.toString().padStart(2, '0');
       return `${year}-${month}-${day} ${formatHours}:${minutes}:${seconds}`;
     } else {
       return `${year}-${month}-${day}`;
-    };
+    }
   };
 
 
@@ -233,7 +240,7 @@ const TodoAddPage = (props) => {
       todoSat: todo.todoSat,
       todoSun: todo.todoSun 
     };
-
+    console.log(todoData)
     axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
       todoData,
       { headers: { 'Authorization': `Bearer ${token}` } }
@@ -299,16 +306,19 @@ const TodoAddPage = (props) => {
             </div>
 
             <div className={Style.select_toggle}>
-              <p><BiCalendarEvent />
+              <p>
                 <span>
-                  {today}
-                  { isToday === false ? '' : (selectedDate === 0 ? '' : '~' + endDay)}
+                  <BiCalendarEvent />
+                  <span>
+                    {today}
+                    { isToday === false ? '' : (selectedDate === 0 ? '' : '~' + endDay)}
+                  </span>
                 </span>
                 <ToggleSwitch
                   switchChecked={isToday}
                   handleSwitchClick={handleTodayClick}
                   disabled={isTodayDisabled}
-              />
+                />
               </p>
               <div className={Style.select_toggle_box}>
               <SelectToggleRound
@@ -321,12 +331,13 @@ const TodoAddPage = (props) => {
             </div>
           
             <div className={Style.select_toggle}>
-              <p><MdRepeat /> 반복
-              <ToggleSwitch
-                switchChecked={isRepeat}
-                handleSwitchClick={handleRepeatClick}
-                disabled={isRepeatDisabled}
-              />
+              <p>
+                <span> <MdRepeat /> 반복 </span>
+                <ToggleSwitch
+                  switchChecked={isRepeat}
+                  handleSwitchClick={handleRepeatClick}
+                  disabled={isRepeatDisabled}
+                />
               </p>
               <SelectToggleRound
                 toggleList={repeatList}
@@ -337,7 +348,7 @@ const TodoAddPage = (props) => {
             </div>
 
             <div className={Style.select_toggle}>
-              <p><MdControlPoint /> 포인트</p>
+              <p><span><MdControlPoint /> 포인트</span></p>
               <SelectToggleRound
                 toggleList={pointList}
                 toggleActive={selectedPoint}

@@ -64,6 +64,8 @@ const TodolistPage = () => {
         const todoIdxes = res.data.map(item => item.todoDate);
         setTodoDate(todoDates);
         setTodoIdx(todoIdxes);
+        const tododone = res.data.map(item => item.todoDoneCheck);
+        setTodoDoneState(tododone);
       }
     })
     .catch(err => {
@@ -95,11 +97,11 @@ const TodolistPage = () => {
     navigate(location);
   }
 
-  function handlerNavi(id){
-    console.log(id);
-    // let location = '/campaign/' + id;
-    navigate(`/todo/edit/${id}`);
-  }
+  // function handlerNavi(id){
+  //   console.log(id);
+  //   // let location = '/campaign/' + id;
+  //   navigate(`/todo/edit/${id}`);
+  // }
 
   const titleProperties = {
     titleName: "TODO"
@@ -107,30 +109,35 @@ const TodolistPage = () => {
 
   // 할일 삭제 핸들러
   const handlerDelete = (todoIdx) => {
-    const todoIdxData = { todoIdx: todoIdx };
-  
-    axios.delete(
-      `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
-      {
-        data: todoIdxData,
-        headers: {
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-        },
-      }
-    )
-      .then((res) => {
-        if (res.data === '삭제') {
-          console.log("정상적으로 삭제되었습니다.");
-          alert("정상적으로 삭제되었습니다")
-          window.location.replace('/todolist');
-        } else {
-          console.log("삭제에 실패했습니다.");
-          return;
+    if (window.confirm('투두를 삭제 하시겠습니다?')) {
+      const todoIdxData = { todoIdx: todoIdx };
+    
+      axios.delete(
+        `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo`,
+        {
+          data: todoIdxData,
+          headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+          },
         }
-      })
-      .catch((err) => {
-        console.error('에러 상세 정보:', err); 
-      });
+      )
+        .then((res) => {
+          if (res.data === '삭제') {
+            console.log("정상적으로 삭제되었습니다.");
+            alert("정상적으로 삭제되었습니다")
+            window.location.replace('/todolist');
+          } else {
+            console.log("삭제에 실패했습니다.");
+            return;
+          }
+        })
+        .catch((err) => {
+          console.error('에러 상세 정보:', err); 
+        });
+
+    } else {
+      console.log("취소")
+    }
   };
 
   const handlerTodoClick = (data) => {
@@ -141,10 +148,17 @@ const TodolistPage = () => {
   const handlerDoneClick = (todoIdx, todo) => {
 
     const today = new Date().getDate();
+    
 
     if (today === selectedDate){
       let todoDoneIdx  = todo.todoDoneIdx;
-      let todoDoneCheck = todo.todoDoneCheck === 0 ? 1 : 0;
+      // let todoDoneCheck = todo.todoDoneCheck;
+      setTodoDoneState((prevTodoDoneState) => ({
+        ...prevTodoDoneState,
+        [todoIdx]: !prevTodoDoneState[todoIdx],
+      }))
+  
+      let todoDoneCheck = !todoDoneState[todoIdx] ? 1 : 0;
 
       if (todoDoneIdx === 0){
           const todoDoneFirst = {
@@ -156,7 +170,7 @@ const TodolistPage = () => {
           )
             .then((res) => {
               console.log(res);
-              // window.location.replace(`/todolist`)
+              window.location.replace(`/todolist`)
               // setTodoDone(todoDoneCheck === 0 ? 1 : 0);
             })
             .catch((err) => {
@@ -165,9 +179,9 @@ const TodolistPage = () => {
         } else {
           const todoDoneSwitch = {
             todoDoneIdx: todoDoneIdx,
-            todoDoneCheck: todoDoneCheck 
+            todoDoneCheck: todoDoneCheck
           };
-          
+          console.log(todoDoneSwitch);
           axios.put(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/todo/done`, 
             todoDoneSwitch, { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } }
           )
@@ -180,16 +194,14 @@ const TodolistPage = () => {
             .catch((err) => { 
               console.error('에러 상세 정보:', err);
             });
-        };
-        setTodoDoneState({
-          ...todoDoneState,
-          [todoIdx]: !todoDoneState[todoIdx],
-        });
+        }
+        
     } else {
       alert("오늘 날짜가 아닙니다. 완료 처리되지 않습니다");
     };
   };
 
+console.log(todoDoneState)
       const todoContent = () => (
         Array.isArray(data) && data.length > 0
         ?
@@ -197,7 +209,8 @@ const TodolistPage = () => {
             data.map((todo, index) => (
               <TodoContent
                 key={index}
-                todoDoneClick={() => handlerDoneClick(todo.todoIdx, todo)}
+                todoDoneClick={()=>handlerDoneClick(todo.todoIdx, todo)}
+                todoDoneBlur={setTodoDoneState}
                 todoFinishCheck={todoDoneState[todo.todoIdx] || false} 
                 // todoFinishCheck={todo.todoDoneCheck === 1 ? true : false}
                 todoTitle={todo.todoContents}
