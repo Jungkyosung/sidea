@@ -2,7 +2,7 @@
   color: #0077E4;
   z-index: 1;
   position :absolute;
-  top : 14px;
+  top : 22px;
 }
 
 .NavMenuBox {
@@ -10,17 +10,18 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  width: 52px;
-  height: 60px;
+  /* width: 52px; */
+  /* height: 60px; */
+  padding: 10px 15px;
   border-radius: 10px;
   background-color : #0077E4;
   box-shadow: 1px 2px 1px 1px rgba(0, 0, 0, 0.2);
   color: #FFFFFF;
-  font-size: 0.6rem;
+  font-size: 0.9rem;
   z-index: 1;
-  position :absolute;
-  top : 22px;
-  right: -20px;
+  position : absolute;
+  top : 35px;
+  right: -30px;
 
   animation-name: modal-animation;
   animation-duration: 0.1s;

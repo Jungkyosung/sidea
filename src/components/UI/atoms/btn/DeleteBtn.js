@@ -1,10 +1,10 @@
 import Style from './Btn.module.css';
 
-const DeleteBtn = ({ deleteOnClick }) => {
+const DeleteBtn = ({ deleteTxt, deleteOnClick }) => {
   return (
     <>
       <button className={Style.DeleteBtn}  onClick={deleteOnClick}>
-          삭제
+          {deleteTxt}
       </button>
     </>
   )

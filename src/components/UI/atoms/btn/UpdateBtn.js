@@ -1,11 +1,11 @@
 import Style from './Btn.module.css';
 
-const UpdateBtn = ({ updateOnClick }) => {
+const UpdateBtn = ({ updateTxt, updateOnClick }) => {
 
   return (
     <>
       <button className={Style.UpdateBtn}  onClick={updateOnClick}>
-          수정
+          {updateTxt}
       </button>
     </>
   )

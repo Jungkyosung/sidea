@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Style from './Input.module.css';
 
-const Input = ({ inputType, inputValue, inputHandler, inputPlaceholder }) => {
+const Input = ({ inputType, inputValue, inputHandler, inputPlaceholder, readOnly }) => {
   
   return (
     <>
@@ -11,6 +11,7 @@ const Input = ({ inputType, inputValue, inputHandler, inputPlaceholder }) => {
               value={inputValue}
               onChange={inputHandler}
               placeholder={inputPlaceholder}
+              disabled={readOnly}
         />
       </div>
     </>

@@ -4,49 +4,71 @@ import MainQuickBtn from './MainQuickBtn';
 import QuickTodo from './icons/iconn1.png';
 import QuickPoint from './icons/iconn2.png';
 import QuickMy from './icons/iconn3.png';
+import { useNavigate } from 'react-router-dom';
 
-const MainQuickContainer = () => {
+const MainQuickContainer = ({isLogin}) => {
   
-  const handlerMouseOver = () => {};
-  const handlerMouseOut = () => {};
+  const navigate = useNavigate();
 
-  const handlerGoTodo = () => {
-    console.log("TODO")
+  const locations = {
+    todo : "/todolist",
+    point : "/mypage/point",
+    mypage: "/mypage",
+    login: "/login"
   };
 
-  const handlerGoPoint = () => {
-    console.log("Point")
+  function handlerMove(location){
+    navigate(location);
   };
 
-  const handlerGoMy = () => {
-    console.log("My")
+  function handlerAlert(location){
+    alert('로그인 후 이용 가능합니다. 로그인 페이지로 이동합니다')
+    navigate(location);
   };
 
   return (
     <div className={Style.container}>
-      <MainQuickBtn
-        quickIcon={QuickTodo}
-        quickTitle="TODO"
-        onMouseOver={handlerMouseOver}
-        onMouseOut={handlerMouseOut}
-        quickClick={handlerGoTodo}
-      />
+      {isLogin ?
+        (<>
+          <MainQuickBtn
+          quickIcon={QuickTodo}
+          quickTitle="TODO"
+          quickClick={()=>handlerMove(locations.todo)}
+          />
 
-      <MainQuickBtn
-        quickIcon={QuickPoint}
-        quickTitle="POINT"
-        onMouseOver={handlerMouseOver}
-        onMouseOut={handlerMouseOut}
-        quickClick={handlerGoPoint}
-      />
+          <MainQuickBtn
+            quickIcon={QuickPoint}
+            quickTitle="POINT"
+            quickClick={()=>handlerMove(locations.point)}
+          />
 
-      <MainQuickBtn
-        quickIcon={QuickMy}
-        quickTitle="MY"
-        onMouseOver={handlerMouseOver}
-        onMouseOut={handlerMouseOut}
-        quickClick={handlerGoMy}
-      />
+          <MainQuickBtn
+            quickIcon={QuickMy}
+            quickTitle="MY"
+            quickClick={()=>handlerMove(locations.mypage)}
+          />
+        </>)
+        :
+        (<>
+          <MainQuickBtn
+          quickIcon={QuickTodo}
+          quickTitle="TODO"
+          quickClick={()=>handlerAlert(locations.login)}
+          />
+
+          <MainQuickBtn
+            quickIcon={QuickPoint}
+            quickTitle="POINT"
+            quickClick={()=>handlerAlert(locations.login)}
+          />
+
+          <MainQuickBtn
+            quickIcon={QuickMy}
+            quickTitle="MY"
+            quickClick={()=>handlerAlert(locations.login)}
+          />
+        </>)
+      }
     </div>
   );
 };

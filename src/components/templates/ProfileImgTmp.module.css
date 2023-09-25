@@ -1,8 +1,17 @@
 .ContentsWrap {
+  width: 100%;
+  height: 100%;
+  /* background-color: aqua; */
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  margin-top : 40px;
-  margin-left : 20px;
-  margin-right: 20px;
+  padding: 60px 20px;
+}
+
+.ProfileWrap {
+  width: 100%;
+  margin: 20px 0px;
+  /* background-color: antiquewhite; */
+  text-align: center;
 }

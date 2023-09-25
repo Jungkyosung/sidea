@@ -1,7 +1,11 @@
+.Year_Month {
+  margin-bottom: 5px;
+}
 .datebox {
   /* border: 1px solid red; */
   display: flex;
   justify-content: space-between;
+  align-items: center
 }
 
 /* 전, 후 주간 버튼 */
@@ -19,6 +23,7 @@
   height: 50px;
   width: calc(100% / 7);
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .SelectedDay {
@@ -28,14 +33,21 @@
 
 /* 요일 */
 .dayText {
-  /* font-weight: bold; */
-  color: black;
+  font-size: 0.8em;
+  color: rgb(0, 0, 0, 0.6);
 }
 
 .Sun {
-  color: red; 
+  color: #0077E4; 
 }
 
 .Sat {
-  color: blue; 
+  color: #B2D9FD; 
 }
+
+.arrow {
+  font-size: 1.5em;
+  color: #0077E4;
+  cursor: pointer;
+}
+

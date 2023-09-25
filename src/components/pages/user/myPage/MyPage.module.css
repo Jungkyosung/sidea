@@ -1,5 +1,6 @@
 .MenuBox {
-  margin-top: 50px;
+  /* margin-top: 50px; */
+  height: 55%;
 }
 
 .LogoutBtn {
@@ -7,5 +8,6 @@
   justify-content: flex-end;
   width: 100%;
   text-decoration: underline;
-  margin-top: 140px;
+  /* margin-top: 140px; */
+  cursor: pointer;
 }

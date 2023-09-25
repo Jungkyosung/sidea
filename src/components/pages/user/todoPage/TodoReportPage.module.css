@@ -15,8 +15,8 @@
 
 .selectRepot_box {
   margin-bottom: 20px;
-  display: flex;
-  justify-content: space-around;
+  width: 70%;
+  margin: auto;
 }
 
 .report {
@@ -34,4 +34,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.report_point_box {
+  background-color: lightgrey;
+  height: 25%;
+  margin: 10px 0px;
+  display: flex;
+  justify-content: space-between;
+}
+.report_point {
+  background-color: aqua;
+  width: calc(50% - 10px);
+  margin: 0px 5px;
 }

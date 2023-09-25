@@ -1,16 +1,17 @@
 .ContentsWrap {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top : 40px;
-  margin-left : 20px;
-  margin-right: 20px;
+  /* align-items: center; */
+  width: 100%;
+  height: 100%;
+  padding: 60px 20px;
 }
 
 .askListHead {
   display: flex;
   justify-content: flex-start;
   width: 100%;
+  margin: 10px 0px;
   color: rgba(0, 0, 0, 0.6);
 }
 
@@ -23,4 +24,9 @@
 
 .askListBox::-webkit-scrollbar {
   display: none;
+}
+s
+
+.nullContens {
+  margin-top: 150px;
 }

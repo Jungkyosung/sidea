@@ -1,0 +1,15 @@
+.react-datepicker-wrapper {
+  display: block !important;
+}
+
+.react-datepicker__close-icon {
+  height: auto;
+  padding: 0px 5px;
+  top: 23%;
+  right: 1%;
+  background-color: transparent;
+}
+
+.react-datepicker__close-icon::after {
+  background-color: #0077E4;
+}

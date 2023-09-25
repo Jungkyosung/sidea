@@ -1,34 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Style from './TimePicker.module.css';
 import { Swiper } from 'swiper';
+import 'swiper/css';
 
+const TimePicker = ({ selectedPeriod, selectedHour, selectedMinute, setSelectedPeriod, setSelectedHour, setSelectedMinute, onPeriod, onHour, onMinute, toggleOff}) => {
 
-const TimePicker = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState('AM');
-  const [selectedHour, setSelectedHour] = useState('01');
-  const [selectedMinute, setSelectedMinute] = useState('00');
+  const view1 = useRef(null);
+  const view2 = useRef(null);
+  const view3 = useRef(null);
+  
 
   const periods = ['AM', 'PM'];
   const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
   const minutes = Array.from({ length: 12 }, (_, i) => (i * 5).toString().padStart(2, '0'));
 
-  
-
   // Swiper 초기화 및 해제
   useEffect(() => {
     const mySwiper = new Swiper(`.${Style.swiper_container}`, {
       direction: 'vertical',
-      loop: true,
       slidesPerView: 3,
       centeredSlides: true,
-      freeMode: true,
-      // 슬라이드를 클릭하면 해당 슬라이드로 자동 이동
       slideToClickedSlide: true,
-      scrollbar: {
-        el: `${Style.swiper_wrapper}`,
-        draggable: true,
-        dragSize: 4,
-      },
+      initialSlide: 1
     });
     
     return () => {
@@ -40,88 +33,96 @@ const TimePicker = () => {
 
   const handlePeriodSelect = period => {
     setSelectedPeriod(period);
+    onPeriod(period);
+    console.log(onPeriod)
   };
 
   const handleHourSelect = hour => {
+    let 총높이 = view2.current.scrollHeight;
+    let 이동할y값 = 총높이*hour/12; 
+    //스크롤 위치를 빼줘야 하나?
+    //빈 시간을 추가해주면 좀더 될 거 같기도?
+    console.log(이동할y값);
+    view2.current.scrollTo(0,이동할y값-69.6);
+
     setSelectedHour(hour);
+    onHour(hour);
   };
 
   const handleMinuteSelect = minute => {
+    let 총높이 = view3.current.scrollHeight;
+    let 이동할y값 = 총높이*(minute/5 + 1 )/12; 
+    
+    console.log(이동할y값);
+    view3.current.scrollTo(0,이동할y값-69.6);
+
     setSelectedMinute(minute);
+    onMinute(minute);
   };
 
-  
-  
-
   return (
-    <div className="time-picker">
-      <div className="time-display">
+    <div className={Style.time_picker}>
+      {/* <div className="time-display">
         <span className="selected-time">
           <span className="selected-hour">{selectedHour}:</span>
           <span className="selected-minute">{selectedMinute}</span>
           <span className="selected-period">{selectedPeriod}</span>
         </span>
-      </div>
+      </div> */}
+
       <div className={Style.options}>
 
+
         {/* Swiper 컨테이너 */}
-        <div className={`${Style.swiper_container} swiper-container`}>
-          {/* Swiper 슬라이드 */}
-          <div className={`${Style.swiper_wrapper} swiper-wrapper`}>
-            {/* Periods */}
-            <div className={`${Style.period} swiper-slide`}>
+        <div className={ `${Style.swiper_container} swiper-container`}>
+          <div ref={view1} className={`${Style.swiper_wrapper} swiper-wrapper`}>
               {periods.map(period => (
-                <button
-                  key={period}
-                  className={`period-option ${selectedPeriod === period ? 'selected' : ''}`}
-                  onClick={() => handlePeriodSelect(period)}
-                >
-                  {period}
-                </button>
+                <div key={period} className={`${Style.swiper_slide} swiper-slide`}>
+                  <button
+                    key={period}
+                    className={`period-option ${selectedPeriod === period  && !toggleOff ? Style.selected : '' }`}
+                    onClick={() => handlePeriodSelect(period)}
+                    disabled={toggleOff}
+                  >
+                    {period}
+                  </button>
+                </div>
               ))}
-            </div>
           </div>
         </div>
-
         {/* Hours */}
         <div className={`${Style.swiper_container} swiper-container`}>
-          <div className={`${Style.swiper_wrapper} swiper-wrapper`}>
-            <div className={`swiper-slide ${Style.slide}`}>
+          <div ref={view2} className={`${Style.swiper_wrapper} swiper-wrapper`}>
               {hours.map(hour => (
-                
-                  <div className={Style.hour}>
+                <div key={hour} className={`swiper-slide ${Style.swiper_slide}`}>
                   <button
-                  key={hour}
-                  className={`hour-option ${selectedHour === hour ? 'selected' : ''}`}
-                  onClick={() => handleHourSelect(hour)}
-                >
+                    className={`hour-option ${selectedHour === hour && !toggleOff ? Style.selected : ''}`}
+                    onClick={() => handleHourSelect(hour)}
+                    disabled={toggleOff}
+                  >
                   {hour}
-                </button>
+                  </button>
                 </div>
-                
               ))}
-            </div>
           </div>
         </div>
         {/* Minutes */}
         <div className={`${Style.swiper_container} swiper-container`}>
-          <div className={`${Style.swiper_wrapper} swiper-wrapper`}>
-            {/* Swiper 슬라이드 영역 */}
-            <div className={`swiper-slide ${Style.minute}`}>
-              {minutes.map(minute => (
-                <div key={minute}>
-                  {/* 선택된 요소의 스타일 적용 */}
-                  <button key={minute}
-                    className={`minute-option ${selectedMinute === minute ? Style.selected : ''}`}
-                    onClick={() => handleMinuteSelect(minute)}
-                  >
-                    {minute}
-                  </button>
-                </div>
-              ))}
-            </div>
+          <div ref={view3} className={`${Style.swiper_wrapper} swiper-wrapper`}>
+            {minutes.map(minute => (
+              <div key={minute} className={`swiper-slide ${Style.swiper_slide}`}>
+                <button key={minute}
+                  className={`minute-option ${selectedMinute === minute && !toggleOff ? Style.selected : ''}`}
+                  onClick={() => handleMinuteSelect(minute)}
+                  disabled={toggleOff}
+                >
+                  {minute}
+                </button>
+              </div>
+            ))}
           </div>
         </div>
+
       </div>
     </div>
   );

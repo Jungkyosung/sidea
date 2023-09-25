@@ -1,51 +1,63 @@
 .ContentsWrap {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top : 40px;
-  overflow: hidden;
+  align-items: center; */
+  width: 100%;
+  height: 100%;
+  padding : 60px 0px 40px;
+  /* background-color: antiquewhite; */
+  /* overflow: hidden; */
 }
 
 .QnaWriteHeadWrap {
   width: 100%;
+  height: 17%;
   padding-left : 20px;
   padding-right: 20px;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .askListHead {
-  display: flex;
-  justify-content: flex-start;
+  /* display: flex;
+  justify-content: flex-start; */
   width: 100%;
+  margin-top: 20px;
   color: rgba(0, 0, 0, 0.6);
 }
 
 .QnaWriteBox {
   width: 100%;
-  margin-top: 20px;
-  border: none;
-  box-shadow: 0px -3px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 30px;
-  padding-left : 20px;
-  padding-right: 20px;
-  padding-top: 40px;
+  height: 73%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
+  border: none;
+  box-shadow: 0px -4px 4px rgb(0, 0, 0, 0.4);
+  border-radius: 20px 20px 0px 0px;
+
+  padding: 20px;
+  background-color: white;
   animation-name: modal-animation;
-  animation-duration: 0.4s;
+  animation-duration: 0.2s;
   animation-timing-function: ease-in;
 }
 
 @keyframes modal-animation {
   0% {
-    transform: translateY(50%);
+    transform: translateY(30%);
   }
   100% {
     transform: translateY(0%);
   }
 }
+.QnaWriteTitle {
+  height: 12%;
+  /* background-color: black; */
+}
 
 .QnaWriteCont {
-  height: 340px;
+  height: 83%;
   width: 100%;
   border: none;
   border-radius: 8px;
@@ -53,22 +65,90 @@
   color: black;
   padding: 10px;
   resize: none;
+  font-size: 1em;
+  line-height: 1.4em;
 }
 
 .QnaWriteCont:focus {
-  outline: none;
+  outline: 2px solid #B2D9FD ;
 }
 
 .QnaWriteCont::placeholder {
   color: rgba(0, 0, 0, 0.6);
+  font-size: 0.8em;
+}
+
+/* 스크롤바css */
+.QnaWriteCont::-webkit-scrollbar {
+  width: 5px;
+}
+
+.QnaWriteCont::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  transition: width 0.2s ease-in-out;
+}
+
+.QnaWriteCont::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(178, 217, 253, 0.5);
 }
 
 .QnaWriteBtm {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   width: 100%;
-  height: 200px;
+  height: 10%;
   padding-left : 20px;
   padding-right: 20px;
   background-color: #FFFFFF;
   z-index: 1;
+}
+
+.close {
+  height: 5%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.QnaEditBox {
+  width: 100%;
+  height: 73%;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  border: none;
+  box-shadow: 0px -4px 4px rgb(0, 0, 0, 0.4);
+  border-radius: 20px 20px 0px 0px;
+
+  padding: 50px 20px 20px;
+  background-color: white;
+  animation-name: modal-animation;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-in;
+}
+
+.QnaEditTitle {
+  height: 15%;
+  /* background-color: black; */
+}
+
+.QnaEditCont {
+  height: 85%;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+  color: black;
+  padding: 10px;
+  resize: none;
+  font-size: 1em;
+  line-height: 1.4em;
+}
+
+.QnaEditCont:focus {
+  outline: 2px solid #B2D9FD;
+}
+
+.nullContens {
+  height: 20%;
 }

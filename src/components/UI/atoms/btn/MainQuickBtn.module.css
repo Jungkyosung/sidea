@@ -6,7 +6,7 @@
   text-align: center;
   border: 2px solid black;
   background-color: rgb(255, 255, 255, 0.5);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(3px);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -14,6 +14,7 @@
 .mainQuick:hover {
   border: 2px solid #B2D9FD;
 }
+
 
 .mainQuickIcon {
   position: absolute;

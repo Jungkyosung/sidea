@@ -1,36 +1,67 @@
 import Style from './MyQnalistPage.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DoBtn from '../../../UI/atoms/btn/DoBtn';
 import AskList from '../../../UI/atoms/AskList';
 import { useNavigate } from 'react-router';
 import ProfileImgTmp from '../../../templates/ProfileImgTmp';
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 const MyQnalistPage = () => {
-
+  const [nickname, setNickname] = useState("");
+  const [profileImg, setProfileImg] = useState("https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg");
+  const [data, setData] = useState('');
   const navigate = useNavigate();
 
-  const [profileInfo, setProfileInfo] = useState({
-    profileImgSrc: "https://i.pinimg.com/564x/84/62/80/846280899168e1abab5a6cd0d6e03dcf.jpg",
-    profileText: "닉네임"
-  });
+
+  // 페이지 로딩시 및 날짜 선택 변경시 데이터 로드
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    const decode_token = jwt_decode(token);
+    const userIdx = decode_token.userIdx;
+    
+    const params = { userIdx: userIdx};
+    
+    axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/qna`, 
+    {
+      params,
+      headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` },
+    })
+    .then(res => {
+      console.log(res.data)
+      setData(res.data);      
+      setNickname(decode_token.nickname)
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }, []);
+
 
   function handlerMove(location) {
     navigate(location);
   }
 
+  function handlerNavi(id) {
+    navigate(`/mypage/qna/detail/${id}`);
+  }
+
   return (
-    <ProfileImgTmp profileImgSrc={profileInfo.profileImgSrc} profileText={profileInfo.profileText}>
+    <ProfileImgTmp profileImgSrc={profileImg} profileText={nickname}>
       <div className={Style.askListHead} >나의 문의내역</div>
       <div className={Style.askListBox}>
-        <AskList askNumber={"1"} askTitleClick={() => handlerMove("/mypage/qna/detail/1")} askTitle={"문의샘플제목1"} askIsCommented={true} />
-        <AskList askNumber={"2"} askTitleClick={() => handlerMove("/mypage/qna/detail/2")} askTitle={"문의샘플제목 길어지면 어떻게 될까?2"} askIsCommented={true} />
-        <AskList askNumber={"3"} askTitleClick={() => handlerMove("/mypage/qna/detail/3")} askTitle={"문의샘플제목 길어지면 어떻게 될까?3"} askIsCommented={false} />
-        <AskList askNumber={"4"} askTitleClick={() => handlerMove("/mypage/qna/detail/4")} askTitle={"문의샘플제목4"} askIsCommented={false} />
-        <AskList askNumber={"5"} askTitleClick={() => handlerMove("/mypage/qna/detail/5")} askTitle={"문의샘플제목5"} askIsCommented={false} />
-        <AskList askNumber={"6"} askTitleClick={() => handlerMove("/mypage/qna/detail/6")} askTitle={"문의샘플제목 길어지면 어떻게 될까?6"} askIsCommented={true} />
-        <AskList askNumber={"7"} askTitleClick={() => handlerMove("/mypage/qna/detail/7")} askTitle={"문의샘플제목 길어지면 어떻게 될까?7"} askIsCommented={true} />
-        <AskList askNumber={"8"} askTitleClick={() => handlerMove("/mypage/qna/detail/8")} askTitle={"문의샘플제목 길어지면 어떻게 될까?8"} askIsCommented={false} />
-        <AskList askNumber={"9"} askTitleClick={() => handlerMove("/mypage/qna/detail/9")} askTitle={"문의샘플제목 길어지면 어떻게 될까?9"} askIsCommented={true} />
+        { Array.isArray(data) && data.length > 0 ? 
+          (data.map((ask, index) => (
+            <AskList
+              key={ask.askIdx}
+              askNumber={data.length - index}
+              askTitleClick={() => handlerNavi(ask.askIdx)}
+              askTitle={ask.askTitle}
+              askIsCommented={ask.askAnswer ? true : false} />
+            ))
+          ) 
+          : (<div className={Style.nullContens}>등록된 문의가 없습니다</div>)
+        }
       </div>
       <DoBtn doOnClick={() => handlerMove("/mypage/qna/write")} doText={"문의하기"} />
     </ProfileImgTmp>

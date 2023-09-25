@@ -2,12 +2,15 @@
   width: 100%;
   height: 100%;
   padding: 120px 20px;
-  background-color: antiquewhite;
+  background-image: url('./main.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  /* background-color: antiquewhite; */
 }
 
 /*  */
 .main_box {
-  border: 1px solid red;
+  /* border: 1px solid red; */
   width: 100%;
   height: 100%;
   display: flex;
@@ -17,12 +20,12 @@
 
 /* 메인 헤더 */
 .main_header {
-  background-color: skyblue;
+  /* background-color: skyblue; */
 }
 
 /* 메인 퀵메뉴 */
 .main_menu {
-  background-color: pink;
+  /* background-color: pink; */
 }
 
 
@@ -34,4 +37,5 @@
 
 .logintext span {
   text-decoration: underline;
+  cursor: pointer;
 }

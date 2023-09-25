@@ -9,8 +9,10 @@ const ProfileImgTmp = ({children, profileImgSrc, profileText }) => {
   return (
     <NaviControll>
       <div className={Style.ContentsWrap}>
-        <ProfileImg profileImgSrc={profileImgSrc} />
-        <ProfileText profileText={profileText} />
+        <div className={Style.ProfileWrap}>
+          <ProfileImg profileImgSrc={profileImgSrc} />
+          <ProfileText profileText={profileText} />
+        </div>
         {children}
       </div>
     </NaviControll>

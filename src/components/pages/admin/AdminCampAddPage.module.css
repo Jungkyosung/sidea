@@ -1,45 +1,61 @@
 .ContentsWrap {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top : 40px;
-  margin-left : 20px;
-  margin-right: 20px;
+  justify-content: space-between;
+  padding: 60px 20px;
 }
 
-.AdminTitle {
-  width: 100%;
+.input_container {
+  width: 100%; 
+  height: 80%;
+  margin: 25px 0px 0px;
+  /* border: 1px solid pink; */
   display: flex;
-  font-size : 2rem;
-  font-weight: bold;
-  margin-bottom: 40px;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .InputBox {
   width: 100%;
+  height: 10%;
+}
+
+.pointBox {
+  position: relative;
+}
+
+.pointBox span {
+  position: absolute;
+  top: 19%;
+  right: 4%;
+  font-weight: bold;
 }
 
 .FileAdd {
   width: 100%;
+  height: 52%;
+  /* border: 1px solid blue; */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .FileAddInput {
+  width: 100%;
+  height: 40px;
+  font-size: 0.8rem;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
-  width: 100%;
-  height: 45px;
-  font-size: 0.8rem;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
-  border-radius: 8px;
-  margin-bottom: 10px;
 }
 
 .FileAddInput > div {
   width: 70%;
   padding-left: 10px;
+  
 }
 
 .FileAddInput > label {
@@ -50,6 +66,7 @@
   height: 100%;
   border-radius: 0 8px 8px 0;
   background-color: #B2D9FD;
+  cursor: pointer;
 }
 
 .FileAdd > input {
@@ -57,6 +74,55 @@
 }
 
 .InputImgView {
-  width: 235px;
-  height: 235px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.campImgBox {
+  /* border:1px solid blue; */
+  background-color: rgb(178, 217, 253, 0.2);
+  border-radius: 8px;
+  width: 100%;
+  height: 216px;
+  padding: 8px;
+  text-align: center;
+}
+
+.Dobtn {
+  width: 100%;
+  height: 10%;
+}
+
+.datepicker, .select_box {
+  width: 100%;
+  height: 40px;
+  padding: 0px 10px;
+  display: flex;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+  font-size: 1em;
+  color: black;
+  cursor: pointer;
+}
+
+.datepicker::placeholder {
+  font-size: 0.8em;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.datepicker:focus, .donorDropbox:focus {
+ outline: #B2D9FD;
+}
+.select_box {
+  padding-left: 5px;
+}
+.donorDropbox {
+  border: none;
+  font-size: 1em;
+  color: black;
+  cursor: pointer;
+  width: 100%;
 }
