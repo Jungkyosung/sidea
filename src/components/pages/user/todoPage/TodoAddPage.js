@@ -281,7 +281,7 @@ const TodoAddPage = (props) => {
 
           <div className={Style.select_box}>
             <p>
-              <div><BiAlarm /> 알림 <span>{alarmstr}</span></div>
+              <span><BiAlarm /> 알림 <span>{alarmstr}</span></span>
               <span>
                 <ToggleSwitch
                   switchChecked={isEnabled}
@@ -307,18 +307,18 @@ const TodoAddPage = (props) => {
 
             <div className={Style.select_toggle}>
               <p>
-                <div>
+                <span>
                   <BiCalendarEvent />
                   <span>
                     {today}
                     { isToday === false ? '' : (selectedDate === 0 ? '' : '~' + endDay)}
                   </span>
-                </div>
+                </span>
                 <ToggleSwitch
                   switchChecked={isToday}
                   handleSwitchClick={handleTodayClick}
                   disabled={isTodayDisabled}
-              />
+                />
               </p>
               <div className={Style.select_toggle_box}>
               <SelectToggleRound
@@ -332,12 +332,12 @@ const TodoAddPage = (props) => {
           
             <div className={Style.select_toggle}>
               <p>
-                <div> <MdRepeat /> 반복 </div>
-              <ToggleSwitch
-                switchChecked={isRepeat}
-                handleSwitchClick={handleRepeatClick}
-                disabled={isRepeatDisabled}
-              />
+                <span> <MdRepeat /> 반복 </span>
+                <ToggleSwitch
+                  switchChecked={isRepeat}
+                  handleSwitchClick={handleRepeatClick}
+                  disabled={isRepeatDisabled}
+                />
               </p>
               <SelectToggleRound
                 toggleList={repeatList}
@@ -348,7 +348,7 @@ const TodoAddPage = (props) => {
             </div>
 
             <div className={Style.select_toggle}>
-              <p><div><MdControlPoint /> 포인트</div></p>
+              <p><span><MdControlPoint /> 포인트</span></p>
               <SelectToggleRound
                 toggleList={pointList}
                 toggleActive={selectedPoint}
