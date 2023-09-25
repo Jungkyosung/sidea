@@ -13,6 +13,7 @@ const MyEditPage = () => {
   const navigate = useNavigate();
 
   const [nickname, setNickname] = useState("");
+  const [uploadImg, setUploadImg] = useState('https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg');
   const [profileImg, setProfileImg] = useState("https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg");
   const [email, setEmail] = useState("");
   const [userPw, setUserPw] = useState('');
@@ -191,7 +192,7 @@ const MyEditPage = () => {
   const MIN_PASSWORD_LENGTH = 10;
 
   const handlerChangePw = (e) => {
- 
+
     const pwLength = e.target.value;
     setChangePw(pwLength);
 
@@ -263,12 +264,26 @@ const MyEditPage = () => {
     );
   };
 
+  const handlerImgChange = (e) => {
+    const files = e.target.files;
+    console.log(files);
+    const reader = new FileReader();
+    reader.onload = ()=> {
+      console.log(reader.result);
+      const imageURL = reader.result;
+      setUploadImg(imageURL);
+    };
+    reader.readAsDataURL(files[0]);
+
+  }
 
   return (
     <NaviControll>
       <div className={Style.ContentsWrap}>
         <div className={Style.profile}>
-        <ProfileImg profileImgSrc={profileImg} />
+          <ProfileImg profileImgSrc={uploadImg} />
+          <label htmlFor='prfImg' className={Style.prfInputLabel}>이미지 파일선택</label>
+          <input id="prfImg" type="file" name="prfImg" onChange={handlerImgChange}/>
         </div>
         <div className={Style.editContents}>
         <div className={Style.EditInputBox}>
