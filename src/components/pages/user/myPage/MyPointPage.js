@@ -55,14 +55,13 @@ const MyPointPage = () => {
     setSelectedChargePoint(parseInt(e, 10)); 
     setChargeInput(''); 
   };
-
-  // 입력 포인트 
+  
   const handlerInputChange = (e) => {
     const inputValue = e.target.value;
-    const number = inputValue.replace(/[^0-9]/g, '');
-    
-    if (number !== '') {
-      const inputPoint = parseInt(number, 10);
+    const number = inputValue.replace(/[^0-9-]/g, ''); // "+"와 "-"를 포함한 모든 기호를 제거
+    const inputPoint = parseInt(number, 10);
+  
+    if (inputPoint > 0) { // 양수 여부 확인
       // 포커스가 아웃되었을 때 값 비교
       e.target.onblur = () => {
         if (chargePointList.includes(inputPoint)) {
@@ -86,7 +85,8 @@ const MyPointPage = () => {
 
   // 충전 버튼
   const handlerCharPoint = () => {
-    // e.preventDefault();
+    if(selectedChargePoint) {
+      // e.preventDefault();
     console.log(selectedChargePoint);
     const pointDto = {
       userIdx : userIdx,
@@ -115,6 +115,9 @@ const MyPointPage = () => {
           }
         });
     console.log("충전")
+    } else {
+      alert('충전할 포인트를 선택해주세요');
+    }
   };
 
   // 포인트 타입

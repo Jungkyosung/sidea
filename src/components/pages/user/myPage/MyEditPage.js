@@ -74,9 +74,28 @@ const MyEditPage = () => {
 
   // 닉네임, 프로필 이미지, 비밀번호 수정가능
   const handlerEdit = () => {
-    
+    let requestData = {
+      userEmail: email,
+      userImg: profileImg,
+      userNickname: nickname,
+      
+    };
+  
+    // 비밀번호가 변경된 경우에만  추가
+    if (changePw) {
+      requestData = {
+        ...requestData,
+        userPw: changePw,
+      };
+    } else {
+      requestData = {
+        ...requestData,
+        userPw: currentPw,
+      };
+    }
     axios.put(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/user`,
-      { userEmail: email, userPw: changePw, userImg: profileImg, userNickname: nickname },
+      // { userEmail: email, userPw: changePw, userImg: profileImg, userNickname: nickname },
+      requestData,
       { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
       })
         .then(res => {
@@ -99,16 +118,18 @@ const MyEditPage = () => {
   
   };
 
-  // input handler
   const handlerNickname = (e) => {
-    setNickname(e.target.value);
-    if(e.target.value){
+    const changeNickname = e.target.value;
+  
+    if (changeNickname === myNickName) {
+      setIsValidNickname(true);
+      setMessageDuplicate("");
+    } else {
       setIsValidNickname(false);
       setMessageDuplicate("중복 확인을 해주세요");
     }
-    if(myNickName == nickname) {
-      setIsValidNickname(true);
-    }
+  
+    setNickname(changeNickname);
   }
 
   // 닉네임 중복 확인
@@ -122,9 +143,7 @@ const MyEditPage = () => {
       headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}`}
     })
       .then((response) => {
-        console.log(response);
-        console.log(response.config.params.usernickname);
-        console.log(myNickName);
+        
         const userNickname = response.config.params.usernickname;
         if (response.data === 0) {
           setIsValidNickname(true);
@@ -226,33 +245,37 @@ const MyEditPage = () => {
 
   // 
   const leaveUser = () => {
-    if (window.confirm('탈퇴 후 일정기간 재가입이 불가능 합니다. 탈퇴 하시겠습니까?')){
+    if(isCurrentPw) {
+      if (window.confirm('탈퇴 후 일정기간 재가입이 불가능 합니다. 탈퇴 하시겠습니까?')){
       
-    axios.put(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/user/delete`,
-      { userEmail: email, userPw: userPw },
-      { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }}
-    )
-      .then(res => {
-        console.log(res);
-        sessionStorage.clear();
-        localStorage.clear();
-        alert('서비스를 이용해주셔서 감사합니다. 정상적으로 탈퇴 되었습니다')
-        navigate("/");
-      })
-      .catch(err => {
-        if (err.response) {
-          // 요청은 성공했지만 서버에서 오류 응답을 보낸 경우
-          console.error('서버 응답 오류:', err.response.data);
-        } else if (err.request) {
-          // 요청이 전송되지 않은 경우 (네트워크 문제 등)
-          console.error('요청 전송 실패:', err.request);
+        axios.put(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/user/delete`,
+          { userEmail: email, userPw: userPw },
+          { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }}
+        )
+          .then(res => {
+            console.log(res);
+            sessionStorage.clear();
+            localStorage.clear();
+            alert('서비스를 이용해주셔서 감사합니다. 정상적으로 탈퇴 되었습니다')
+            navigate("/");
+          })
+          .catch(err => {
+            if (err.response) {
+              // 요청은 성공했지만 서버에서 오류 응답을 보낸 경우
+              console.error('서버 응답 오류:', err.response.data);
+            } else if (err.request) {
+              // 요청이 전송되지 않은 경우 (네트워크 문제 등)
+              console.error('요청 전송 실패:', err.request);
+            } else {
+              // 기타 오류
+              console.error('오류:', err.message);
+            }
+          })
         } else {
-          // 기타 오류
-          console.error('오류:', err.message);
+          console.log("취소")
         }
-      })
     } else {
-      console.log("취소")
+      alert('현재 비밀번호를 입력해주세요.\n현재 비밀번호 확인 후 탈퇴 가능 합니다.')
     }
   };
 

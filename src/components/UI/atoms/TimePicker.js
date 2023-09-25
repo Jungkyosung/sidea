@@ -34,7 +34,6 @@ const TimePicker = ({ selectedPeriod, selectedHour, selectedMinute, setSelectedP
   const handlePeriodSelect = period => {
     setSelectedPeriod(period);
     onPeriod(period);
-    console.log(onPeriod)
   };
 
   const handleHourSelect = hour => {
@@ -42,18 +41,18 @@ const TimePicker = ({ selectedPeriod, selectedHour, selectedMinute, setSelectedP
     let 이동할y값 = 총높이*hour/12; 
     //스크롤 위치를 빼줘야 하나?
     //빈 시간을 추가해주면 좀더 될 거 같기도?
-    console.log(이동할y값);
+    // console.log(이동할y값);
     view2.current.scrollTo(0,이동할y값-69.6);
 
     setSelectedHour(hour);
-    onHour(hour);
+    onHour(hour); 
   };
 
   const handleMinuteSelect = minute => {
     let 총높이 = view3.current.scrollHeight;
     let 이동할y값 = 총높이*(minute/5 + 1 )/12; 
     
-    console.log(이동할y값);
+    // console.log(이동할y값);
     view3.current.scrollTo(0,이동할y값-69.6);
 
     setSelectedMinute(minute);

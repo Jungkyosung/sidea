@@ -33,10 +33,13 @@
 .select_box p {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .select_box svg {
   margin-right: 5px;
+  vertical-align: sub;
+  font-size: 1.2em;
 }
 
 .select_alarm,
