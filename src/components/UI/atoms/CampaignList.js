@@ -7,7 +7,9 @@ const CampaignList = ({campClick, campImgSource, campTitle, campOrganizer, campP
         const month = ('0' + (date.getMonth() + 1)).slice(-2);
         const day = ('0' + date.getDate()).slice(-2);  
         return `${year}.${month}.${day}`;
-      };
+    };
+
+    const campImgUrl = `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/image/${campImgSource}`
 
     const today = new Date();
     const endDate = new Date(campEnddate);
@@ -18,7 +20,7 @@ const CampaignList = ({campClick, campImgSource, campTitle, campOrganizer, campP
     return (
         <>
             <div className={Style.campList} onClick={campClick}>
-                <img className={Style.campImg} src={campImgSource} />
+                <img className={Style.campImg} src={campImgUrl} alt="campImg"/>
                 <div className={Style.campInfo}>
                     <div className={Style.campTitle}>{campTitle}</div>
                     <div className={Style.campOrganizer}>{campOrganizer}</div>

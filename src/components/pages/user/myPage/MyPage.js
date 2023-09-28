@@ -14,10 +14,13 @@ const MyPage = () => {
 
   const navigate = useNavigate();
   const [nickname, setNickname] = useState("");
-  const [profileImg, setProfileImg] = useState("https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg");
+  const [profileImg, setProfileImg] = useState('');
 
-
-
+  let prfImgSrc = '';
+  
+  if (profileImg !== '') {
+    prfImgSrc = `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/image/${profileImg}`;
+  }
   // 조회 (닉네임, 프로필 이미지)
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -33,7 +36,7 @@ const MyPage = () => {
         .then(res => {
           console.log(res.data);
           setNickname(res.data.userNickname);
-          // setProfileImg(res.data.profileImg);
+          setProfileImg(res.data.userImage);
         })
         .catch(err => {
           if (err.response) {
@@ -70,7 +73,7 @@ const MyPage = () => {
   };
 
   return (
-    <ProfileImgTmp profileImgSrc={profileImg} profileText={nickname}>
+    <ProfileImgTmp profileImgSrc={prfImgSrc} profileText={nickname}>
       <div className={Style.MenuBox}>
         <Menu menuArrowClick={() => handlerMove(locations.edit)} menuTitle={"계정설정"}><BsPersonFill /></Menu>
         <Menu menuArrowClick={() => handlerMove(locations.point)} menuTitle={"포인트 관리"}><BsPlusCircle /></Menu>

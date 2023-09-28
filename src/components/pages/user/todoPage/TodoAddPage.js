@@ -114,7 +114,6 @@ const TodoAddPage = (props) => {
       setSelectedMinute(value);
     }
   };
-   
   const alarmstr = `( ${selectedHour} : ${selectedMinute} ${selectedPeriod} )`;
 
   // 날짜선택
@@ -281,7 +280,7 @@ const TodoAddPage = (props) => {
 
           <div className={Style.select_box}>
             <p>
-              <div><BiAlarm /> 알림 <span>{alarmstr}</span></div>
+              <span><BiAlarm /> 알림 <span>{alarmstr}</span></span>
               <span>
                 <ToggleSwitch
                   switchChecked={isEnabled}
@@ -290,7 +289,7 @@ const TodoAddPage = (props) => {
               </span>
             </p>
             <div className={Style.select_alarm}>
-             <TimePicker 
+            <TimePicker 
               selectedPeriod={selectedPeriod}
               selectedHour={selectedHour}
               selectedMinute={selectedMinute}
@@ -301,7 +300,7 @@ const TodoAddPage = (props) => {
               onHour={(value) => updateTime(value, 'hour')}
               onMinute={(value) => updateTime(value, 'minute')}
               toggleOff={toggleOff}
-              />
+            />
             
             </div>
 

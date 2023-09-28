@@ -52,7 +52,10 @@ const AdminCampDetailPage = () => {
   progressEndday.setDate(progressEndday.getDate() + 1);
 
   const status = formatDate(progressEndday) >= formatDate(today) ? "진행중" : "완료";
-  const img = `http://www.newsggam.com/news/photo/202109/86016_45584_2321.jpg`;
+  let img = null;
+  if(data.donationImage !== undefined){
+    img = `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/image/${data.donationImage}`;
+  }
   const campProperties = {
     campId: data.donationIdx,
     // campImgSource: data.donorImage,

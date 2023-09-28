@@ -95,7 +95,7 @@ const MyPointPage = () => {
     console.log(pointDto);
     console.log(userIdx);
     axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/point/charging`,
-         pointDto ,
+        pointDto ,
         { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }})
         .then(res => {
           console.log(res);

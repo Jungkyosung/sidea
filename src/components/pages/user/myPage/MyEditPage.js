@@ -13,8 +13,14 @@ const MyEditPage = () => {
   const navigate = useNavigate();
 
   const [nickname, setNickname] = useState("");
-  const [uploadImg, setUploadImg] = useState('https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg');
-  const [profileImg, setProfileImg] = useState("https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg");
+  const [profileImg, setProfileImg] = useState('');
+
+  let prfImgSrc = '';
+  if (profileImg !== '') {
+    prfImgSrc = `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/image/${profileImg}`;
+  }
+  const [uploadImg, setUploadImg] = useState('');
+  const [imgFile, setImgFile] = useState({});
   const [email, setEmail] = useState("");
   const [userPw, setUserPw] = useState('');
   const [currentPw, setCurrentPw] = useState('');
@@ -51,7 +57,7 @@ const MyEditPage = () => {
         .then(res => {
           console.log(res.data);
           setNickname(res.data.userNickname);
-          // setProfileImg(res.data.userImg);
+          setProfileImg(res.data.userImage);
           setEmail(res.data.userEmail);
           setUserPw(res.data.userPw);
           setMyNickName(res.data.userNickname);
@@ -71,16 +77,16 @@ const MyEditPage = () => {
         
 }, []);
 
+  
+
 
   // 닉네임, 프로필 이미지, 비밀번호 수정가능
   const handlerEdit = () => {
     let requestData = {
       userEmail: email,
-      userImg: profileImg,
-      userNickname: nickname,
-      
+      userNickname: nickname
     };
-  
+
     // 비밀번호가 변경된 경우에만  추가
     if (changePw) {
       requestData = {
@@ -93,10 +99,22 @@ const MyEditPage = () => {
         userPw: currentPw,
       };
     }
+
+    let formData = new FormData();
+    formData.append('data', new Blob([JSON.stringify(requestData)], {type: 'application/json'}));
+    console.log(formData.values().next());
+    // console.log(imgFile.name,'and', imgFile.files[0]);
+    formData.append(imgFile.name, imgFile.files[0]);
+    for (const value of formData.values()){
+      console.log(value);
+    }
+    
+    console.log(formData);
+    console.log(formData.files);
     axios.put(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/user`,
       // { userEmail: email, userPw: changePw, userImg: profileImg, userNickname: nickname },
-      requestData,
-      { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+      formData,
+      { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
       })
         .then(res => {
           console.log(res);
@@ -288,6 +306,7 @@ const MyEditPage = () => {
   };
 
   const handlerImgChange = (e) => {
+    const name = e.target.name;
     const files = e.target.files;
     console.log(files);
     const reader = new FileReader();
@@ -297,16 +316,26 @@ const MyEditPage = () => {
       setUploadImg(imageURL);
     };
     reader.readAsDataURL(files[0]);
-
+    setImgFile({name, files});
   }
 
   return (
     <NaviControll>
       <div className={Style.ContentsWrap}>
         <div className={Style.profile}>
-          <ProfileImg profileImgSrc={uploadImg} />
-          <label htmlFor='prfImg' className={Style.prfInputLabel}>이미지 파일선택</label>
-          <input id="prfImg" type="file" name="prfImg" onChange={handlerImgChange}/>
+          { uploadImg === '' ? 
+            <>
+              <ProfileImg profileImgSrc={prfImgSrc} />
+              <label htmlFor='prfImg' className={Style.prfInputLabel}>이미지 파일선택</label>
+              <input id="prfImg" type="file" name="prfImg" onChange={handlerImgChange}/>
+            </>
+            :
+            <>
+              <ProfileImg profileImgSrc={uploadImg} />
+              <label htmlFor='prfImg' className={Style.prfInputLabel}>이미지 파일선택</label>
+              <input id="prfImg" type="file" name="prfImg" onChange={handlerImgChange}/>
+            </>
+          }
         </div>
         <div className={Style.editContents}>
         <div className={Style.EditInputBox}>

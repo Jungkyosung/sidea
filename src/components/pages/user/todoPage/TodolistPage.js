@@ -58,6 +58,7 @@ const TodolistPage = () => {
       headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` },
     })
     .then(res => {
+      console.log(res.data);
       setData(res.data);
       if (Array.isArray(res.data)) {
         const todoDates = res.data.map(item => item.todoDate);
@@ -262,7 +263,7 @@ console.log(todoDoneState)
               </div>
   
               <div className={Style.todoContent_box}>
-                 {isClick ? (
+                  {isClick ? (
                   <>
                     
                     <div className={Style.todoEdit_page}>

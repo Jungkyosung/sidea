@@ -56,10 +56,13 @@ const CampDetailPage = ({}) => {
   progressEndday.setDate(progressEndday.getDate() + 1);
 
   const status = formatDate(progressEndday) >= formatDate(today) ? "진행중" : "완료";
-
+  let img = null;
+  if(data.donationImage !== undefined) {
+  img = `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/image/${data.donationImage}`;
+  };
   const campProperties = {
     campId: data.donationIdx,
-    campImgSource: "https://i.pinimg.com/564x/73/61/13/736113f91b9513418f1f8af1bdb2e00c.jpg",
+    campImgSource: img,
     campTitle: data.donationName,
     campOrganizer: data.donorName,
     campPeriod: `${formatDate(startDate)} ~ ${formatDate(endDate)}`,
@@ -125,7 +128,7 @@ const CampDetailPage = ({}) => {
     <>
       <div className={Style.container}>
         {/* <div> */}
-          <div className={Style.campImg_box}><img className={Style.campImg} src={campProperties.campImgSource} /></div>
+          <div className={Style.campImg_box}><img className={Style.campImg} src={campProperties.campImgSource} alt="campImg"/></div>
           <div className={Style.close}><CloseBtn onClick={()=>navigate('/campaignlist')} /></div>
         {/* </div> */}
 

@@ -59,8 +59,8 @@ const ToggleSwitch = ({switchChecked, handleSwitchClick, disabled }) => {
   return (
     <>
       <IOSSwitch 
-        {...label} defaultChecked
-        {...label} disabled={disabled}
+        // {...label} defaultChecked
+        // {...label} disabled={disabled}
         checked={switchChecked}
         onClick={handleSwitchClick}
         inputProps={{ 'aria-label': 'controlled' }}
