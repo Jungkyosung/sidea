@@ -45,7 +45,7 @@ const MyQnaDetailPage = () => {
           setData(res.data); 
           setNickname(decode_token.nickname)
 
-          if (res.data.askAnswer == null) {
+          if (res.data.askAnswer == null || res.data.askAnswerDelete === "Y") {
             setIsAnswered(false)
           } else {
             setIsAnswered(true)

@@ -9,10 +9,14 @@ import jwt_decode from "jwt-decode";
 
 const MyQnalistPage = () => {
   const [nickname, setNickname] = useState("");
-  const [profileImg, setProfileImg] = useState("https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg");
+  const [profileImg, setProfileImg] = useState('');
   const [data, setData] = useState('');
   const navigate = useNavigate();
 
+  let prfImgSrc = '';
+  if (profileImg !== '') {
+    prfImgSrc = `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/image/${profileImg}`;
+  }
 
   // 페이지 로딩시 및 날짜 선택 변경시 데이터 로드
   useEffect(() => {
@@ -30,7 +34,8 @@ const MyQnalistPage = () => {
     .then(res => {
       console.log(res.data)
       setData(res.data);      
-      setNickname(decode_token.nickname)
+      setNickname(decode_token.nickname);
+      setProfileImg(decode_token.userImage);
     })
     .catch(err => {
       console.log(err);
@@ -47,7 +52,7 @@ const MyQnalistPage = () => {
   }
 
   return (
-    <ProfileImgTmp profileImgSrc={profileImg} profileText={nickname}>
+    <ProfileImgTmp profileImgSrc={prfImgSrc} profileText={nickname}>
       <div className={Style.askListHead} >나의 문의내역</div>
       <div className={Style.askListBox}>
         { Array.isArray(data) && data.length > 0 ? 
@@ -57,7 +62,7 @@ const MyQnalistPage = () => {
               askNumber={data.length - index}
               askTitleClick={() => handlerNavi(ask.askIdx)}
               askTitle={ask.askTitle}
-              askIsCommented={ask.askAnswer ? true : false} />
+              askIsCommented={ask.askAnswer && ask.askAnswerDelete !== "Y" ? true : false} />
             ))
           ) 
           : (<div className={Style.nullContens}>등록된 문의가 없습니다</div>)
