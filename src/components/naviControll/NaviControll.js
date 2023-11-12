@@ -5,11 +5,13 @@ import NavAdmin from '../UI/atoms/NavAdmin';
 import jwt_decode from "jwt-decode";
 import { closeSnackbar, useSnackbar } from 'notistack';
 import axios from 'axios';
-
+import TodoAlarm from '../../common_js/TodoAlarm';
 
 const NaviControll = ({ children }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [alarmData, setAlarmData] = useState([]);
+
+  const sampleData = TodoAlarm.sampleData;
 
   const targetTime =
     [{
