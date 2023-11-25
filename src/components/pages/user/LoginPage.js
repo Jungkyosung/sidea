@@ -54,6 +54,20 @@ const LoginPage = () => {
     navigate("/regist");
   };
 
+  const handlerPasswordFind = () => {
+    axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/email/password`,
+    userEmail, {headers: {
+      'Content-Type': 'text/plain'
+    }})
+      .then((response) => {
+        alert('메일주소로 임시비밀번호를 보냈습니다.(테스트용)')
+        console.log(response)
+      })
+      .catch((err) => {
+        console.error(err.response);
+      });
+  };
+
   const titleProperties = {
     titleName: "LOGIN"
   }
@@ -117,6 +131,7 @@ const LoginPage = () => {
             <div className={Style.login_submit}>
               <DoBtn doText="로그인" doOnClick={handlerClickLogin} doDisabled={!isloginDisabled()}/>
               <p className={Style.signUp_text} onClick={handlerRegist}>회원가입</p>
+              <p className={Style.signUp_text} onClick={handlerPasswordFind}>비밀번호찾기</p>
             </div> 
         </form>
       </div>

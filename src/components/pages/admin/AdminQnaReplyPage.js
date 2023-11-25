@@ -18,7 +18,6 @@ const AdminQnaReplyPage = (props) => {
   const [editAskAnswer, setEditAskAnswer] = useState('');
   // const [editReplyDate, setEditReplyDate] = useState(new Date(askAnswerDate));
 
-  console.log(askAnswerDate)
   useEffect(() => {
     if(askAnswerContent == null) {
       setIsAnswered(false)

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const RegistPage = () => {
   const [userEmail, setUserEmail] = useState('');
+  const [registerCode, setRegisterCode] = useState('');
   const [userNickname, setUserNickname] = useState('');
   const [userPw, setUserPw] = useState('');
   const [userPwCheck, setUserPwCheck] = useState('');
@@ -19,12 +20,14 @@ const RegistPage = () => {
   //유효성 검사
   const [isEmail, setIsEmail] = useState(false);       // 이메일
   const [isPwCheck, setIsPwCheck] = useState(false);   // 비밀번호 확인
+  const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidNickname, setIsValidNickname] = useState(false);
-
+  
   // 오류메세지 
   const [emailMessage, setEmailMessage] = useState('');
   const [pwMessage, setPwMessage] = useState('');
   const [messageDuplicate, setMessageDuplicate] = useState('');
+  const [messageEmailDuplicate, setMessageEmailDuplicate] = useState('');
 
   const titleProperties = {
     titleName: "SING UP"
@@ -51,6 +54,10 @@ const RegistPage = () => {
         }
     }, [])
 
+  const handlerChangeCode = (e) => {
+    setRegisterCode(e.target.value);
+  }
+
   // 닉네임 
   const handlerChangeNickname = (e) => {
     if (isEmail) {
@@ -62,7 +69,49 @@ const RegistPage = () => {
     } 
   }; 
 
-  // 아이디 중복 확인
+  // 이메일 검증 확인
+  const validateEmail = () => {
+
+    axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/email/code`,
+    userEmail, {headers: {
+      'Content-Type': 'text/plain'
+    }})
+      .then((response) => {
+        alert('메일주소로 코드번호를 보냈습니다. 코드를 입력하면 가입이 가능합니다.')
+        console.log(response)
+      })
+      .catch((err) => {
+        console.error(err.response);
+      });
+  }
+
+
+  // 이메일 중복 확인
+  const duplicateEmail = () => {
+    const params = {  useremail: userEmail };
+
+    axios.get(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/useremail/duplicate`,
+    {params}, { 
+      withCredentials: true,
+      headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}`}
+    })
+      .then((response) => {
+        console.log(response)
+        if(response.data === 0){
+          setIsValidEmail(true);
+          setMessageEmailDuplicate("사용 가능한 이메일입니다");
+        }  else {
+          setIsValidEmail(false);
+          setMessageEmailDuplicate("이미 사용 중인 이메일입니다");
+        }
+      })
+      .catch((err) => {
+        console.error(err.response);
+      });
+  }
+
+
+  // 닉네임 중복 확인
   const duplicateNickname = () => {
     const params = {  usernickname: userNickname };
 
@@ -131,8 +180,8 @@ const RegistPage = () => {
   const handlerClickLogin = (e) => {
     e.preventDefault();
 
-    axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/regist`,
-        { userEmail, userNickname, userPw })
+    axios.post(`http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/register`,
+        { userEmail, userNickname, userPw, registerCode })
         .then(res => {
           alert('정상적으로 가입 되었습니다. 로그인 페이지로 이동합니다. ')
           navigator('/login');
@@ -174,7 +223,16 @@ const RegistPage = () => {
                 inputHandler= {handlerChangeEmail}
                 inputPlaceholder="이메일"
               />
-              <label className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</label> 
+              <Input 
+                inputType="text"
+                inputValue={registerCode}
+                inputHandler= {handlerChangeCode}
+                inputPlaceholder="인증코드"
+              />
+              <button onClick={duplicateEmail}>중복확인</button>
+              <button onClick={validateEmail}>이메일 검증</button>
+              <label className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</label>
+              <label className={`message ${isValidEmail ? 'success' : 'error'}`}>{messageEmailDuplicate}</label> 
             </div>
 
             <div className={Style.regist_input}>

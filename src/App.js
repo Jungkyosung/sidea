@@ -28,10 +28,12 @@ import NotFoundPage from './components/pages/NotFoundPage';
 import MyEditPage from './components/pages/user/myPage/MyEditPage';
 import TodoAddPage from './components/pages/user/todoPage/TodoAddPage';
 import MyQnaEditPage from './components/pages/user/myPage/MyQnaEditPage';
+import { SnackbarProvider } from 'notistack';
 
 function App() {
   return (
     <div className='guideline'> 
+    <SnackbarProvider maxSnack={10}>
       <Routes>
         
         {/* admin */}
@@ -68,6 +70,7 @@ function App() {
         <Route path="/todo/edit/:todoidx"                   element={<TodoEditPage />} />
         <Route path="/*"                                    element={<NotFoundPage />} />
       </Routes>
+      </SnackbarProvider>
     </div>
   );
 }

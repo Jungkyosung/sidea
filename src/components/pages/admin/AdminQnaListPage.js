@@ -11,6 +11,7 @@ import jwt_decode from "jwt-decode";
 
 const AdminQnaListPage = () => {
   const [data, setData] = useState([]);
+  const [seachedData, setSearchedData] = useState([]);
   const navigate = useNavigate();
 
   function handlerNavi(id){
@@ -29,6 +30,7 @@ const AdminQnaListPage = () => {
         .then(res => {
           console.log(res.data);
           setData(res.data);
+          setSearchedData(res.data);
         })
         .catch(err => {
             console.log(err);
@@ -42,13 +44,13 @@ const AdminQnaListPage = () => {
 
   const radioList = ['전체', '미답변', '답변완료'];
 
-  const filterData = data.filter((radio) => {
+  const filterData = seachedData.filter((radio) => {
     if (selectedRadio === '전체') {
       return true; 
     } else if (selectedRadio === '미답변') {
-      return !radio.askAnswer;
+      return !radio.askAnswer || radio.askAnswerDelete === "Y";
     } else if (selectedRadio === '답변완료') {
-      return radio.askAnswer;
+      return radio.askAnswer && radio.askAnswerDelete === "N";
     }
     return false; 
   });
@@ -58,6 +60,17 @@ const AdminQnaListPage = () => {
     setSelectedRadio(e);
   }
 
+  const handlerSerchChange = (e) => {
+    //아무것도 없다면 전체 표시
+    if(e.target.value === null || e.target.value === ''){
+      setSearchedData(data)
+    } else {
+      const searchData = data.filter(a => a.askTitle.includes(e.target.value))
+      setSearchedData(searchData);
+    }
+  }
+
+  console.log(data);
   
   return (
     <NaviControll>
@@ -72,7 +85,7 @@ const AdminQnaListPage = () => {
         </div>
         <div className={Style.SearchWrap}>
           <div className={Style.SearchBox}>
-            <input placeholder='검색' />
+            <input placeholder='검색' onChange={(e)=>handlerSerchChange(e)}/>
             <div className={Style.SearchIcon}><BiSearchAlt2 /></div>
           </div>
         </div>
@@ -84,7 +97,7 @@ const AdminQnaListPage = () => {
                 askNumber={filterData.length - id}
                 askTitleClick={() => handlerNavi(ask.askIdx)}
                 askTitle={ask.askTitle}
-                askIsCommented={ask.askAnswer ? true : false} />  
+                askIsCommented={ask.askAnswer && ask.askAnswerDelete !== "Y" ? true : false} />  
             ))) 
           : (<div className={Style.nullContens}>등록된 문의가 없습니다</div>)
           }

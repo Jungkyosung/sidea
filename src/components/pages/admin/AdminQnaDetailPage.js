@@ -42,7 +42,7 @@ const AdminQnaDetailPage = () => {
           setData(res.data); 
           setNickname(decode_token.nickname)
 
-          if (res.data.askAnswer == null) {
+          if (res.data.askAnswer == null || res.data.askAnswerDelete === "Y") {
             setIsAnswered(false)
           } else {
             setIsAnswered(true)
@@ -66,6 +66,7 @@ const AdminQnaDetailPage = () => {
 
   // const askIdx = data.AskIdx;
   const askAnswer = data.askAnswer;
+  const askAnswerDelete = data.askAnswerDelete;
   const askContents = data.askContents;
   const askTitle = data.askTitle;
   const askAnswerDateStr = data.askAnswerDate;

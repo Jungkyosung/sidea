@@ -12,11 +12,15 @@ import jwt_decode from "jwt-decode";
 
 const MyPointPage = () => {
 
-  const [profileImg, setProfileImg] = useState("https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg");
+  const [profileImg, setProfileImg] = useState('');
   const [nickname, setNickname] = useState('');
   const [userIdx, setUserIdx] = useState('');
   const [pointData, setPointData] = useState([]);
 
+  let prfImgSrc = '';
+  if (profileImg !== '') {
+    prfImgSrc = `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/image/${profileImg}`;
+  }
   // 조회 (프로필 이미지, 닉네임, 포인트)
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -33,6 +37,7 @@ const MyPointPage = () => {
             console.log(res.data);
             setNickname(decode_token.nickname);
             setUserIdx(decode_token.userIdx);
+            setProfileImg(decode_token.userImage);
             console.log(decode_token.userIdx);
             setPointData(res.data);
         })
@@ -174,7 +179,7 @@ const MyPointPage = () => {
   
 
   return (
-    <ProfileImgTmp profileImgSrc={profileImg} profileText={nickname}>
+    <ProfileImgTmp profileImgSrc={prfImgSrc} profileText={nickname}>
       
       { isCharged 
       ?

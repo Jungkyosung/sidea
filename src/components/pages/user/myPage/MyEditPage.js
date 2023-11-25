@@ -100,13 +100,14 @@ const MyEditPage = () => {
       };
     }
 
+
+    //파일 선택 안됐을 경우 에러가 발생함. 수정 필요
     let formData = new FormData();
     formData.append('data', new Blob([JSON.stringify(requestData)], {type: 'application/json'}));
     console.log(formData.values().next());
     // console.log(imgFile.name,'and', imgFile.files[0]);
-    formData.append(imgFile.name, imgFile.files[0]);
-    for (const value of formData.values()){
-      console.log(value);
+    if (imgFile.files !== undefined) {
+      formData.append(imgFile.name, imgFile.files[0]);
     }
     
     console.log(formData);

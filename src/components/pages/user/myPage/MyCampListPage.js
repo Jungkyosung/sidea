@@ -10,7 +10,12 @@ const MyCampListPage = () => {
 
   const [data, setData] = useState([]);
   const [nickname, setNickname] = useState("");
-  const [profileImg, setProfileImg] = useState("https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg");
+  const [profileImg, setProfileImg] = useState('');
+
+  let prfImgSrc = '';
+  if (profileImg !== '') {
+    prfImgSrc = `http://${process.env.REACT_APP_IP}:${process.env.REACT_APP_PORT}/api/image/${profileImg}`;
+  }
 
   const navigate = useNavigate();
 
@@ -33,7 +38,8 @@ const MyCampListPage = () => {
         .then(res => {
           console.log(res.data)
             setData(res.data);
-            setNickname(decode_token.nickname)
+            setNickname(decode_token.nickname);
+            setProfileImg(decode_token.userImage);
         })
         .catch(err => {
             console.log(err);
@@ -62,7 +68,7 @@ const MyCampListPage = () => {
 
 
   return (
-    <ProfileImgTmp profileImgSrc={profileImg} profileText={nickname}>
+    <ProfileImgTmp profileImgSrc={prfImgSrc} profileText={nickname}>
       <div className={Style.CampHead} >참여한 기부</div>
       <div className={Style.CampListBox}>
         {myCampContent()}
