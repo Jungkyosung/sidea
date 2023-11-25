@@ -40,13 +40,13 @@ function App() {
         <Route path="/admin/qna/:qnaidx"                    element={<AdminQnaDetailPage />} />
         <Route path="/admin/qna/reply/:qnaidx"              element={<AdminQnaReplyPage />} />
         <Route path="/admin/campaignlist"                   element={<AdminCampListPage />} />
-        <Route path="/admin/campaign/:campaignidx"          element={<AdminCampDetailPage />} noNaviCont={true}/>
+        <Route path="/admin/campaign/:campaignidx"          element={<AdminCampDetailPage />} naviCont={false}/>
         <Route path="/admin/campaign/add"                   element={<AdminCampAddPage />} />
         <Route path="/admin/campaign/edit/:campaignidx"     element={<AdminCampEditPage />} />
         {/* user */}
         <Route path="/"                                     element={<MainPage />} />
-        <Route path="/login"                                element={<LoginPage />} noNaviCont={true}/>
-        <Route path="/regist"                               element={<RegistPage />} noNaviCont={true}/>
+        <Route path="/login"                                element={<LoginPage />} naviCont={false}/>
+        <Route path="/regist"                               element={<RegistPage />} naviCont={false}/>
         <Route path="/info"                                 element={<InfoPage />} />
         {/* user-mypage*/}
         <Route path="/mypage"                               element={<MyPage />} />
@@ -55,12 +55,12 @@ function App() {
         <Route path="/mypage/campaignlist"                  element={<MyCampListPage />} />
         <Route path="/mypage/qnalist"                       element={<MyQnalistPage />} />
         <Route path="/mypage/qna/detail/:qnaidx"            element={<MyQnaDetailPage />} />
-        <Route path="/mypage/qna/:qnaidx"                   element={<MyQnaEditPage />} noNaviCont={true}/>
+        <Route path="/mypage/qna/:qnaidx"                   element={<MyQnaEditPage />} naviCont={false}/>
         <Route path="/mypage/qna/write"                     element={<MyQnaWritePage />} />
         <Route path="/mypage/edit"                          element={<MyEditPage />} />
         {/* user-campPage*/}
         <Route path="/campaignlist"                         element={<CampListPage />} />
-        <Route path="/campaign/:campaignidx"                element={<CampDetailPage />} noNaviCont={true}/>
+        <Route path="/campaign/:campaignidx"                element={<CampDetailPage />} naviCont={false}/>
         {/* user-todoPage*/}
         <Route path="/todolist"                             element={<TodolistPage />} />
         <Route path="/todo/report"                          element={<TodoReportPage />} />
