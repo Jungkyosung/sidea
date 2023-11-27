@@ -4,14 +4,20 @@ import { LiaHomeSolid } from 'react-icons/lia';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { BiSolidCircle, BiCircle } from 'react-icons/bi';
 import { BiBell } from 'react-icons/bi';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import NavPopupMenu from './NavPopupMenu';
 import NavPopupBell from './NavPopupBell';
+import SockJS from 'sockjs-client';
+import { Stomp } from '@stomp/stompjs';
+
 
 const Nav = (props) => {
 
   const [isLogin, setIsLogin] = useState(false);
   const [isOpenBell, setIsOpenBell] = useState(false);
+  
+  let stomp = useRef(null);
+  
 
   const navigate = useNavigate();
 
@@ -21,8 +27,33 @@ const Nav = (props) => {
     } else {
       setIsLogin(false);
     }
+
+    //소켓 확인
+    console.log("콘솔 확인");
+
+    stomp.current = Stomp.over(()=> new SockJS(`http://localhost:8080/ws`));
+
+    stomp.current.connect({}, onConnected, onError);
   },[]);
   
+  const onConnected = () => {
+    console.log('connected = topic/alarm');
+    stomp.current.subscribe('/topic/alarm', onMessageReceived);
+    stomp.current.send('/app/msg', {},
+    {msg: '메시지'});
+  }
+
+
+
+  const onMessageReceived = (payload) => {
+    const msg = JSON.parse(payload.body);
+    console.log('msg=', msg);
+  }
+
+  const onError = useCallback((error) => {
+    console.log('연결실패', error);
+  }, []);
+
 
   const handlerOpenBell = () => {
     if( isOpenBell) {
